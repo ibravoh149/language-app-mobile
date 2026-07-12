@@ -1,98 +1,56 @@
-# languageapp-mobile
+# Welcome to your Expo app 👋
 
-React Native mobile app (Expo) for languageapp.
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-Communicates exclusively with the NestJS API (`languageapp-backend/apps/api`). Never talks directly to the Python LLM service.
+## Get started
 
----
+1. Install dependencies
 
-## Prerequisites
+   ```bash
+   npm install
+   ```
 
-- [Node.js](https://nodejs.org) 20+
-- [Expo Go](https://expo.dev/go) app on your phone, or an iOS/Android simulator
-- `languageapp-backend` stack running locally
+2. Start the app
 
----
+   ```bash
+   npx expo start
+   ```
 
-## Setup
+In the output, you'll find options to open the app in a
 
-### 1. Install dependencies
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-```bash
-yarn install
-```
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-### 2. Create your env file
+## Get a fresh project
 
-```bash
-cp .env.example .env
-```
-
-`.env` defaults point to the local NestJS API — no changes needed for local dev:
-
-```bash
-EXPO_PUBLIC_API_URL=http://localhost:3000/api/v1
-```
-
-For testing on a physical device, replace `localhost` with your machine's local IP:
+When you're ready, run:
 
 ```bash
-EXPO_PUBLIC_API_URL=http://192.168.x.x:3000/api/v1
+npm run reset-project
 ```
 
-### 3. Start the dev server
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-```bash
-yarn start
-```
+### Other setup steps
 
-Then:
-- Press `i` to open in iOS simulator
-- Press `a` to open in Android emulator
-- Scan the QR code with Expo Go on your phone
+- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
+- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
+- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
 
----
+## Learn more
 
-## Project structure
+To learn more about developing your project with Expo, look at the following resources:
 
-```
-languageapp-mobile/
-├── src/
-│   ├── screens/            # Screen components
-│   ├── components/         # Shared UI components
-│   ├── services/
-│   │   └── api.ts          # Axios client — all API calls go through here
-│   └── store/
-│       └── index.ts        # Zustand global state
-├── app.json                # Expo config (name, slug, platforms)
-├── tsconfig.json
-└── .env.example
-```
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
----
+## Join the community
 
-## Useful commands
+Join our community of developers creating universal apps.
 
-```bash
-# Start dev server
-yarn start
-
-# Start for specific platform
-yarn ios
-yarn android
-
-# Clear Expo cache (if you see stale module errors)
-npx expo start --clear
-```
-
----
-
-## Pointing to production API
-
-Update `EXPO_PUBLIC_API_URL` in `.env` to your deployed NestJS URL:
-
-```bash
-EXPO_PUBLIC_API_URL=https://api.yourdomain.com/api/v1
-```
-
-No code changes needed — the `src/services/api.ts` client reads this at build time.
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
