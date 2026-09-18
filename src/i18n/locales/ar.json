@@ -1,0 +1,15 @@
+{
+  "common": {
+    "appName": "LanguageApp",
+    "continue": "متابعة",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "back": "رجوع",
+    "loading": "جارٍ التحميل…",
+    "retry": "إعادة المحاولة"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة"
+  }
+}

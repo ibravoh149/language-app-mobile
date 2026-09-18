@@ -1,0 +1,15 @@
+{
+  "common": {
+    "appName": "LanguageApp",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "loading": "Loading…",
+    "retry": "Retry"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language"
+  }
+}

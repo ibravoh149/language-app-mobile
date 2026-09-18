@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "icon": "./assets/expo.icon",
-      "bundleIdentifier": "com.yourcompany.languageapp",
+      "bundleIdentifier": "com.languageapp.sprachbar",
       "supportsTablet": true
     },
     "android": {
@@ -20,7 +20,7 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "package": "com.yourcompany.languageapp",
+      "package": "com.languageapp.sprachbar",
       "predictiveBackGestureEnabled": false
     },
     "web": {
@@ -36,7 +36,8 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,
