@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { DEFAULT_LEARNABLE_LANGUAGE_CODE } from '@/constants/learnable-languages';
 import i18n from '@/i18n';
 import { DEFAULT_LANGUAGE_CODE, isSupportedLanguageCode } from '@/i18n/languages';
 import { applyRTLForLanguage } from '@/i18n/rtl';
@@ -15,22 +16,25 @@ export const useAppStore = create<AppState>(() => ({}));
 interface LanguageState {
   language: string;
   hasHydrated: boolean;
-  /** True once a language switch has flipped text direction — the app needs a restart to lay out correctly. */
-  needsRestartForRTL: boolean;
+  /** Bumped every time direction flips — used as a React `key` to force a full remount, since RN/react-native-web only apply a new RTL direction to components created after the change. */
+  rtlEpoch: number;
   setLanguage: (code: string) => void;
 }
 
 export const useLanguageStore = create<LanguageState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       language: i18n.language,
       hasHydrated: false,
-      needsRestartForRTL: false,
+      rtlEpoch: 0,
       setLanguage: (code) => {
         if (!isSupportedLanguageCode(code)) return;
         i18n.changeLanguage(code);
         const directionChanged = applyRTLForLanguage(code);
-        set({ language: code, needsRestartForRTL: directionChanged });
+        set({
+          language: code,
+          rtlEpoch: directionChanged ? get().rtlEpoch + 1 : get().rtlEpoch,
+        });
       },
     }),
     {
@@ -44,6 +48,51 @@ export const useLanguageStore = create<LanguageState>()(
         applyRTLForLanguage(language);
         useLanguageStore.setState({ language, hasHydrated: true });
       },
+    }
+  )
+);
+
+export type ThemePreference = 'system' | 'light' | 'dark';
+
+interface ThemeState {
+  themePreference: ThemePreference;
+  hasHydrated: boolean;
+  setThemePreference: (preference: ThemePreference) => void;
+}
+
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set) => ({
+      themePreference: 'system',
+      hasHydrated: false,
+      setThemePreference: (preference) => set({ themePreference: preference }),
+    }),
+    {
+      name: 'theme-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+        useThemeStore.setState({ hasHydrated: true });
+      },
+    }
+  )
+);
+
+interface CourseState {
+  /** The language the user is learning — distinct from `useLanguageStore`'s interface language. */
+  targetLanguage: string;
+  setTargetLanguage: (code: string) => void;
+}
+
+export const useCourseStore = create<CourseState>()(
+  persist(
+    (set) => ({
+      targetLanguage: DEFAULT_LEARNABLE_LANGUAGE_CODE,
+      setTargetLanguage: (code) => set({ targetLanguage: code }),
+    }),
+    {
+      name: 'course-storage',
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );

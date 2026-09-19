@@ -1,108 +1,53 @@
-import { Image } from 'expo-image';
-import { StyleSheet, View } from 'react-native';
-import Animated, { Keyframe, Easing } from 'react-native-reanimated';
+import { StyleSheet, Text, View } from 'react-native';
 
-import classes from './animated-icon.module.css';
-const DURATION = 300;
+import { Colors, FontFamily } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
+
+/** The app icon is a fixed brand mark — it doesn't change with light/dark theme. */
+const BRAND = Colors.dark;
+
+export function AppIcon() {
+  const theme = useTheme();
+
+  return (
+    <View style={styles.iconBadge}>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: 28,
+          backgroundImage: `linear-gradient(135deg, ${BRAND.accentBright}, ${BRAND.accent})`,
+        }}
+      />
+      <Text style={[styles.iconLetter, { color: BRAND.textOnAccent }]}>S</Text>
+      <View style={[styles.iconDot, { backgroundColor: BRAND.highlight, borderColor: theme.background }]} />
+    </View>
+  );
+}
 
 export function AnimatedSplashOverlay() {
   return null;
 }
 
-const keyframe = new Keyframe({
-  0: {
-    transform: [{ scale: 0 }],
-  },
-  60: {
-    transform: [{ scale: 1.2 }],
-    easing: Easing.elastic(1.2),
-  },
-  100: {
-    transform: [{ scale: 1 }],
-    easing: Easing.elastic(1.2),
-  },
-});
-
-const logoKeyframe = new Keyframe({
-  0: {
-    opacity: 0,
-  },
-  60: {
-    transform: [{ scale: 1.2 }],
-    opacity: 0,
-    easing: Easing.elastic(1.2),
-  },
-  100: {
-    transform: [{ scale: 1 }],
-    opacity: 1,
-    easing: Easing.elastic(1.2),
-  },
-});
-
-const glowKeyframe = new Keyframe({
-  0: {
-    transform: [{ rotateZ: '-180deg' }, { scale: 0.8 }],
-    opacity: 0,
-  },
-  [DURATION / 1000]: {
-    transform: [{ rotateZ: '0deg' }, { scale: 1 }],
-    opacity: 1,
-    easing: Easing.elastic(0.7),
-  },
-  100: {
-    transform: [{ rotateZ: '7200deg' }],
-  },
-});
-
-export function AnimatedIcon() {
-  return (
-    <View style={styles.iconContainer}>
-      <Animated.View entering={glowKeyframe.duration(60 * 1000 * 4)} style={styles.glow}>
-        <Image style={styles.glow} source={require('@/assets/images/logo-glow.png')} />
-      </Animated.View>
-
-      <Animated.View style={styles.background} entering={keyframe.duration(DURATION)}>
-        <div className={classes.expoLogoBackground} />
-      </Animated.View>
-
-      <Animated.View style={styles.imageContainer} entering={logoKeyframe.duration(DURATION)}>
-        <Image style={styles.image} source={require('@/assets/images/expo-logo.png')} />
-      </Animated.View>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: {
+  iconBadge: {
+    width: 96,
+    height: 96,
+    borderRadius: 28,
     alignItems: 'center',
-    width: '100%',
-    zIndex: 1000,
-    position: 'absolute',
-    top: 128 / 2 + 138,
-  },
-  imageContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
   },
-  glow: {
-    width: 201,
-    height: 201,
+  iconLetter: {
+    fontFamily: FontFamily.displayBold,
+    fontSize: 44,
+  },
+  iconDot: {
     position: 'absolute',
-  },
-  iconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 128,
-    height: 128,
-  },
-  image: {
-    position: 'absolute',
-    width: 76,
-    height: 71,
-  },
-  background: {
-    width: 128,
-    height: 128,
-    position: 'absolute',
+    top: -3,
+    right: -3,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 3,
   },
 });

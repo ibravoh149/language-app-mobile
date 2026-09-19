@@ -23,22 +23,26 @@ The mobile app talks **only to the NestJS API** (`languageapp-backend/apps/api` 
 languageapp-mobile/
 ├── src/                        # all source code — @/* alias maps here
 │   ├── app/                    # expo-router file-based routes
-│   │   ├── _layout.tsx         # root layout (theme, splash, tabs)
-│   │   ├── index.tsx           # home tab screen
-│   │   └── explore.tsx         # explore tab screen
+│   │   ├── _layout.tsx         # root layout (providers, splash, root Stack)
+│   │   ├── (tabs)/              # main app, gated behind onboarding/auth
+│   │   ├── (onboarding)/        # welcome, language, placement test, level result, choose voice
+│   │   └── (auth)/              # login, signup, forgot password, verify email
 │   ├── components/             # shared UI components (from Expo template)
-│   │   ├── ui/                 # low-level primitives
-│   │   └── ...
 │   ├── constants/
-│   │   └── theme.ts            # spacing, colors, layout constants
+│   │   └── theme.ts            # colors, fonts, spacing, radius
 │   ├── hooks/
 │   │   ├── use-color-scheme.ts
+│   │   ├── use-app-color-scheme.ts
 │   │   └── use-theme.ts
+│   ├── i18n/                    # i18next config, supported languages, locale JSON
 │   ├── screens/                # screen-level components imported by app/ routes
+│   │   ├── onboarding/
+│   │   └── auth/
 │   ├── services/
-│   │   └── api.ts              # axios client — all API calls go here
+│   │   ├── api.ts              # axios client — all API calls go here
+│   │   └── query-client.ts     # shared React Query client
 │   ├── store/
-│   │   └── index.ts            # zustand global state
+│   │   └── index.ts            # zustand global state (language, theme preference, etc.)
 │   └── global.css              # global CSS (web + NativeWind)
 ├── assets/
 │   ├── expo.icon/              # iOS app icon (Expo format)
@@ -62,14 +66,17 @@ languageapp-mobile/
 
 ## Routing
 
-expo-router uses file-based routing. Files in `src/app/` become routes:
+expo-router uses file-based routing. Files in `src/app/` become routes. Group folders `(name)` organize routes without affecting the URL path.
 
-- `src/app/index.tsx` → home tab
-- `src/app/explore.tsx` → explore tab
+- `src/app/(tabs)/index.tsx` → `/` (main app home tab, behind the onboarding/auth gate)
+- `src/app/(tabs)/explore.tsx` → `/explore`
+- `src/app/(onboarding)/welcome.tsx` → `/welcome` (welcome → language → placement-test → level-result → choose-voice)
+- `src/app/(auth)/signup.tsx` → `/signup` (login, signup, forgot-password, verify-email)
 - `src/app/lesson/[id].tsx` → `/lesson/:id`
-- `src/app/(auth)/_layout.tsx` → auth stack group
 
-Keep reusable screen components in `src/screens/` and import them into `src/app/` route files.
+`(tabs)/_layout.tsx` redirects to `/(onboarding)/welcome` until onboarding/auth is complete (currently hardcoded — see the `needsOnboarding` TODO there). Onboarding's last step (`choose-voice`) hands off to `/(auth)/signup`, which collects name/email/password and continues to `/(auth)/verify-email`.
+
+Keep reusable screen components in `src/screens/` and import them into `src/app/` route files — e.g. `src/screens/onboarding/welcome-screen.tsx` is re-exported from `src/app/(onboarding)/welcome.tsx`.
 
 ## Dev setup
 

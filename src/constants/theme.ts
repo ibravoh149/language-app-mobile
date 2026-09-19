@@ -31,6 +31,7 @@ export const Colors = {
     accentSoft: 'rgba(124,58,237,0.10)',
     accentBorder: 'rgba(124,58,237,0.28)',
     accentGlow: 'rgba(124,58,237,0.34)',
+    highlight: '#facc15',
 
     // Status
     success: '#15a34a',
@@ -69,6 +70,7 @@ export const Colors = {
     accentSoft: 'rgba(139,92,246,0.15)',
     accentBorder: 'rgba(139,92,246,0.40)',
     accentGlow: 'rgba(124,58,237,0.50)',
+    highlight: '#facc15',
 
     // Status
     success: '#4ade80',

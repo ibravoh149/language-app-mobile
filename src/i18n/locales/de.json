@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "LanguageApp",
+    "appName": "Sprachbar",
     "continue": "Weiter",
     "cancel": "Abbrechen",
     "save": "Speichern",
@@ -11,5 +11,95 @@
   "settings": {
     "title": "Einstellungen",
     "language": "Sprache"
+  },
+  "splash": {
+    "tagline": "Lernen durch Sprechen, nicht durch Tippen."
+  },
+  "onboarding": {
+    "stepIndicator": "Schritt {{step}} von {{total}}",
+    "welcome": {
+      "title": "Lerne durch Sprechen, nicht durch Tippen.",
+      "subtitle": "Die App, mit der du jeden Tag die Sprache wirklich anwendest – und endlich verstehst, warum.",
+      "cta": "Loslegen",
+      "haveAccount": "Ich habe bereits ein Konto",
+      "features": {
+        "speak": "Sprechen",
+        "write": "Schreiben",
+        "listen": "Hören",
+        "read": "Lesen"
+      }
+    },
+    "language": {
+      "title": "Lege deine Sprachen fest",
+      "speakLabel": "Ich spreche…",
+      "learnLabel": "Ich möchte lernen…",
+      "available": "verfügbar",
+      "comingSoon": "bald",
+      "footnote": "Weitere Sprachen folgen — Sprachbar bedeutet „Sprachleiste“, nicht nur Deutsch.",
+      "courses": {
+        "de": "Deutsch",
+        "fr": "Französisch",
+        "es": "Spanisch",
+        "it": "Italienisch"
+      }
+    },
+    "placementTest": {
+      "title": "Finden wir dein Niveau",
+      "subtitle": "Ein kurzer Einstufungstest hilft uns, die Lektionen auf dich abzustimmen.",
+      "cta": "Test starten"
+    },
+    "levelResult": {
+      "title": "Dein Niveau",
+      "subtitle": "Basierend auf deinen Antworten, hier ist dein Ausgangspunkt."
+    },
+    "chooseVoice": {
+      "title": "Wähle deine Stimme",
+      "subtitle": "Wähle die Stimme, mit der du üben möchtest.",
+      "cta": "Fertig"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Melde dich an, um deinen Fortschritt fortzusetzen.",
+      "emailLabel": "E-Mail",
+      "passwordLabel": "Passwort",
+      "submit": "Anmelden",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "signUp": "Registrieren"
+    },
+    "signup": {
+      "title": "Konto erstellen",
+      "subtitle": "Speichere deinen Fortschritt und mach dort weiter, wo du aufgehört hast.",
+      "nameLabel": "Name",
+      "emailLabel": "E-Mail",
+      "passwordLabel": "Passwort",
+      "submit": "Konto erstellen",
+      "haveAccount": "Hast du bereits ein Konto?",
+      "logIn": "Anmelden"
+    },
+    "forgotPassword": {
+      "title": "Passwort zurücksetzen",
+      "subtitle": "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.",
+      "emailLabel": "E-Mail",
+      "submit": "Link senden",
+      "backToLogin": "Zurück zur Anmeldung"
+    },
+    "verifyEmail": {
+      "title": "Überprüfe deine E-Mails",
+      "subtitle": "Gib den Code ein, den wir an deine E-Mail-Adresse gesendet haben, um dein Konto zu bestätigen.",
+      "codeLabel": "Bestätigungscode",
+      "submit": "Bestätigen",
+      "resend": "Code erneut senden"
+    },
+    "errors": {
+      "nameRequired": "Name ist erforderlich",
+      "emailRequired": "E-Mail ist erforderlich",
+      "emailInvalid": "Gib eine gültige E-Mail-Adresse ein",
+      "passwordRequired": "Passwort ist erforderlich",
+      "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
+      "codeInvalid": "Gib den Code ein, den wir dir geschickt haben"
+    }
   }
 }

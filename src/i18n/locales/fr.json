@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "LanguageApp",
+    "appName": "Sprachbar",
     "continue": "Continuer",
     "cancel": "Annuler",
     "save": "Enregistrer",
@@ -11,5 +11,95 @@
   "settings": {
     "title": "Paramètres",
     "language": "Langue"
+  },
+  "splash": {
+    "tagline": "Apprendre en parlant, pas en tapant."
+  },
+  "onboarding": {
+    "stepIndicator": "Étape {{step}} sur {{total}}",
+    "welcome": {
+      "title": "Apprendre en parlant, pas en tapant.",
+      "subtitle": "L'application où, chaque jour, vous produisez vraiment la langue et comprenez enfin pourquoi.",
+      "cta": "Commencer",
+      "haveAccount": "J'ai déjà un compte",
+      "features": {
+        "speak": "Parler",
+        "write": "Écrire",
+        "listen": "Écouter",
+        "read": "Lire"
+      }
+    },
+    "language": {
+      "title": "Définissez vos langues",
+      "speakLabel": "Je parle…",
+      "learnLabel": "Je veux apprendre…",
+      "available": "disponible",
+      "comingSoon": "bientôt",
+      "footnote": "D'autres langues arrivent bientôt — Sprachbar signifie « barre de langue », pas seulement l'allemand.",
+      "courses": {
+        "de": "Allemand",
+        "fr": "Français",
+        "es": "Espagnol",
+        "it": "Italien"
+      }
+    },
+    "placementTest": {
+      "title": "Trouvons votre niveau",
+      "subtitle": "Un test de positionnement rapide nous aide à adapter les leçons pour vous.",
+      "cta": "Commencer le test"
+    },
+    "levelResult": {
+      "title": "Votre niveau",
+      "subtitle": "D'après vos réponses, voici votre point de départ."
+    },
+    "chooseVoice": {
+      "title": "Choisissez votre voix",
+      "subtitle": "Choisissez la voix avec laquelle vous allez vous entraîner.",
+      "cta": "Terminer"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Content de vous revoir",
+      "subtitle": "Connectez-vous pour continuer votre progression.",
+      "emailLabel": "E-mail",
+      "passwordLabel": "Mot de passe",
+      "submit": "Se connecter",
+      "forgotPassword": "Mot de passe oublié ?",
+      "noAccount": "Pas encore de compte ?",
+      "signUp": "S'inscrire"
+    },
+    "signup": {
+      "title": "Créer votre compte",
+      "subtitle": "Enregistrez votre progression et reprenez où vous en étiez.",
+      "nameLabel": "Nom",
+      "emailLabel": "E-mail",
+      "passwordLabel": "Mot de passe",
+      "submit": "Créer le compte",
+      "haveAccount": "Vous avez déjà un compte ?",
+      "logIn": "Se connecter"
+    },
+    "forgotPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Entrez votre e-mail et nous vous enverrons un lien de réinitialisation.",
+      "emailLabel": "E-mail",
+      "submit": "Envoyer le lien",
+      "backToLogin": "Retour à la connexion"
+    },
+    "verifyEmail": {
+      "title": "Vérifiez votre e-mail",
+      "subtitle": "Entrez le code que nous avons envoyé à votre e-mail pour vérifier votre compte.",
+      "codeLabel": "Code de vérification",
+      "submit": "Vérifier",
+      "resend": "Renvoyer le code"
+    },
+    "errors": {
+      "nameRequired": "Le nom est requis",
+      "emailRequired": "L'e-mail est requis",
+      "emailInvalid": "Saisissez une adresse e-mail valide",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+      "codeInvalid": "Saisissez le code que nous vous avons envoyé"
+    }
   }
 }

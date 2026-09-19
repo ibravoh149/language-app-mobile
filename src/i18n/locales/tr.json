@@ -1,0 +1,105 @@
+{
+  "common": {
+    "appName": "Sprachbar",
+    "continue": "Devam et",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "back": "Geri",
+    "loading": "Yükleniyor…",
+    "retry": "Tekrar dene"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "language": "Dil"
+  },
+  "splash": {
+    "tagline": "Konuşarak öğren, dokunarak değil."
+  },
+  "onboarding": {
+    "stepIndicator": "Adım {{step}} / {{total}}",
+    "welcome": {
+      "title": "Konuşarak öğren, dokunarak değil.",
+      "subtitle": "Her gün dili gerçekten ürettiğin ve nedenini sonunda anladığın uygulama.",
+      "cta": "Başla",
+      "haveAccount": "Zaten bir hesabım var",
+      "features": {
+        "speak": "Konuş",
+        "write": "Yaz",
+        "listen": "Dinle",
+        "read": "Oku"
+      }
+    },
+    "language": {
+      "title": "Dillerini ayarla",
+      "speakLabel": "Konuştuğum dil…",
+      "learnLabel": "Öğrenmek istediğim dil…",
+      "available": "kullanılabilir",
+      "comingSoon": "yakında",
+      "footnote": "Daha fazla dil geliyor — Sprachbar sadece Almanca değil, \"dil çubuğu\" anlamına gelir.",
+      "courses": {
+        "de": "Almanca",
+        "fr": "Fransızca",
+        "es": "İspanyolca",
+        "it": "İtalyanca"
+      }
+    },
+    "placementTest": {
+      "title": "Seviyeni bulalım",
+      "subtitle": "Kısa bir seviye tespit sınavı, dersleri sana göre uyarlamamıza yardımcı olur.",
+      "cta": "Sınavı başlat"
+    },
+    "levelResult": {
+      "title": "Seviyen",
+      "subtitle": "Cevaplarına göre başlangıç noktan burada."
+    },
+    "chooseVoice": {
+      "title": "Sesini seç",
+      "subtitle": "Konuşma pratiği yapacağın sesi seç.",
+      "cta": "Bitir"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Tekrar hoş geldin",
+      "subtitle": "İlerlemene devam etmek için giriş yap.",
+      "emailLabel": "E-posta",
+      "passwordLabel": "Şifre",
+      "submit": "Giriş yap",
+      "forgotPassword": "Şifreni mi unuttun?",
+      "noAccount": "Hesabın yok mu?",
+      "signUp": "Kaydol"
+    },
+    "signup": {
+      "title": "Hesabını oluştur",
+      "subtitle": "İlerlemeni kaydet ve kaldığın yerden devam et.",
+      "nameLabel": "Ad",
+      "emailLabel": "E-posta",
+      "passwordLabel": "Şifre",
+      "submit": "Hesap oluştur",
+      "haveAccount": "Zaten bir hesabın var mı?",
+      "logIn": "Giriş yap"
+    },
+    "forgotPassword": {
+      "title": "Şifreni sıfırla",
+      "subtitle": "E-postanı gir, sana bir sıfırlama bağlantısı gönderelim.",
+      "emailLabel": "E-posta",
+      "submit": "Sıfırlama bağlantısı gönder",
+      "backToLogin": "Girişe dön"
+    },
+    "verifyEmail": {
+      "title": "E-postanı kontrol et",
+      "subtitle": "Hesabını doğrulamak için e-postana gönderdiğimiz kodu gir.",
+      "codeLabel": "Doğrulama kodu",
+      "submit": "Doğrula",
+      "resend": "Kodu tekrar gönder"
+    },
+    "errors": {
+      "nameRequired": "Ad gerekli",
+      "emailRequired": "E-posta gerekli",
+      "emailInvalid": "Geçerli bir e-posta adresi girin",
+      "passwordRequired": "Şifre gerekli",
+      "passwordTooShort": "Şifre en az 8 karakter olmalı",
+      "codeInvalid": "Sana gönderdiğimiz kodu gir"
+    }
+  }
+}

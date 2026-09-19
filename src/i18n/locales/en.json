@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "LanguageApp",
+    "appName": "Sprachbar",
     "continue": "Continue",
     "cancel": "Cancel",
     "save": "Save",
@@ -11,5 +11,95 @@
   "settings": {
     "title": "Settings",
     "language": "Language"
+  },
+  "splash": {
+    "tagline": "Learn by speaking, not tapping."
+  },
+  "onboarding": {
+    "stepIndicator": "Step {{step}} of {{total}}",
+    "welcome": {
+      "title": "Learn by speaking, not tapping.",
+      "subtitle": "The app where every day you actually produce the language and finally understand why.",
+      "cta": "Get started",
+      "haveAccount": "I have an account",
+      "features": {
+        "speak": "Speak",
+        "write": "Write",
+        "listen": "Listen",
+        "read": "Read"
+      }
+    },
+    "language": {
+      "title": "Set your languages",
+      "speakLabel": "I speak…",
+      "learnLabel": "I want to learn…",
+      "available": "available",
+      "comingSoon": "soon",
+      "footnote": "More languages are coming — Sprachbar means \"language bar,\" not just German.",
+      "courses": {
+        "de": "German",
+        "fr": "French",
+        "es": "Spanish",
+        "it": "Italian"
+      }
+    },
+    "placementTest": {
+      "title": "Let's find your level",
+      "subtitle": "A quick placement test helps us tailor lessons to you.",
+      "cta": "Start test"
+    },
+    "levelResult": {
+      "title": "Your level",
+      "subtitle": "Based on your answers, here's where you're starting from."
+    },
+    "chooseVoice": {
+      "title": "Choose your voice",
+      "subtitle": "Pick the voice you'll practice speaking with.",
+      "cta": "Finish"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to continue your progress.",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "submit": "Log in",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Save your progress and pick up where you left off.",
+      "nameLabel": "Name",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in"
+    },
+    "forgotPassword": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send you a reset link.",
+      "emailLabel": "Email",
+      "submit": "Send reset link",
+      "backToLogin": "Back to login"
+    },
+    "verifyEmail": {
+      "title": "Check your email",
+      "subtitle": "Enter the code we sent to your email to verify your account.",
+      "codeLabel": "Verification code",
+      "submit": "Verify",
+      "resend": "Resend code"
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "codeInvalid": "Enter the code we sent you"
+    }
   }
 }

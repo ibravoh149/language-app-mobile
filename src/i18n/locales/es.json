@@ -1,0 +1,105 @@
+{
+  "common": {
+    "appName": "Sprachbar",
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "back": "Atrás",
+    "loading": "Cargando…",
+    "retry": "Reintentar"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "language": "Idioma"
+  },
+  "splash": {
+    "tagline": "Aprende hablando, no tocando."
+  },
+  "onboarding": {
+    "stepIndicator": "Paso {{step}} de {{total}}",
+    "welcome": {
+      "title": "Aprende hablando, no tocando.",
+      "subtitle": "La app donde cada día produces realmente el idioma y por fin entiendes por qué.",
+      "cta": "Empezar",
+      "haveAccount": "Ya tengo una cuenta",
+      "features": {
+        "speak": "Hablar",
+        "write": "Escribir",
+        "listen": "Escuchar",
+        "read": "Leer"
+      }
+    },
+    "language": {
+      "title": "Configura tus idiomas",
+      "speakLabel": "Hablo…",
+      "learnLabel": "Quiero aprender…",
+      "available": "disponible",
+      "comingSoon": "próximamente",
+      "footnote": "Llegarán más idiomas — Sprachbar significa \"barra de idiomas\", no solo alemán.",
+      "courses": {
+        "de": "Alemán",
+        "fr": "Francés",
+        "es": "Español",
+        "it": "Italiano"
+      }
+    },
+    "placementTest": {
+      "title": "Encontremos tu nivel",
+      "subtitle": "Una prueba de nivel rápida nos ayuda a adaptar las lecciones para ti.",
+      "cta": "Empezar prueba"
+    },
+    "levelResult": {
+      "title": "Tu nivel",
+      "subtitle": "Según tus respuestas, este es tu punto de partida."
+    },
+    "chooseVoice": {
+      "title": "Elige tu voz",
+      "subtitle": "Elige la voz con la que practicarás para hablar.",
+      "cta": "Finalizar"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión para continuar tu progreso.",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "submit": "Iniciar sesión",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUp": "Regístrate"
+    },
+    "signup": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Guarda tu progreso y continúa donde lo dejaste.",
+      "nameLabel": "Nombre",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "submit": "Crear cuenta",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "logIn": "Iniciar sesión"
+    },
+    "forgotPassword": {
+      "title": "Restablece tu contraseña",
+      "subtitle": "Ingresa tu correo y te enviaremos un enlace de restablecimiento.",
+      "emailLabel": "Correo electrónico",
+      "submit": "Enviar enlace",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "verifyEmail": {
+      "title": "Revisa tu correo",
+      "subtitle": "Ingresa el código que enviamos a tu correo para verificar tu cuenta.",
+      "codeLabel": "Código de verificación",
+      "submit": "Verificar",
+      "resend": "Reenviar código"
+    },
+    "errors": {
+      "nameRequired": "El nombre es obligatorio",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "emailInvalid": "Ingresa un correo electrónico válido",
+      "passwordRequired": "La contraseña es obligatoria",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+      "codeInvalid": "Ingresa el código que te enviamos"
+    }
+  }
+}

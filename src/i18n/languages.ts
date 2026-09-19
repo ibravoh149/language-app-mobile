@@ -11,6 +11,8 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: 'de', label: 'German', nativeLabel: 'Deutsch', rtl: false },
   { code: 'fr', label: 'French', nativeLabel: 'Français', rtl: false },
   { code: 'ar', label: 'Arabic', nativeLabel: 'العربية', rtl: true },
+  { code: 'tr', label: 'Turkish', nativeLabel: 'Türkçe', rtl: false },
+  { code: 'es', label: 'Spanish', nativeLabel: 'Español', rtl: false },
 ];
 
 export const DEFAULT_LANGUAGE_CODE = 'en';

@@ -5,7 +5,9 @@ import { initReactI18next } from 'react-i18next';
 import ar from './locales/ar.json';
 import de from './locales/de.json';
 import en from './locales/en.json';
+import es from './locales/es.json';
 import fr from './locales/fr.json';
+import tr from './locales/tr.json';
 import { DEFAULT_LANGUAGE_CODE, isSupportedLanguageCode } from './languages';
 
 const resources = {
@@ -13,6 +15,8 @@ const resources = {
   de: { translation: de },
   fr: { translation: fr },
   ar: { translation: ar },
+  tr: { translation: tr },
+  es: { translation: es },
 };
 
 function getInitialLanguage(): string {
