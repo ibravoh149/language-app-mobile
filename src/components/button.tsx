@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Pressable, type PressableProps, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Pressable, type PressableProps, StyleSheet, Text } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
@@ -9,11 +9,14 @@ import { Motion } from '@/constants/motion';
 type ButtonProps = Omit<PressableProps, 'style'> & {
   title: string;
   variant?: 'primary' | 'secondary';
+  /** Shows a spinner in place of the title and blocks presses, e.g. while a request is in flight. */
+  loading?: boolean;
 };
 
-export function Button({ title, variant = 'primary', disabled, onPressIn, onPressOut, ...props }: ButtonProps) {
+export function Button({ title, variant = 'primary', loading = false, disabled: disabledProp, onPressIn, onPressOut, ...props }: ButtonProps) {
   const theme = useTheme();
   const isPrimary = variant === 'primary';
+  const disabled = disabledProp || loading;
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
@@ -30,7 +33,7 @@ export function Button({ title, variant = 'primary', disabled, onPressIn, onPres
         onPressOut?.(event);
       }}
       accessibilityRole="button"
-      accessibilityState={{ disabled: !!disabled }}
+      accessibilityState={{ disabled: !!disabled, busy: loading }}
       style={({ pressed }) => [
         styles.button,
         {
@@ -38,7 +41,7 @@ export function Button({ title, variant = 'primary', disabled, onPressIn, onPres
           borderColor: isPrimary ? theme.accentBorder : theme.borderStrong,
           boxShadow: isPrimary && !disabled ? `0px 8px 22px -8px ${theme.accentGlow}` : 'none',
         },
-        { opacity: disabled ? 0.5 : pressed ? 0.85 : 1 },
+        { opacity: disabled && !loading ? 0.5 : pressed ? 0.85 : 1 },
       ]}
       {...props}>
       {isPrimary ? (
@@ -49,9 +52,13 @@ export function Button({ title, variant = 'primary', disabled, onPressIn, onPres
           style={[StyleSheet.absoluteFill, { borderRadius: BorderRadius.pill }]}
         />
       ) : null}
-      <Text style={[styles.label, { color: isPrimary ? theme.textOnAccent : theme.textPrimary }]}>
-        {title}
-      </Text>
+      {loading ? (
+        <ActivityIndicator color={isPrimary ? theme.textOnAccent : theme.textPrimary} accessibilityLabel={title} />
+      ) : (
+        <Text style={[styles.label, { color: isPrimary ? theme.textOnAccent : theme.textPrimary }]}>
+          {title}
+        </Text>
+      )}
     </Pressable>
     </Animated.View>
   );
