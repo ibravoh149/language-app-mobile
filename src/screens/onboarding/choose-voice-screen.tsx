@@ -18,6 +18,7 @@ import { Icon } from '@/components/icon';
 import { OnboardingProgress } from '@/components/onboarding-screen';
 import { ONBOARDING_STEPS } from '@/constants/onboarding';
 import { SelectablePill } from '@/components/selectable-pill';
+import { FormError } from '@/components/form-error';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
@@ -27,7 +28,9 @@ import { useTheme } from '@/hooks/use-theme';
 import { useVoiceSample } from '@/hooks/use-voice-sample';
 import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { authApi } from '@/services/auth-api';
+import { haptics } from '@/services/haptics';
 import { useAssessmentStore, useCourseStore } from '@/store';
+import { celebrate } from '@/store/celebration';
 import { buildProfile } from '@/store/profile';
 import { routeAfterAuth, useSessionStore } from '@/store/session';
 
@@ -162,6 +165,7 @@ export function ChooseVoiceScreen() {
       const assessmentId = useAssessmentStore.getState().assessmentId ?? undefined;
       const me = await authApi.updateProfile({ ...buildProfile(), assessmentId });
       setMe(me);
+      celebrate({ title: t('onboarding.done.celebrateTitle'), subtitle: t('onboarding.done.celebrateSubtitle'), icon: 'spark' });
       router.replace(routeAfterAuth(me.user));
     });
   }
@@ -202,7 +206,10 @@ export function ChooseVoiceScreen() {
                 index={index}
                 selected={voiceId === voice.id}
                 isPreviewing={previewingId === voice.id && sample.isPlaying}
-                onSelect={() => setVoiceId(voice.id)}
+                onSelect={() => {
+                  if (voiceId !== voice.id) haptics.select();
+                  setVoiceId(voice.id);
+                }}
                 onPreview={() => handlePreview(voice.id)}
               />
             ))}
@@ -230,11 +237,7 @@ export function ChooseVoiceScreen() {
           </ThemedText>
         </ScrollView>
 
-        {save.formError ? (
-          <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
-            {save.formError}
-          </ThemedText>
-        ) : null}
+        {save.formError ? <FormError message={save.formError} attempt={save.errorAttempt} /> : null}
         <Button title={t('common.continue')} loading={save.submitting} onPress={handleContinue} />
       </SafeAreaView>
     </ThemedView>

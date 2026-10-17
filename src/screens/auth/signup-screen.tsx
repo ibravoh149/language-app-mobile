@@ -8,6 +8,7 @@ import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
 import { Icon } from '@/components/icon';
 import { ControlledTextField } from '@/components/controlled-text-field';
+import { FormError } from '@/components/form-error';
 import { ThemedText } from '@/components/themed-text';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
@@ -29,7 +30,7 @@ export function SignupScreen() {
     mode: 'onChange',
   });
 
-  const { submitting, formError, run } = useAuthSubmit(setError);
+  const { submitting, formError, errorAttempt, run } = useAuthSubmit(setError);
 
   const onSubmit = (values: SignupFormValues) =>
     run(async () => {
@@ -89,11 +90,7 @@ export function SignupScreen() {
           {t('auth.signup.trustCard')}
         </ThemedText>
       </View>
-      {formError ? (
-        <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
-          {formError}
-        </ThemedText>
-      ) : null}
+      {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.signup.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
     </AuthScreen>
   );

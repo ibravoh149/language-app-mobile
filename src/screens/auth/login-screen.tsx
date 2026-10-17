@@ -7,6 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
 import { ControlledTextField } from '@/components/controlled-text-field';
+import { FormError } from '@/components/form-error';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
@@ -26,7 +27,7 @@ export function LoginScreen() {
     mode: 'onChange',
   });
 
-  const { submitting, formError, run } = useAuthSubmit(setError);
+  const { submitting, formError, errorAttempt, run } = useAuthSubmit(setError);
 
   // A returning user with a saved profile goes straight into the app; onboarding is skipped.
   const onSubmit = ({ email, password }: LoginFormValues) =>
@@ -69,11 +70,7 @@ export function LoginScreen() {
           {t('auth.login.forgotPassword')}
         </ThemedText>
       </Link>
-      {formError ? (
-        <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
-          {formError}
-        </ThemedText>
-      ) : null}
+      {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.login.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
 
       <View style={styles.dividerRow}>

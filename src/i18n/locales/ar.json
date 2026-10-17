@@ -111,6 +111,10 @@
         "normal": "عادي",
         "fast": "سريع"
       }
+    },
+    "done": {
+      "celebrateTitle": "كل شيء جاهز",
+      "celebrateSubtitle": "محادثتك الأولى بانتظارك"
     }
   },
   "auth": {
@@ -166,7 +170,9 @@
       "resendIn": "إعادة الإرسال خلال {{seconds}} ثانية",
       "wrongAddress": "عنوان خاطئ؟",
       "changeEmail": "تغيير البريد الإلكتروني",
-      "subtitleWithEmail": "أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى {{email}}."
+      "subtitleWithEmail": "أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى {{email}}.",
+      "celebrateTitle": "تم تأكيد البريد الإلكتروني",
+      "celebrateSubtitle": "هيا نبدأ الكلام"
     },
     "errors": {
       "nameRequired": "الاسم مطلوب",

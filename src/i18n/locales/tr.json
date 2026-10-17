@@ -111,6 +111,10 @@
         "normal": "Normal",
         "fast": "Hızlı"
       }
+    },
+    "done": {
+      "celebrateTitle": "Her şey hazır",
+      "celebrateSubtitle": "İlk sohbetin seni bekliyor"
     }
   },
   "auth": {
@@ -166,7 +170,9 @@
       "resendIn": "{{seconds}} sn içinde tekrar gönder",
       "wrongAddress": "Yanlış adres mi?",
       "changeEmail": "E-postayı değiştir",
-      "subtitleWithEmail": "{{email}} adresine gönderdiğimiz 6 haneli kodu gir."
+      "subtitleWithEmail": "{{email}} adresine gönderdiğimiz 6 haneli kodu gir.",
+      "celebrateTitle": "E-posta onaylandı",
+      "celebrateSubtitle": "Hadi konuşmaya başlayalım"
     },
     "errors": {
       "nameRequired": "Ad gerekli",

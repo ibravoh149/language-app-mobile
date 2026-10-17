@@ -111,6 +111,10 @@
         "normal": "Normal",
         "fast": "Fast"
       }
+    },
+    "done": {
+      "celebrateTitle": "You're all set",
+      "celebrateSubtitle": "Your first conversation is waiting"
     }
   },
   "auth": {
@@ -166,7 +170,9 @@
       "resendIn": "Resend code in {{seconds}}s",
       "wrongAddress": "Wrong address?",
       "changeEmail": "Change email",
-      "subtitleWithEmail": "Enter the 6-digit code we sent to {{email}}."
+      "subtitleWithEmail": "Enter the 6-digit code we sent to {{email}}.",
+      "celebrateTitle": "Email confirmed",
+      "celebrateSubtitle": "Let's get you talking"
     },
     "errors": {
       "nameRequired": "Name is required",

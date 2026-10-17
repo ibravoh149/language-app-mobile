@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
 import { ControlledTextField } from '@/components/controlled-text-field';
+import { FormError } from '@/components/form-error';
 import { ThemedText } from '@/components/themed-text';
 import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { type ForgotPasswordFormValues, forgotPasswordSchema } from '@/schemas/auth';
@@ -20,7 +21,7 @@ export function ForgotPasswordScreen() {
     mode: 'onChange',
   });
 
-  const { submitting, formError, run } = useAuthSubmit(setError);
+  const { submitting, formError, errorAttempt, run } = useAuthSubmit(setError);
 
   // Always 202 (no account enumeration), so continue to the code screen either way.
   const onSubmit = ({ email }: ForgotPasswordFormValues) =>
@@ -49,11 +50,7 @@ export function ForgotPasswordScreen() {
         keyboardType="email-address"
         textContentType="emailAddress"
       />
-      {formError ? (
-        <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
-          {formError}
-        </ThemedText>
-      ) : null}
+      {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.forgotPassword.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
     </AuthScreen>
   );

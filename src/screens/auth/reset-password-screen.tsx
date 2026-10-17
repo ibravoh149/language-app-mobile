@@ -8,6 +8,7 @@ import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
 import { ControlledTextField } from '@/components/controlled-text-field';
 import { OtpInput } from '@/components/otp-input';
+import { FormError } from '@/components/form-error';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { useAuthSubmit } from '@/hooks/use-auth-submit';
@@ -33,7 +34,7 @@ export function ResetPasswordScreen() {
     mode: 'onChange',
   });
   const code = watch('code');
-  const { submitting, formError, run } = useAuthSubmit(setError);
+  const { submitting, formError, errorAttempt, run } = useAuthSubmit(setError);
 
   // A successful reset signs the user in (and revokes their other sessions).
   const onSubmit = ({ code: submitted, newPassword }: ResetPasswordFormValues) =>
@@ -56,7 +57,7 @@ export function ResetPasswordScreen() {
         </Link>
       }>
       <View style={styles.otpContainer}>
-        <OtpInput value={code} onChange={(v) => setValue('code', v, { shouldValidate: true })} autoFocus />
+        <OtpInput value={code} onChange={(v) => setValue('code', v, { shouldValidate: true })} autoFocus errorKey={errorAttempt} />
         {errors.code ? (
           <ThemedText type="small" themeColor="danger">
             {t(errors.code.message ?? '')}
@@ -71,11 +72,7 @@ export function ResetPasswordScreen() {
         secureTextEntry
         textContentType="newPassword"
       />
-      {formError ? (
-        <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
-          {formError}
-        </ThemedText>
-      ) : null}
+      {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.resetPassword.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
     </AuthScreen>
   );

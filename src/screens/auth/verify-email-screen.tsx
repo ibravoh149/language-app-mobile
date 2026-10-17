@@ -8,11 +8,13 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
 import { OtpInput } from '@/components/otp-input';
+import { FormError } from '@/components/form-error';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { type VerifyEmailFormValues, verifyEmailSchema } from '@/schemas/auth';
 import { authApi } from '@/services/auth-api';
+import { celebrate } from '@/store/celebration';
 import { routeAfterAuth, useSessionStore } from '@/store/session';
 
 /** The backend allows one resend per 60 s. Right after signup a code was just sent, so start cooling down. */
@@ -58,6 +60,7 @@ export function VerifyEmailScreen() {
     verify.run(async () => {
       const { user } = await authApi.verifyEmail(submitted);
       setMe({ user });
+      celebrate({ title: t('auth.verifyEmail.celebrateTitle'), subtitle: t('auth.verifyEmail.celebrateSubtitle'), icon: 'check' });
       router.replace(routeAfterAuth(user));
     });
 
@@ -112,17 +115,13 @@ export function VerifyEmailScreen() {
         </View>
       }>
       <View style={styles.otpContainer}>
-        <OtpInput value={code} onChange={(v) => setValue('code', v, { shouldValidate: true })} autoFocus />
+        <OtpInput value={code} onChange={(v) => setValue('code', v, { shouldValidate: true })} autoFocus errorKey={verify.errorAttempt} />
         {errors.code ? (
           <ThemedText type="small" themeColor="danger">
             {t(errors.code.message ?? '')}
           </ThemedText>
         ) : null}
-        {formError ? (
-          <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
-            {formError}
-          </ThemedText>
-        ) : null}
+        {formError ? <FormError message={formError} attempt={verify.errorAttempt + resend.errorAttempt} /> : null}
       </View>
       <Button title={t('auth.verifyEmail.submit')} loading={verify.submitting} onPress={handleSubmit(onSubmit)} />
     </AuthScreen>
