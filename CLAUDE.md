@@ -36,7 +36,7 @@ src/
 ├── screens/             screen components (onboarding/, auth/, …)
 ├── components/          shared UI: Button, Icon, TextField, OtpInput, OnboardingScreen, …
 ├── hooks/               use-theme, use-speech-recognition, use-voice-sample, use-tts-buffer-player, …
-├── services/            api.ts (axios + auth/refresh), auth-api.ts, placement-api.ts, token-storage.ts, haptics.ts, mocks/
+├── services/            api.ts (axios + auth/refresh), auth-api.ts, placement-api.ts, social-auth.ts, token-storage.ts, haptics.ts, mocks/
 ├── store/               index.ts (language, theme, course, assessment), session.ts, profile.ts
 ├── constants/           theme, motion, levels, voices, learnable-languages, onboarding
 ├── schemas/             zod schemas
@@ -57,6 +57,11 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
   profile with `PATCH /me/profile` instead of signing up.
 - Forgot password → `/(auth)/reset-password` (6-digit code + new password).
 - `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth and placement mocks (codes are `123456`).
+- Google / Apple sign-in (`src/services/social-auth.ts`, buttons on login) are
+  **off until configured**: `app.config.ts` adds the Google plugin only when
+  `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` is set, and the Apple capability only when
+  `EXPO_PUBLIC_APPLE_SIGN_IN=1` (needs a paid Apple Developer team). Buttons
+  without a configured provider are hidden. Changing these needs a rebuild.
 
 ## Running on the phone
 
