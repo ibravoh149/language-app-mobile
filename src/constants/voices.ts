@@ -18,4 +18,7 @@ export const VOICES: Voice[] = [
   { id: 'sofia', name: 'Sofia', tagKey: 'energetic', descriptionKey: 'sofia', color: '#f59e0b', available: false },
 ];
 
+/** Personas with a real voice behind them. Only these are offered (B-VOICE-3, D13). */
+export const AVAILABLE_VOICES = VOICES.filter((voice) => voice.available);
+
 export const DEFAULT_VOICE_ID = 'lena';

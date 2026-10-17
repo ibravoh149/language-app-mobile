@@ -22,7 +22,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
 import { VOICE_SPEED_OPTIONS, type VoiceSpeed } from '@/constants/levels';
-import { VOICES } from '@/constants/voices';
+import { AVAILABLE_VOICES, type Voice } from '@/constants/voices';
 import { useTheme } from '@/hooks/use-theme';
 import { useVoiceSample } from '@/hooks/use-voice-sample';
 import { useAssessmentStore, useCourseStore } from '@/store';
@@ -76,7 +76,7 @@ function VoiceRow({
   onPreview,
   index,
 }: {
-  voice: (typeof VOICES)[number];
+  voice: Voice;
   selected: boolean;
   isPreviewing: boolean;
   onSelect: () => void;
@@ -89,14 +89,12 @@ function VoiceRow({
   return (
     <Animated.View entering={FadeInDown.delay(80 + index * 50).duration(280)}>
       <Pressable
-        disabled={!voice.available}
         onPress={onSelect}
         style={[
           styles.voiceRow,
           {
             backgroundColor: selected ? theme.accentSoft : theme.surface,
             borderColor: selected ? theme.accentBorder : theme.border,
-            opacity: voice.available ? 1 : 0.55,
           },
         ]}>
         <View style={[styles.avatar, { backgroundColor: voice.color }]}>
@@ -110,23 +108,14 @@ function VoiceRow({
                 {t(`onboarding.chooseVoice.tags.${voice.tagKey}`)}
               </ThemedText>
             </View>
-            {!voice.available ? (
-              <View style={[styles.tagBadge, { backgroundColor: theme.surfaceAlt }]}>
-                <ThemedText type="small" themeColor="textMuted" style={styles.tagLabel}>
-                  {t('onboarding.language.comingSoon')}
-                </ThemedText>
-              </View>
-            ) : null}
           </View>
           <ThemedText type="small" themeColor="textSecondary">
             {t(`onboarding.chooseVoice.voices.${voice.descriptionKey}`)}
           </ThemedText>
         </View>
         <Pressable
-          disabled={!voice.available}
           accessibilityRole="button"
           accessibilityLabel={`${t(isPreviewing ? 'common.stop' : 'common.preview')}: ${voice.name}`}
-          accessibilityState={{ disabled: !voice.available }}
           onPress={(event) => { event.stopPropagation(); onPreview(); }}
           hitSlop={8}
           style={[styles.playButton, { backgroundColor: theme.accentSoft }]}>
@@ -184,7 +173,7 @@ export function ChooseVoiceScreen() {
 
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           <View style={styles.voicesList}>
-            {VOICES.map((voice, index) => (
+            {AVAILABLE_VOICES.map((voice, index) => (
               <VoiceRow
                 key={voice.id}
                 voice={voice}
