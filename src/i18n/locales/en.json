@@ -211,5 +211,11 @@
       "submit": "Save and log in",
       "resend": "Didn't get a code? Send again"
     }
+  },
+  "home": {
+    "greeting": "Welcome!",
+    "greetingName": "Welcome, {{name}}!",
+    "level": "Starting level: {{level}}",
+    "logOut": "Log out"
   }
 }

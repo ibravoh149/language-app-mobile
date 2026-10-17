@@ -211,5 +211,11 @@
       "submit": "Kaydet ve giriş yap",
       "resend": "Kod gelmedi mi? Tekrar gönder"
     }
+  },
+  "home": {
+    "greeting": "Hoş geldin!",
+    "greetingName": "Hoş geldin, {{name}}!",
+    "level": "Başlangıç seviyesi: {{level}}",
+    "logOut": "Çıkış yap"
   }
 }

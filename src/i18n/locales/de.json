@@ -211,5 +211,11 @@
       "submit": "Speichern und anmelden",
       "resend": "Keinen Code bekommen? Erneut senden"
     }
+  },
+  "home": {
+    "greeting": "Willkommen!",
+    "greetingName": "Willkommen, {{name}}!",
+    "level": "Startniveau: {{level}}",
+    "logOut": "Abmelden"
   }
 }

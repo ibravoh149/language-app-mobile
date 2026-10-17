@@ -211,5 +211,11 @@
       "submit": "Guardar e iniciar sesión",
       "resend": "¿No te llegó el código? Enviar de nuevo"
     }
+  },
+  "home": {
+    "greeting": "¡Hola!",
+    "greetingName": "¡Hola, {{name}}!",
+    "level": "Nivel inicial: {{level}}",
+    "logOut": "Cerrar sesión"
   }
 }

@@ -211,5 +211,11 @@
       "submit": "Enregistrer et se connecter",
       "resend": "Pas reçu de code ? Renvoyer"
     }
+  },
+  "home": {
+    "greeting": "Bienvenue !",
+    "greetingName": "Bienvenue, {{name}} !",
+    "level": "Niveau de départ : {{level}}",
+    "logOut": "Se déconnecter"
   }
 }
