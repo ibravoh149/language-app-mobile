@@ -2,153 +2,83 @@
 
 # languageapp-mobile
 
-React Native mobile app (Expo SDK 57, TypeScript, EAS) for a language learning app.
+React Native app for Sprachbar (Expo SDK 57, TypeScript, EAS), a speaking-first
+German-learning app.
+
+> **Workspace rules come first.** Read
+> `/Users/ibrahimiliyasu/Projects/languageapp/AGENTS.md` and `TRACKER.md` there
+> before changing anything.
 
 ## Stack
 
-- **Framework:** Expo SDK 57 + expo-router (file-based routing)
-- **Language:** TypeScript strict mode (TypeScript 6, React 19)
-- **State:** Zustand (`src/store/`)
+- **Framework:** Expo SDK 57, React Native 0.86 (New Architecture), expo-router (file-based, typed routes), React Compiler on
+- **Language:** TypeScript strict (TypeScript 6, React 19)
+- **State:** Zustand with AsyncStorage persistence (`src/store/`)
+- **Server state:** TanStack Query (`src/services/query-client.ts`)
 - **API client:** Axios (`src/services/api.ts`)
-- **Package manager:** yarn
-- **Builds:** EAS (Expo Application Services)
+- **Speech:** `react-native-executorch` (Whisper STT, Kokoro TTS) + `react-native-audio-api`
+- **Forms:** react-hook-form + zod; **i18n:** i18next (en, de, fr, es, tr, ar; RTL for Arabic)
+- **Package manager:** yarn · **Builds:** EAS
 
-## Key architecture decision
+## Key architecture decisions
 
-The mobile app talks **only to the NestJS API** (`languageapp-backend/apps/api` on port `3000`). Never calls the Python LLM or audio services directly.
+- The app talks **only to the NestJS gateway** (`languageapp-backend/apps/api`,
+  `/api/v1`). Never call the Python services directly.
+- **Speech runs on the device** (Whisper for the learner, Kokoro `df_anna` for
+  German playback). Explanations in the learner's language are text, not speech.
+- Routes in `src/app/` are thin re-exports of components in `src/screens/`.
 
 ## Project structure
 
-```
-languageapp-mobile/
-├── src/                        # all source code — @/* alias maps here
-│   ├── app/                    # expo-router file-based routes
-│   │   ├── _layout.tsx         # root layout (providers, splash, root Stack)
-│   │   ├── (tabs)/              # main app, gated behind onboarding/auth
-│   │   ├── (onboarding)/        # welcome, language, placement test, level result, choose voice
-│   │   └── (auth)/              # login, signup, forgot password, verify email
-│   ├── components/             # shared UI components (from Expo template)
-│   ├── constants/
-│   │   └── theme.ts            # colors, fonts, spacing, radius
-│   ├── hooks/
-│   │   ├── use-color-scheme.ts
-│   │   ├── use-app-color-scheme.ts
-│   │   └── use-theme.ts
-│   ├── i18n/                    # i18next config, supported languages, locale JSON
-│   ├── screens/                # screen-level components imported by app/ routes
-│   │   ├── onboarding/
-│   │   └── auth/
-│   ├── services/
-│   │   ├── api.ts              # axios client — all API calls go here
-│   │   └── query-client.ts     # shared React Query client
-│   ├── store/
-│   │   └── index.ts            # zustand global state (language, theme preference, etc.)
-│   └── global.css              # global CSS (web + NativeWind)
-├── assets/
-│   ├── expo.icon/              # iOS app icon (Expo format)
-│   └── images/                 # icon.png, adaptive icons, splash, etc.
-├── scripts/
-│   └── reset-project.js        # wipes src/app back to blank (run once to clean up demo)
-├── app.json                    # Expo + EAS config
-├── eas.json                    # EAS build profiles
-├── tsconfig.json
-├── AGENTS.md                   # Expo SDK version reminder
-└── .env.example
+```text
+src/
+├── app/                 routes: _layout.tsx (root stack), (tabs)/, (onboarding)/, (auth)/
+├── screens/             screen components (onboarding/, auth/, …)
+├── components/          shared UI: Button, Icon, TextField, OtpInput, OnboardingScreen, …
+├── hooks/               use-theme, use-speech-recognition, use-voice-sample, use-tts-buffer-player, …
+├── services/            api.ts (axios), placement-api.ts (mock), mocks/, query-client.ts
+├── store/index.ts       language, theme, course, assessment stores
+├── constants/           theme, motion, levels, voices, learnable-languages, onboarding
+├── schemas/             zod schemas
+└── i18n/                setup, languages, rtl, locales/
+docs/                    icons.md, motion.md
 ```
 
-## Path alias
-
-`@/*` maps to `src/`. Examples:
-- `@/services/api` → `src/services/api.ts`
-- `@/store` → `src/store/index.ts`
-- `@/hooks/use-color-scheme` → `src/hooks/use-color-scheme.ts`
-- `@/assets/images/icon.png` → `assets/images/icon.png` (separate alias)
+Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
 
 ## Routing
 
-expo-router uses file-based routing. Files in `src/app/` become routes. Group folders `(name)` organize routes without affecting the URL path.
+- `(tabs)/_layout.tsx` redirects to `/(onboarding)/welcome`; the check is
+  hard-coded (`needsOnboarding = true`) until auth exists (BACKLOG B-FLOW-1).
+- Onboarding: welcome → language → target-language → placement-test →
+  speaking-sample → level-result → choose-voice → `/(auth)/signup` →
+  `/(auth)/verify-email`.
 
-- `src/app/(tabs)/index.tsx` → `/` (main app home tab, behind the onboarding/auth gate)
-- `src/app/(tabs)/explore.tsx` → `/explore`
-- `src/app/(onboarding)/welcome.tsx` → `/welcome` (welcome → language → placement-test → level-result → choose-voice)
-- `src/app/(auth)/signup.tsx` → `/signup` (login, signup, forgot-password, verify-email)
-- `src/app/lesson/[id].tsx` → `/lesson/:id`
-
-`(tabs)/_layout.tsx` redirects to `/(onboarding)/welcome` until onboarding/auth is complete (currently hardcoded — see the `needsOnboarding` TODO there). Onboarding's last step (`choose-voice`) hands off to `/(auth)/signup`, which collects name/email/password and continues to `/(auth)/verify-email`.
-
-Keep reusable screen components in `src/screens/` and import them into `src/app/` route files — e.g. `src/screens/onboarding/welcome-screen.tsx` is re-exported from `src/app/(onboarding)/welcome.tsx`.
-
-## Dev setup
+## Running on the phone
 
 ```bash
 yarn install
-cp .env.example .env
-yarn start          # opens Expo dev tools
+cp .env.example .env        # set EXPO_PUBLIC_API_URL=http://<Mac LAN IP>:3000/api/v1
+yarn ios                    # or: yarn android — builds and installs the dev client
+yarn start                  # afterwards, for JS-only changes
 ```
 
-- Press `i` for iOS simulator, `a` for Android emulator
-- Scan QR code with Expo Go for physical device
-
-For physical device, set machine IP in `.env`:
-```
-EXPO_PUBLIC_API_URL=http://192.168.x.x:3000/api/v1
-```
-
-To reset the demo boilerplate and get a blank slate:
-```bash
-yarn reset-project
-```
-
-## EAS builds
-
-```bash
-# Install EAS CLI (one-time)
-npm install -g eas-cli
-
-# Log in and link project (one-time)
-eas login
-eas init
-
-# Build profiles (defined in eas.json)
-eas build --profile development --platform ios
-eas build --profile preview --platform android
-eas build --profile production --platform all
-
-# Submit to stores
-eas submit --platform ios
-eas submit --platform android
-```
-
-## Before first EAS build
-
-1. Run `eas init` to link to your Expo account and get a `projectId` in `app.json`
-2. Replace `com.yourcompany.languageapp` in `app.json` with your real bundle identifier
-3. Add real app icons to `assets/images/` (icon.png 1024×1024, adaptive-icon.png 1024×1024)
+- Find the Mac's LAN IP with `ipconfig getifaddr en0`. `localhost` doesn't work
+  from the phone.
+- Clean native rebuild: `yarn ri` (iOS) / `yarn ra` (Android). Needed after
+  native dependency, plugin, permission or icon changes.
+- From a worktree, run Metro on another port: `yarn start --port 8082`.
 
 ## Conventions
 
-- **No auto-commits.** Always wait for explicit instruction before committing.
-- **Package manager:** yarn
-- All API calls must go through `src/services/api.ts`.
-- New routes go in `src/app/`, reusable screen components go in `src/screens/`.
-- Components in `src/components/`, hooks in `src/hooks/`.
-
-## Backend API base URL
-
-| Environment | `EXPO_PUBLIC_API_URL` |
-|---|---|
-| Local dev (simulator) | `http://localhost:3000/api/v1` |
-| Local dev (device) | `http://<machine-ip>:3000/api/v1` |
-| Production | `https://api.yourdomain.com/api/v1` |
-
-## Key backend endpoints
-
-- `GET  /health`
-- `POST /llm/generate` — full LLM response (JSON)
-- `POST /llm/stream` — streaming LLM response (SSE)
-- `POST /stt/transcribe` — speech to text (multipart/form-data, optional `word_timestamps`)
-- `POST /tts/synthesize` — text to speech (returns WAV stream, pass `language` for routing)
-- `GET  /tts/voices` — list available TTS voices
+- **Git:** work in a worktree on a branch and merge to `main` per the workspace
+  `AGENTS.md`. Never edit or commit in the main checkout.
+- All API calls go through `src/services/`; follow the contracts in
+  `languageapp-backend/docs/api/`.
+- New routes go in `src/app/`, screen components in `src/screens/`, shared
+  components in `src/components/`, hooks in `src/hooks/`.
+- Every user-facing string goes through i18n in all six locale files.
+- Quality gate: `npx tsc --noEmit`.
 
 ## Repos
 
