@@ -152,9 +152,9 @@
     },
     "forgotPassword": {
       "title": "Réinitialise ton mot de passe",
-      "subtitle": "Entre ton e-mail et nous t'enverrons un lien de réinitialisation.",
+      "subtitle": "Entre ton e-mail et nous t'enverrons un code de réinitialisation à 6 chiffres.",
       "emailLabel": "E-mail",
-      "submit": "Envoyer le lien",
+      "submit": "Envoyer le code",
       "backToLogin": "Retour à la connexion"
     },
     "verifyEmail": {
@@ -165,7 +165,8 @@
       "resend": "Renvoyer le code",
       "resendIn": "Renvoyer le code dans {{seconds}}s",
       "wrongAddress": "Mauvaise adresse ?",
-      "changeEmail": "Changer l'e-mail"
+      "changeEmail": "Changer l'e-mail",
+      "subtitleWithEmail": "Entre le code à 6 chiffres envoyé à {{email}}."
     },
     "errors": {
       "nameRequired": "Le nom est requis",
@@ -173,7 +174,27 @@
       "emailInvalid": "Saisis une adresse e-mail valide",
       "passwordRequired": "Le mot de passe est requis",
       "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
-      "codeInvalid": "Saisis le code que nous t'avons envoyé"
+      "codeInvalid": "Saisis le code que nous t'avons envoyé",
+      "api": {
+        "CODE_INVALID": "Ce code n'est pas bon. Vérifie-le et réessaie.",
+        "CODE_EXPIRED": "Ce code a expiré. Demandes-en un nouveau.",
+        "INVALID_CREDENTIALS": "L'e-mail ou le mot de passe ne correspond pas.",
+        "OAUTH_TOKEN_INVALID": "Impossible de confirmer cette connexion. Réessaie.",
+        "EMAIL_TAKEN": "Un compte existe déjà avec cet e-mail. Essaie de te connecter.",
+        "ACCOUNT_USES_SOCIAL": "Ce compte utilise Apple ou Google. Continue avec l'un des deux.",
+        "VALIDATION_FAILED": "Vérifie les champs signalés.",
+        "NETWORK": "Impossible de joindre Sprachbar. Vérifie ta connexion et réessaie.",
+        "RATE_LIMITED": "Trop de tentatives. Patiente un instant.",
+        "RATE_LIMITED_SECONDS": "Trop de tentatives. Réessaie dans {{seconds}} s.",
+        "INTERNAL": "Une erreur s'est produite. Réessaie."
+      }
+    },
+    "resetPassword": {
+      "title": "Choisis un nouveau mot de passe",
+      "subtitle": "Entre le code à 6 chiffres envoyé à {{email}}, puis choisis un nouveau mot de passe.",
+      "passwordLabel": "Nouveau mot de passe",
+      "submit": "Enregistrer et se connecter",
+      "resend": "Pas reçu de code ? Renvoyer"
     }
   }
 }

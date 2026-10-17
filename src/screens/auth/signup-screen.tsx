@@ -11,19 +11,33 @@ import { ControlledTextField } from '@/components/controlled-text-field';
 import { ThemedText } from '@/components/themed-text';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { type SignupFormValues, signupSchema } from '@/schemas/auth';
+import { authApi } from '@/services/auth-api';
+import { useAssessmentStore } from '@/store';
+import { buildProfile } from '@/store/profile';
+import { useSessionStore } from '@/store/session';
 
 export function SignupScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const theme = useTheme();
-  const { control, handleSubmit } = useForm<SignupFormValues>({
+  const signIn = useSessionStore((state) => state.signIn);
+  const { control, handleSubmit, setError } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: { name: '', email: '', password: '' },
     mode: 'onChange',
   });
 
-  const onSubmit = () => router.push('/(auth)/verify-email');
+  const { submitting, formError, run } = useAuthSubmit(setError);
+
+  const onSubmit = (values: SignupFormValues) =>
+    run(async () => {
+      const assessmentId = useAssessmentStore.getState().assessmentId ?? undefined;
+      const result = await authApi.signup({ ...values, email: values.email.trim(), profile: buildProfile(), assessmentId });
+      await signIn(result);
+      router.replace({ pathname: '/(auth)/verify-email', params: { sent: '1' } });
+    });
 
   return (
     <AuthScreen
@@ -75,7 +89,12 @@ export function SignupScreen() {
           {t('auth.signup.trustCard')}
         </ThemedText>
       </View>
-      <Button title={t('auth.signup.submit')} onPress={handleSubmit(onSubmit)} />
+      {formError ? (
+        <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
+          {formError}
+        </ThemedText>
+      ) : null}
+      <Button title={t('auth.signup.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
     </AuthScreen>
   );
 }

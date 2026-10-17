@@ -152,9 +152,9 @@
     },
     "forgotPassword": {
       "title": "Şifreni sıfırla",
-      "subtitle": "E-postanı gir, sana bir sıfırlama bağlantısı gönderelim.",
+      "subtitle": "E-postanı gir, sana 6 haneli bir sıfırlama kodu gönderelim.",
       "emailLabel": "E-posta",
-      "submit": "Sıfırlama bağlantısı gönder",
+      "submit": "Kodu gönder",
       "backToLogin": "Girişe dön"
     },
     "verifyEmail": {
@@ -165,7 +165,8 @@
       "resend": "Kodu tekrar gönder",
       "resendIn": "{{seconds}} sn içinde tekrar gönder",
       "wrongAddress": "Yanlış adres mi?",
-      "changeEmail": "E-postayı değiştir"
+      "changeEmail": "E-postayı değiştir",
+      "subtitleWithEmail": "{{email}} adresine gönderdiğimiz 6 haneli kodu gir."
     },
     "errors": {
       "nameRequired": "Ad gerekli",
@@ -173,7 +174,27 @@
       "emailInvalid": "Geçerli bir e-posta adresi gir",
       "passwordRequired": "Şifre gerekli",
       "passwordTooShort": "Şifre en az 8 karakter olmalı",
-      "codeInvalid": "Sana gönderdiğimiz kodu gir"
+      "codeInvalid": "Sana gönderdiğimiz kodu gir",
+      "api": {
+        "CODE_INVALID": "Bu kod doğru değil. Kontrol edip tekrar dene.",
+        "CODE_EXPIRED": "Bu kodun süresi doldu. Yeni bir kod iste.",
+        "INVALID_CREDENTIALS": "E-posta veya şifre eşleşmiyor.",
+        "OAUTH_TOKEN_INVALID": "Bu girişi doğrulayamadık. Lütfen tekrar dene.",
+        "EMAIL_TAKEN": "Bu e-postayla zaten bir hesap var. Giriş yapmayı dene.",
+        "ACCOUNT_USES_SOCIAL": "Bu hesap Apple veya Google kullanıyor. Bunlardan biriyle devam et.",
+        "VALIDATION_FAILED": "Lütfen işaretli alanları kontrol et.",
+        "NETWORK": "Sprachbar'a ulaşılamıyor. Bağlantını kontrol edip tekrar dene.",
+        "RATE_LIMITED": "Çok fazla deneme. Lütfen biraz bekle.",
+        "RATE_LIMITED_SECONDS": "Çok fazla deneme. {{seconds}} sn sonra tekrar dene.",
+        "INTERNAL": "Bir şeyler ters gitti. Lütfen tekrar dene."
+      }
+    },
+    "resetPassword": {
+      "title": "Yeni bir şifre seç",
+      "subtitle": "{{email}} adresine gönderdiğimiz 6 haneli kodu gir ve yeni bir şifre seç.",
+      "passwordLabel": "Yeni şifre",
+      "submit": "Kaydet ve giriş yap",
+      "resend": "Kod gelmedi mi? Tekrar gönder"
     }
   }
 }

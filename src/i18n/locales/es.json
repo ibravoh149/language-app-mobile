@@ -152,9 +152,9 @@
     },
     "forgotPassword": {
       "title": "Restablece tu contraseña",
-      "subtitle": "Ingresa tu correo y te enviaremos un enlace de restablecimiento.",
+      "subtitle": "Ingresa tu correo y te enviaremos un código de 6 dígitos para restablecerla.",
       "emailLabel": "Correo electrónico",
-      "submit": "Enviar enlace",
+      "submit": "Enviar código",
       "backToLogin": "Volver al inicio de sesión"
     },
     "verifyEmail": {
@@ -165,7 +165,8 @@
       "resend": "Reenviar código",
       "resendIn": "Reenviar código en {{seconds}}s",
       "wrongAddress": "¿Dirección incorrecta?",
-      "changeEmail": "Cambiar correo"
+      "changeEmail": "Cambiar correo",
+      "subtitleWithEmail": "Ingresa el código de 6 dígitos que enviamos a {{email}}."
     },
     "errors": {
       "nameRequired": "El nombre es obligatorio",
@@ -173,7 +174,27 @@
       "emailInvalid": "Ingresa un correo electrónico válido",
       "passwordRequired": "La contraseña es obligatoria",
       "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
-      "codeInvalid": "Ingresa el código que te enviamos"
+      "codeInvalid": "Ingresa el código que te enviamos",
+      "api": {
+        "CODE_INVALID": "Ese código no es correcto. Revísalo e inténtalo de nuevo.",
+        "CODE_EXPIRED": "Ese código ha caducado. Pide uno nuevo.",
+        "INVALID_CREDENTIALS": "El correo o la contraseña no coinciden.",
+        "OAUTH_TOKEN_INVALID": "No pudimos confirmar ese inicio de sesión. Inténtalo de nuevo.",
+        "EMAIL_TAKEN": "Ya existe una cuenta con este correo. Prueba a iniciar sesión.",
+        "ACCOUNT_USES_SOCIAL": "Esta cuenta usa Apple o Google. Continúa con uno de ellos.",
+        "VALIDATION_FAILED": "Revisa los campos marcados.",
+        "NETWORK": "No se puede conectar con Sprachbar. Revisa tu conexión e inténtalo de nuevo.",
+        "RATE_LIMITED": "Demasiados intentos. Espera un momento.",
+        "RATE_LIMITED_SECONDS": "Demasiados intentos. Inténtalo de nuevo en {{seconds}} s.",
+        "INTERNAL": "Algo salió mal. Inténtalo de nuevo."
+      }
+    },
+    "resetPassword": {
+      "title": "Elige una contraseña nueva",
+      "subtitle": "Ingresa el código de 6 dígitos que enviamos a {{email}} y elige una contraseña nueva.",
+      "passwordLabel": "Contraseña nueva",
+      "submit": "Guardar e iniciar sesión",
+      "resend": "¿No te llegó el código? Enviar de nuevo"
     }
   }
 }

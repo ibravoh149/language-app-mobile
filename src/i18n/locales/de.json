@@ -152,9 +152,9 @@
     },
     "forgotPassword": {
       "title": "Passwort zurücksetzen",
-      "subtitle": "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.",
+      "subtitle": "Gib deine E-Mail-Adresse ein und wir senden dir einen 6-stelligen Code zum Zurücksetzen.",
       "emailLabel": "E-Mail",
-      "submit": "Link senden",
+      "submit": "Code senden",
       "backToLogin": "Zurück zur Anmeldung"
     },
     "verifyEmail": {
@@ -165,7 +165,8 @@
       "resend": "Code erneut senden",
       "resendIn": "Code erneut senden in {{seconds}}s",
       "wrongAddress": "Falsche Adresse?",
-      "changeEmail": "E-Mail ändern"
+      "changeEmail": "E-Mail ändern",
+      "subtitleWithEmail": "Gib den 6-stelligen Code ein, den wir an {{email}} geschickt haben."
     },
     "errors": {
       "nameRequired": "Name ist erforderlich",
@@ -173,7 +174,27 @@
       "emailInvalid": "Gib eine gültige E-Mail-Adresse ein",
       "passwordRequired": "Passwort ist erforderlich",
       "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
-      "codeInvalid": "Gib den Code ein, den wir dir geschickt haben"
+      "codeInvalid": "Gib den Code ein, den wir dir geschickt haben",
+      "api": {
+        "CODE_INVALID": "Der Code stimmt nicht. Prüf ihn und versuch es noch einmal.",
+        "CODE_EXPIRED": "Der Code ist abgelaufen. Fordere einen neuen an.",
+        "INVALID_CREDENTIALS": "E-Mail oder Passwort stimmt nicht.",
+        "OAUTH_TOKEN_INVALID": "Die Anmeldung konnte nicht bestätigt werden. Bitte versuch es noch einmal.",
+        "EMAIL_TAKEN": "Mit dieser E-Mail gibt es schon ein Konto. Melde dich an.",
+        "ACCOUNT_USES_SOCIAL": "Dieses Konto nutzt Apple oder Google. Melde dich damit an.",
+        "VALIDATION_FAILED": "Bitte prüf die markierten Felder.",
+        "NETWORK": "Sprachbar ist nicht erreichbar. Prüf deine Verbindung und versuch es noch einmal.",
+        "RATE_LIMITED": "Zu viele Versuche. Bitte warte kurz.",
+        "RATE_LIMITED_SECONDS": "Zu viele Versuche. Versuch es in {{seconds}} s noch einmal.",
+        "INTERNAL": "Etwas ist schiefgelaufen. Bitte versuch es noch einmal."
+      }
+    },
+    "resetPassword": {
+      "title": "Neues Passwort wählen",
+      "subtitle": "Gib den 6-stelligen Code ein, den wir an {{email}} geschickt haben, und wähle ein neues Passwort.",
+      "passwordLabel": "Neues Passwort",
+      "submit": "Speichern und anmelden",
+      "resend": "Keinen Code bekommen? Erneut senden"
     }
   }
 }

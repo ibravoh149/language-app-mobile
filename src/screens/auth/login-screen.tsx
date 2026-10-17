@@ -10,19 +10,31 @@ import { ControlledTextField } from '@/components/controlled-text-field';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { type LoginFormValues, loginSchema } from '@/schemas/auth';
+import { authApi } from '@/services/auth-api';
+import { routeAfterAuth, useSessionStore } from '@/store/session';
 
 export function LoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const theme = useTheme();
-  const { control, handleSubmit } = useForm<LoginFormValues>({
+  const signIn = useSessionStore((state) => state.signIn);
+  const { control, handleSubmit, setError } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
     mode: 'onChange',
   });
 
-  const onSubmit = () => router.replace('/(tabs)');
+  const { submitting, formError, run } = useAuthSubmit(setError);
+
+  // A returning user with a saved profile goes straight into the app; onboarding is skipped.
+  const onSubmit = ({ email, password }: LoginFormValues) =>
+    run(async () => {
+      const result = await authApi.login(email.trim(), password);
+      await signIn(result);
+      router.replace(routeAfterAuth(result.user));
+    });
 
   return (
     <AuthScreen
@@ -57,7 +69,12 @@ export function LoginScreen() {
           {t('auth.login.forgotPassword')}
         </ThemedText>
       </Link>
-      <Button title={t('auth.login.submit')} onPress={handleSubmit(onSubmit)} />
+      {formError ? (
+        <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
+          {formError}
+        </ThemedText>
+      ) : null}
+      <Button title={t('auth.login.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
 
       <View style={styles.dividerRow}>
         <View style={[styles.dividerLine, { backgroundColor: theme.border }]} />

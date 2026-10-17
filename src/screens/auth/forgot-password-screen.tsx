@@ -7,18 +7,27 @@ import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
 import { ControlledTextField } from '@/components/controlled-text-field';
 import { ThemedText } from '@/components/themed-text';
+import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { type ForgotPasswordFormValues, forgotPasswordSchema } from '@/schemas/auth';
+import { authApi } from '@/services/auth-api';
 
 export function ForgotPasswordScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { control, handleSubmit } = useForm<ForgotPasswordFormValues>({
+  const { control, handleSubmit, setError } = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: '' },
     mode: 'onChange',
   });
 
-  const onSubmit = () => router.replace('/(auth)/login');
+  const { submitting, formError, run } = useAuthSubmit(setError);
+
+  // Always 202 (no account enumeration), so continue to the code screen either way.
+  const onSubmit = ({ email }: ForgotPasswordFormValues) =>
+    run(async () => {
+      await authApi.forgotPassword(email.trim());
+      router.push({ pathname: '/(auth)/reset-password', params: { email: email.trim() } });
+    });
 
   return (
     <AuthScreen
@@ -40,7 +49,12 @@ export function ForgotPasswordScreen() {
         keyboardType="email-address"
         textContentType="emailAddress"
       />
-      <Button title={t('auth.forgotPassword.submit')} onPress={handleSubmit(onSubmit)} />
+      {formError ? (
+        <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
+          {formError}
+        </ThemedText>
+      ) : null}
+      <Button title={t('auth.forgotPassword.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
     </AuthScreen>
   );
 }

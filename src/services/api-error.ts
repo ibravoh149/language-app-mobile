@@ -53,3 +53,24 @@ export function toApiError(error: unknown): ApiError {
   }
   return new ApiError('INTERNAL', error instanceof Error ? error.message : String(error));
 }
+
+/** i18n key (under `auth.errors.api`) and params for showing an `ApiError` to the learner. */
+export function apiErrorMessage(error: ApiError): { key: string; params?: Record<string, number> } {
+  switch (error.code) {
+    case 'CODE_INVALID':
+    case 'CODE_EXPIRED':
+    case 'INVALID_CREDENTIALS':
+    case 'OAUTH_TOKEN_INVALID':
+    case 'EMAIL_TAKEN':
+    case 'ACCOUNT_USES_SOCIAL':
+    case 'VALIDATION_FAILED':
+    case 'NETWORK':
+      return { key: `auth.errors.api.${error.code}` };
+    case 'RATE_LIMITED':
+      return error.retryAfter
+        ? { key: 'auth.errors.api.RATE_LIMITED_SECONDS', params: { seconds: Math.ceil(error.retryAfter) } }
+        : { key: 'auth.errors.api.RATE_LIMITED' };
+    default:
+      return { key: 'auth.errors.api.INTERNAL' };
+  }
+}

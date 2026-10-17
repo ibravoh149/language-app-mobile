@@ -152,9 +152,9 @@
     },
     "forgotPassword": {
       "title": "Reset your password",
-      "subtitle": "Enter your email and we'll send you a reset link.",
+      "subtitle": "Enter your email and we'll send you a 6-digit reset code.",
       "emailLabel": "Email",
-      "submit": "Send reset link",
+      "submit": "Send reset code",
       "backToLogin": "Back to login"
     },
     "verifyEmail": {
@@ -165,7 +165,8 @@
       "resend": "Resend code",
       "resendIn": "Resend code in {{seconds}}s",
       "wrongAddress": "Wrong address?",
-      "changeEmail": "Change email"
+      "changeEmail": "Change email",
+      "subtitleWithEmail": "Enter the 6-digit code we sent to {{email}}."
     },
     "errors": {
       "nameRequired": "Name is required",
@@ -173,7 +174,27 @@
       "emailInvalid": "Enter a valid email address",
       "passwordRequired": "Password is required",
       "passwordTooShort": "Password must be at least 8 characters",
-      "codeInvalid": "Enter the code we sent you"
+      "codeInvalid": "Enter the code we sent you",
+      "api": {
+        "CODE_INVALID": "That code isn't right. Check it and try again.",
+        "CODE_EXPIRED": "That code has expired. Request a new one.",
+        "INVALID_CREDENTIALS": "Email or password doesn't match.",
+        "OAUTH_TOKEN_INVALID": "We couldn't confirm that sign-in. Please try again.",
+        "EMAIL_TAKEN": "An account with this email already exists. Try logging in.",
+        "ACCOUNT_USES_SOCIAL": "This account uses Apple or Google. Continue with one of those.",
+        "VALIDATION_FAILED": "Please check the highlighted fields.",
+        "NETWORK": "Can't reach Sprachbar. Check your connection and try again.",
+        "RATE_LIMITED": "Too many attempts. Please wait a moment.",
+        "RATE_LIMITED_SECONDS": "Too many attempts. Try again in {{seconds}}s.",
+        "INTERNAL": "Something went wrong. Please try again."
+      }
+    },
+    "resetPassword": {
+      "title": "Choose a new password",
+      "subtitle": "Enter the 6-digit code we sent to {{email}}, then pick a new password.",
+      "passwordLabel": "New password",
+      "submit": "Save and log in",
+      "resend": "Didn't get a code? Send again"
     }
   }
 }
