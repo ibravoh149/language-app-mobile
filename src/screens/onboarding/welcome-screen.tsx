@@ -3,28 +3,28 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AppIcon } from '@/components/animated-icon';
+import { AppIcon } from '@/components/app-icon';
 import { Button } from '@/components/button';
+import { Icon, type IconName } from '@/components/icon';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 const FEATURES = [
-  { emoji: '🗣️', key: 'speak' },
-  { emoji: '✍️', key: 'write' },
-  { emoji: '🎧', key: 'listen' },
-  { emoji: '📖', key: 'read' },
+  { icon: 'mic', key: 'speak' },
+  { icon: 'pen', key: 'write' },
+  { icon: 'headphones', key: 'listen' },
+  { icon: 'read', key: 'read' },
 ] as const;
 
-function FeaturePill({ emoji, label }: { emoji: string; label: string }) {
+function FeaturePill({ icon, label }: { icon: IconName; label: string }) {
   const theme = useTheme();
 
   return (
     <View style={[styles.pill, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-      <ThemedText type="smallBold">
-        {emoji} {label}
-      </ThemedText>
+      <Icon name={icon} size={16} themeColor="accentBright" />
+      <ThemedText type="smallBold">{label}</ThemedText>
     </View>
   );
 }
@@ -48,7 +48,7 @@ export function WelcomeScreen() {
             {FEATURES.map((feature) => (
               <FeaturePill
                 key={feature.key}
-                emoji={feature.emoji}
+                icon={feature.icon}
                 label={t(`onboarding.welcome.features.${feature.key}`)}
               />
             ))}
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: Spacing.lg,
+    paddingHorizontal: Spacing.xl,
     paddingBottom: Spacing.lg,
   },
   content: {
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   pill: {
+    gap: 6,
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: Spacing.xs,
