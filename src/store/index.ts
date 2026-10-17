@@ -119,6 +119,8 @@ interface AssessmentState {
   reminderMinute: number;
   voiceId: string;
   voiceSpeed: VoiceSpeed;
+  /** Placement attempt id from the backend; linked to the account at signup. */
+  assessmentId: string | null;
   setSelfRatedLevel: (level: CEFRLevel | null) => void;
   setAiSuggestedLevel: (level: CEFRLevel | null) => void;
   setChosenLevel: (level: CEFRLevel) => void;
@@ -127,6 +129,7 @@ interface AssessmentState {
   setReminderTime: (hour: number, minute: number) => void;
   setVoiceId: (id: string) => void;
   setVoiceSpeed: (speed: VoiceSpeed) => void;
+  setAssessmentId: (id: string | null) => void;
 }
 
 export const useAssessmentStore = create<AssessmentState>()(
@@ -141,6 +144,7 @@ export const useAssessmentStore = create<AssessmentState>()(
       reminderMinute: 0,
       voiceId: DEFAULT_VOICE_ID,
       voiceSpeed: DEFAULT_VOICE_SPEED,
+      assessmentId: null,
       setSelfRatedLevel: (level) => set({ selfRatedLevel: level }),
       setAiSuggestedLevel: (level) => set({ aiSuggestedLevel: level }),
       setChosenLevel: (level) => set({ chosenLevel: level }),
@@ -153,6 +157,7 @@ export const useAssessmentStore = create<AssessmentState>()(
       },
       setVoiceId: (id) => set({ voiceId: id }),
       setVoiceSpeed: (speed) => set({ voiceSpeed: speed }),
+      setAssessmentId: (id) => set({ assessmentId: id }),
     }),
     {
       name: 'assessment-storage',

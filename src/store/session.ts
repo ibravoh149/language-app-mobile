@@ -7,6 +7,8 @@ import { toApiError } from '@/services/api-error';
 import { authApi, type AuthResult, type Me, type Profile, type User } from '@/services/auth-api';
 import { tokenStorage } from '@/services/token-storage';
 
+import { applyProfile } from './profile';
+
 export type SessionStatus = 'restoring' | 'signedOut' | 'signedIn';
 
 interface SessionState {
@@ -62,6 +64,7 @@ export const useSessionStore = create<SessionState>()(
 
       signIn: async (result) => {
         await tokenStorage.save(result.tokens);
+        if (result.profile && !result.isNewUser) applyProfile(result.profile);
         set({ status: 'signedIn', user: result.user, profile: result.profile });
       },
 
@@ -88,9 +91,14 @@ setSessionExpiredHandler(() => useSessionStore.setState(signedOut));
  * Where a user in this session state belongs (contract table under `GET /me`),
  * or null when they may enter the app.
  */
-export function sessionRedirect(state: Pick<SessionState, 'status' | 'user'>) {
+export function sessionRedirect(state: { status: SessionStatus; user: User | null }) {
   if (state.status !== 'signedIn' || !state.user) return '/(onboarding)/welcome' as const;
   if (!state.user.emailVerified) return '/(auth)/verify-email' as const;
   if (!state.user.onboardingCompleted) return '/(onboarding)/welcome' as const;
   return null;
+}
+
+/** Where to go right after a successful sign-in, signup, verify or reset. */
+export function routeAfterAuth(user: User) {
+  return sessionRedirect({ status: 'signedIn', user }) ?? ('/(tabs)' as const);
 }
