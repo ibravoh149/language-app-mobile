@@ -25,7 +25,11 @@ import { VOICE_SPEED_OPTIONS, type VoiceSpeed } from '@/constants/levels';
 import { AVAILABLE_VOICES, type Voice } from '@/constants/voices';
 import { useTheme } from '@/hooks/use-theme';
 import { useVoiceSample } from '@/hooks/use-voice-sample';
+import { useAuthSubmit } from '@/hooks/use-auth-submit';
+import { authApi } from '@/services/auth-api';
 import { useAssessmentStore, useCourseStore } from '@/store';
+import { buildProfile } from '@/store/profile';
+import { routeAfterAuth, useSessionStore } from '@/store/session';
 
 const SPEED_LABEL_KEYS: Record<VoiceSpeed, string> = {
   0.75: 'slow',
@@ -143,6 +147,24 @@ export function ChooseVoiceScreen() {
   const setVoiceSpeed = useAssessmentStore((state) => state.setVoiceSpeed);
   const sample = useVoiceSample();
   const [previewingId, setPreviewingId] = useState<string | null>(null);
+  const isSignedIn = useSessionStore((state) => state.status === 'signedIn');
+  const setMe = useSessionStore((state) => state.setMe);
+  const save = useAuthSubmit();
+
+  // New learners create their account next; a signed-in learner (e.g. who logged in
+  // before finishing onboarding) saves the profile to the server instead.
+  function handleContinue() {
+    if (!isSignedIn) {
+      router.push('/(auth)/signup');
+      return;
+    }
+    save.run(async () => {
+      const assessmentId = useAssessmentStore.getState().assessmentId ?? undefined;
+      const me = await authApi.updateProfile({ ...buildProfile(), assessmentId });
+      setMe(me);
+      router.replace(routeAfterAuth(me.user));
+    });
+  }
 
   useEffect(() => {
     if (!sample.isPlaying) setPreviewingId(null);
@@ -208,7 +230,12 @@ export function ChooseVoiceScreen() {
           </ThemedText>
         </ScrollView>
 
-        <Button title={t('common.continue')} onPress={() => router.push('/(auth)/signup')} />
+        {save.formError ? (
+          <ThemedText type="small" themeColor="danger" accessibilityLiveRegion="polite">
+            {save.formError}
+          </ThemedText>
+        ) : null}
+        <Button title={t('common.continue')} loading={save.submitting} onPress={handleContinue} />
       </SafeAreaView>
     </ThemedView>
   );
