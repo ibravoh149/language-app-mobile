@@ -89,14 +89,25 @@ export const useThemeStore = create<ThemeState>()(
 interface CourseState {
   /** The language the user is learning — distinct from `useLanguageStore`'s interface language. */
   targetLanguage: string;
+  /**
+   * The learner's own language: placement prompts and the AI's explanations use it (B-FLOW-3).
+   * Separate from the interface language, which can later change in settings on its own.
+   * null on installs from before the split; read it through `resolveSpokenLanguage()`.
+   */
+  spokenLanguage: string | null;
   setTargetLanguage: (code: string) => void;
+  setSpokenLanguage: (code: string) => void;
 }
 
 export const useCourseStore = create<CourseState>()(
   persist(
     (set) => ({
       targetLanguage: DEFAULT_LEARNABLE_LANGUAGE_CODE,
+      spokenLanguage: null,
       setTargetLanguage: (code) => set({ targetLanguage: code }),
+      setSpokenLanguage: (code) => {
+        if (isSupportedLanguageCode(code)) set({ spokenLanguage: code });
+      },
     }),
     {
       name: 'course-storage',
@@ -104,6 +115,14 @@ export const useCourseStore = create<CourseState>()(
     }
   )
 );
+
+export interface PlacementFeedback {
+  /** false = skipped or scoring unavailable: show the level without a reason. */
+  scored: boolean;
+  reason: string | null;
+  strengths: string[];
+  focusAreas: string[];
+}
 
 interface AssessmentState {
   /** How the user rated themselves on the placement screen, before the mock/real API responds. */
@@ -121,6 +140,8 @@ interface AssessmentState {
   voiceSpeed: VoiceSpeed;
   /** Placement attempt id from the backend; linked to the account at signup. */
   assessmentId: string | null;
+  /** Feedback from the last placement submission; null on the beginner path or before placement. */
+  placementFeedback: PlacementFeedback | null;
   setSelfRatedLevel: (level: CEFRLevel | null) => void;
   setAiSuggestedLevel: (level: CEFRLevel | null) => void;
   setChosenLevel: (level: CEFRLevel) => void;
@@ -130,6 +151,7 @@ interface AssessmentState {
   setVoiceId: (id: string) => void;
   setVoiceSpeed: (speed: VoiceSpeed) => void;
   setAssessmentId: (id: string | null) => void;
+  setPlacementFeedback: (feedback: PlacementFeedback | null) => void;
 }
 
 export const useAssessmentStore = create<AssessmentState>()(
@@ -145,6 +167,7 @@ export const useAssessmentStore = create<AssessmentState>()(
       voiceId: DEFAULT_VOICE_ID,
       voiceSpeed: DEFAULT_VOICE_SPEED,
       assessmentId: null,
+      placementFeedback: null,
       setSelfRatedLevel: (level) => set({ selfRatedLevel: level }),
       setAiSuggestedLevel: (level) => set({ aiSuggestedLevel: level }),
       setChosenLevel: (level) => set({ chosenLevel: level }),
@@ -158,6 +181,7 @@ export const useAssessmentStore = create<AssessmentState>()(
       setVoiceId: (id) => set({ voiceId: id }),
       setVoiceSpeed: (speed) => set({ voiceSpeed: speed }),
       setAssessmentId: (id) => set({ assessmentId: id }),
+      setPlacementFeedback: (feedback) => set({ placementFeedback: feedback }),
     }),
     {
       name: 'assessment-storage',
@@ -165,3 +189,8 @@ export const useAssessmentStore = create<AssessmentState>()(
     }
   )
 );
+
+/** The learner's own language, falling back to the interface language for installs from before B-FLOW-3. */
+export function resolveSpokenLanguage(): string {
+  return useCourseStore.getState().spokenLanguage ?? useLanguageStore.getState().language;
+}

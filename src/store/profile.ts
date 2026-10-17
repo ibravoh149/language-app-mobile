@@ -2,7 +2,7 @@ import { BEGINNER_LEVEL } from '@/constants/levels';
 import { DEFAULT_LANGUAGE_CODE, isSupportedLanguageCode } from '@/i18n/languages';
 import { type Lang, type Profile } from '@/services/auth-api';
 
-import { useAssessmentStore, useLanguageStore } from './index';
+import { resolveSpokenLanguage, useAssessmentStore, useCourseStore, useLanguageStore } from './index';
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
@@ -16,8 +16,7 @@ export function buildProfile(): Profile {
   const language = asLang(useLanguageStore.getState().language);
   return {
     interfaceLanguage: language,
-    // TODO(B-FLOW-3, F1-M5): onboarding asks one question for both; split once the language screen does.
-    spokenLanguage: language,
+    spokenLanguage: asLang(resolveSpokenLanguage()),
     targetLanguage: 'de',
     selfRatedLevel: assessment.selfRatedLevel,
     suggestedLevel: assessment.aiSuggestedLevel,
@@ -33,6 +32,7 @@ export function buildProfile(): Profile {
 /** Copies a server profile into the local stores, e.g. for a returning user on a new phone. */
 export function applyProfile(profile: Profile) {
   useLanguageStore.getState().setLanguage(profile.interfaceLanguage);
+  useCourseStore.getState().setSpokenLanguage(profile.spokenLanguage);
   const assessment = useAssessmentStore.getState();
   assessment.setSelfRatedLevel(profile.selfRatedLevel);
   assessment.setAiSuggestedLevel(profile.suggestedLevel);
