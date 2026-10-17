@@ -5,6 +5,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } fr
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { Motion } from '@/constants/motion';
+import { haptics } from '@/services/haptics';
 
 type ButtonProps = Omit<PressableProps, 'style'> & {
   title: string;
@@ -26,6 +27,7 @@ export function Button({ title, variant = 'primary', loading = false, disabled: 
       disabled={disabled}
       onPressIn={(event) => {
         scale.value = withTiming(0.98, Motion.press);
+        haptics.press();
         onPressIn?.(event);
       }}
       onPressOut={(event) => {

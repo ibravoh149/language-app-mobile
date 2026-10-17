@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 
 import { Icon } from '@/components/icon';
 import { MotionReveal } from '@/components/motion-reveal';
@@ -8,6 +8,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Motion } from '@/constants/motion';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { haptics } from '@/services/haptics';
 
 export function OnboardingChoice({ label, detail, leading, selected, disabled = false, badge, index, onPress }: {
   label: string;
@@ -31,17 +32,27 @@ export function OnboardingChoice({ label, detail, leading, selected, disabled = 
     borderColor: interpolateColor(selection.value, [0, 1], [theme.border, theme.accentBorder]),
     transform: [{ scale: scale.value }],
   }));
+  const checkScale = useSharedValue(1);
   const check = useAnimatedStyle(() => ({
     opacity: selection.value,
-    transform: [{ scale: 0.65 + selection.value * 0.35 }],
+    transform: [{ scale: (0.65 + selection.value * 0.35) * checkScale.value }],
   }));
+
+  function handlePress() {
+    if (!selected) {
+      haptics.select();
+      scale.value = withSequence(withTiming(1.025, Motion.press), withSpring(1, Motion.pop));
+      checkScale.value = withSequence(withTiming(1.35, Motion.press), withSpring(1, Motion.pop));
+    }
+    onPress();
+  }
 
   return (
     <MotionReveal index={index + 1}>
       <Pressable accessibilityRole="radio" accessibilityState={{ checked: selected, disabled }}
         aria-checked={selected}
         accessibilityLabel={[label, detail, badge].filter(Boolean).join(', ')} disabled={disabled}
-        onPress={onPress}
+        onPress={handlePress}
         onPressIn={() => { scale.value = withTiming(0.98, Motion.press); }}
         onPressOut={() => { scale.value = withSpring(1, Motion.settle); }}>
         <Animated.View style={[styles.row, { opacity: disabled ? 0.55 : 1 }, surface]}>

@@ -1,10 +1,11 @@
 import { Pressable, StyleSheet } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/themed-text';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { Motion } from '@/constants/motion';
+import { haptics } from '@/services/haptics';
 
 type SelectablePillProps = {
   label: string;
@@ -37,7 +38,13 @@ export function SelectablePill({ label, selected, onPress, disabled, variant = '
         onPressOut={() => {
           scale.value = withSpring(1, Motion.settle);
         }}
-        onPress={onPress}
+        onPress={() => {
+          if (!selected) {
+            haptics.select();
+            scale.value = withSequence(withTiming(1.07, Motion.press), withSpring(1, Motion.pop));
+          }
+          onPress();
+        }}
         style={[
           styles.pill,
           {

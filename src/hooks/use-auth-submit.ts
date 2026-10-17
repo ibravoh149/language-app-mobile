@@ -21,6 +21,8 @@ export function useAuthSubmit<T extends FieldValues>(setError?: UseFormSetError<
   const { t } = useTranslation();
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  /** Bumped on every failure, so feedback replays when the same message repeats. */
+  const [errorAttempt, setErrorAttempt] = useState(0);
 
   async function run(request: () => Promise<void>, onError?: (error: ApiError) => boolean | void) {
     if (submitting) return;
@@ -38,10 +40,11 @@ export function useAuthSubmit<T extends FieldValues>(setError?: UseFormSetError<
       }
       const { key, params } = apiErrorMessage(error);
       setFormError(t(key, params));
+      setErrorAttempt((n) => n + 1);
     } finally {
       setSubmitting(false);
     }
   }
 
-  return { submitting, formError, setFormError, run };
+  return { submitting, formError, errorAttempt, setFormError, run };
 }

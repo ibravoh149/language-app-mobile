@@ -1,21 +1,36 @@
-import { useState } from 'react';
-import { StyleSheet, Text, TextInput, type TextInputProps, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TextInput, type TextInputProps, View } from 'react-native';
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
+import { Motion } from '@/constants/motion';
 import { useTheme } from '@/hooks/use-theme';
 
 export type TextFieldProps = TextInputProps & {
   label?: string;
 };
 
+const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+
 export function TextField({ label, style, onFocus, onBlur, ...props }: TextFieldProps) {
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
+  const focus = useSharedValue(0);
+  useEffect(() => {
+    focus.value = withTiming(focused ? 1 : 0, Motion.color);
+  }, [focused, focus]);
+
+  const ring = useAnimatedStyle(() => ({
+    borderColor: interpolateColor(focus.value, [0, 1], [theme.border, theme.accentBorder]),
+  }));
+  const labelColor = useAnimatedStyle(() => ({
+    color: interpolateColor(focus.value, [0, 1], [theme.textSecondary, theme.accentBright]),
+  }));
 
   return (
     <View style={styles.container}>
-      {label ? <Text style={[styles.label, { color: theme.textSecondary }]}>{label}</Text> : null}
-      <TextInput
+      {label ? <Animated.Text style={[styles.label, labelColor]}>{label}</Animated.Text> : null}
+      <AnimatedTextInput
         accessibilityLabel={label}
         selectionColor={theme.accent}
         placeholderTextColor={theme.textMuted}
@@ -23,7 +38,8 @@ export function TextField({ label, style, onFocus, onBlur, ...props }: TextField
         onBlur={(event) => { setFocused(false); onBlur?.(event); }}
         style={[
           styles.input,
-          { backgroundColor: theme.surfaceSunken, borderColor: focused ? theme.accentBorder : theme.border, color: theme.textPrimary },
+          { backgroundColor: theme.surfaceSunken, color: theme.textPrimary },
+          ring,
           style,
         ]}
         {...props}
