@@ -5,9 +5,12 @@ import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import { useAppColorScheme } from '@/hooks/use-app-color-scheme';
+import { useTheme } from '@/hooks/use-theme';
 import '@/i18n';
 import { queryClient } from '@/services/query-client';
 import { useLanguageStore, useThemeStore } from '@/store';
@@ -16,6 +19,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function TabLayout() {
   const colorScheme = useAppColorScheme();
+  const colors = useTheme();
+  const { t } = useTranslation();
+  const reducedMotion = useReducedMotion();
   const languageHydrated = useLanguageStore((state) => state.hasHydrated);
   const rtlEpoch = useLanguageStore((state) => state.rtlEpoch);
   const themeHydrated = useThemeStore((state) => state.hasHydrated);
@@ -37,7 +43,21 @@ export default function TabLayout() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <AnimatedSplashOverlay />
-          <Stack key={rtlEpoch} screenOptions={{ headerShown: false }} />
+          <Stack
+            key={rtlEpoch}
+            screenOptions={{
+              animation: reducedMotion ? 'none' : 'default',
+              title: '',
+              headerStyle: { backgroundColor: colors.background },
+              headerTintColor: colors.textPrimary,
+              headerShadowVisible: false,
+              headerBackTitle: t('common.back'),
+              headerBackButtonDisplayMode: 'minimal',
+              contentStyle: { backgroundColor: colors.background },
+            }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(onboarding)/welcome" options={{ headerShown: false }} />
+          </Stack>
         </ThemeProvider>
       </QueryClientProvider>
     </SafeAreaProvider>
