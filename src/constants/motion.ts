@@ -16,4 +16,8 @@ export const Motion = {
   /** Celebration overlay: confetti fall range, card entrance and auto-dismiss (prototype: 2.4 s). */
   confetti: { pieces: 30, minDuration: 1100, maxDuration: 2100, maxDelay: 350, easing: Easing.linear },
   celebrateDismissMs: 2400,
+  /** Smoothing for live mic input level; buffers arrive every ~250 ms. */
+  level: { duration: 240, easing: Easing.out(Easing.quad), reduceMotion: ReduceMotion.System },
+  /** "AI is thinking" dots: one bounce cycle, offset per dot by `stagger * 3`. */
+  thinking: { duration: 420, easing: Easing.inOut(Easing.quad), reduceMotion: ReduceMotion.System },
 } as const;
