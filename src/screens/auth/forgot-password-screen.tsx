@@ -22,6 +22,7 @@ export function ForgotPasswordScreen() {
 
   return (
     <AuthScreen
+      variant="compact"
       title={t('auth.forgotPassword.title')}
       subtitle={t('auth.forgotPassword.subtitle')}
       footer={

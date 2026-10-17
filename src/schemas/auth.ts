@@ -9,7 +9,7 @@ const emailSchema = z
 const nameSchema = z.string().min(1, 'auth.errors.nameRequired');
 const passwordSchema = z.string().min(8, 'auth.errors.passwordTooShort');
 const requiredPasswordSchema = z.string().min(1, 'auth.errors.passwordRequired');
-const codeSchema = z.string().min(4, 'auth.errors.codeInvalid');
+const codeSchema = z.string().regex(/^\d{6}$/, 'auth.errors.codeInvalid');
 
 export const loginSchema = z.object({
   email: emailSchema,
