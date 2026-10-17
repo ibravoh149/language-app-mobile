@@ -182,3 +182,9 @@ export const FontFamily = {
 
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;
+
+/** Celebration confetti, from the prototype (`CONFETTI_C` in Language_design_files/app/ui.jsx). Same in both schemes. */
+export const ConfettiColors = ['#a78bfa', '#4ade80', '#fbbf24', '#fb7185', '#60a5fa', '#f0abfc'] as const;
+
+/** Scrim behind celebration cards (prototype: rgba(0,0,0,.45)). */
+export const CelebrationScrim = 'rgba(0,0,0,0.45)';

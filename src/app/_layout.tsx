@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'react-native-reanimated';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { CelebrationHost } from '@/components/celebrate';
 import { useAppColorScheme } from '@/hooks/use-app-color-scheme';
 import { useTheme } from '@/hooks/use-theme';
 import '@/i18n';
@@ -65,6 +66,7 @@ export default function TabLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="(onboarding)/welcome" options={{ headerShown: false }} />
           </Stack>
+          <CelebrationHost />
         </ThemeProvider>
       </QueryClientProvider>
     </SafeAreaProvider>
