@@ -36,7 +36,7 @@ src/
 ├── screens/             screen components (onboarding/, auth/, …)
 ├── components/          shared UI: Button, Icon, TextField, OtpInput, OnboardingScreen, …
 ├── hooks/               use-theme, use-speech-recognition, use-voice-sample, use-tts-buffer-player, …
-├── services/            api.ts (axios + auth/refresh), auth-api.ts, token-storage.ts, placement-api.ts (mock), mocks/
+├── services/            api.ts (axios + auth/refresh), auth-api.ts, placement-api.ts, token-storage.ts, haptics.ts, mocks/
 ├── store/               index.ts (language, theme, course, assessment), session.ts, profile.ts
 ├── constants/           theme, motion, levels, voices, learnable-languages, onboarding
 ├── schemas/             zod schemas
@@ -56,7 +56,7 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
   `/(auth)/verify-email`. A signed-in learner finishing onboarding saves the
   profile with `PATCH /me/profile` instead of signing up.
 - Forgot password → `/(auth)/reset-password` (6-digit code + new password).
-- `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth mock (codes are `123456`).
+- `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth and placement mocks (codes are `123456`).
 
 ## Running on the phone
 

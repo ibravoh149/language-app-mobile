@@ -53,14 +53,16 @@ The route order is `language` -> `target-language` -> `placement-test`
 (self-assessment) -> `speaking-sample` -> `level-result` -> `choose-voice`.
 Selections use the existing stores so native back navigation preserves them.
 
-The screen fetches a prompt through `getPlacementPrompt`, passing source/target
-languages and the self-reported level. The mock service issues an ID and text,
-varying the text between fresh attempts. Fixtures live under services/mocks;
-they are not validated assessment items. Prompts stay stable during recording.
-The screen handles loading, retry, and skipping without a loaded prompt.
+The speaking sample creates a placement attempt (`placementApi.createAttempt`)
+with the learner's **spoken** language (B-FLOW-3; separate from the interface
+language), target `de` and the self-rating. The server picks the prompt (D8).
+Submitting sends the on-device transcript, or `skipped: true`; it's idempotent,
+so retries are safe, and an expired attempt (404) fetches a fresh prompt.
+`scored: false` is the self-rating fallback, not an error. The attempt id is
+stored as `assessmentId` and linked at signup or `PATCH /me/profile`.
 
-Submission sends the issued prompt ID (nullable when skipped), transcript,
-languages, claimed level, and skipped status. Replace the service functions
-with backend calls for real prompt selection and evaluation. The mock result
-only echoes the claimed level; it does not evaluate speech. Users can still
-change their level on the result screen.
+While scoring, `ThinkingDots` shows; while recording, the mic halo follows the
+input level (`useSpeechRecognition().level`) and transcript words fade in.
+The level result shows the AI's `reason`, strengths and focus areas when the
+sample was scored. "Start as beginner" also goes through the level result with
+A1 preselected, so the daily goal and reminder are set (B-FLOW-5).
