@@ -36,8 +36,8 @@ src/
 ├── screens/             screen components (onboarding/, auth/, …)
 ├── components/          shared UI: Button, Icon, TextField, OtpInput, OnboardingScreen, …
 ├── hooks/               use-theme, use-speech-recognition, use-voice-sample, use-tts-buffer-player, …
-├── services/            api.ts (axios), placement-api.ts (mock), mocks/, query-client.ts
-├── store/index.ts       language, theme, course, assessment stores
+├── services/            api.ts (axios + auth/refresh), auth-api.ts, token-storage.ts, placement-api.ts (mock), mocks/
+├── store/               index.ts (language, theme, course, assessment), session.ts, profile.ts
 ├── constants/           theme, motion, levels, voices, learnable-languages, onboarding
 ├── schemas/             zod schemas
 └── i18n/                setup, languages, rtl, locales/
@@ -48,11 +48,15 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
 
 ## Routing
 
-- `(tabs)/_layout.tsx` redirects to `/(onboarding)/welcome`; the check is
-  hard-coded (`needsOnboarding = true`) until auth exists (BACKLOG B-FLOW-1).
+- `(tabs)/_layout.tsx` gates on the session (`src/store/session.ts`, restored
+  on launch via `GET /me`): signed out or no profile → `/(onboarding)/welcome`,
+  unverified → `/(auth)/verify-email`, else tabs.
 - Onboarding: welcome → language → target-language → placement-test →
   speaking-sample → level-result → choose-voice → `/(auth)/signup` →
-  `/(auth)/verify-email`.
+  `/(auth)/verify-email`. A signed-in learner finishing onboarding saves the
+  profile with `PATCH /me/profile` instead of signing up.
+- Forgot password → `/(auth)/reset-password` (6-digit code + new password).
+- `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth mock (codes are `123456`).
 
 ## Running on the phone
 
