@@ -1,6 +1,8 @@
 {
   "common": {
     "appName": "Sprachbar",
+    "stop": "Detener",
+    "preview": "Escuchar la voz",
     "continue": "Continuar",
     "cancel": "Cancelar",
     "save": "Guardar",
@@ -35,7 +37,7 @@
       "learnLabel": "Quiero aprender…",
       "available": "disponible",
       "comingSoon": "próximamente",
-      "footnote": "Llegarán más idiomas — Sprachbar significa \"barra de idiomas\", no solo alemán.",
+      "footnote": "Llegarán más idiomas. Sprachbar significa \"barra de idiomas\", no solo alemán.",
       "courses": {
         "de": "Alemán",
         "fr": "Francés",
@@ -44,38 +46,107 @@
       }
     },
     "placementTest": {
-      "title": "Encontremos tu nivel",
-      "subtitle": "Una prueba de nivel rápida nos ayuda a adaptar las lecciones para ti.",
-      "cta": "Empezar prueba"
+      "promptFailed": "No se pudo cargar tu ejercicio oral.",
+      "selfAssessmentSubtitle": "Elige la descripción que más se acerque a ti. Puedes cambiar el nivel después.",
+      "speakingTitle": "Queremos escucharte",
+      "speakingSubtitle": "¿Cómo dirías esto en {{language}}? Usa tus propias palabras.",
+      "promptLabel": "Expresa esta idea",
+      "skipSpeaking": "Continuar sin hablar",
+      "preparingMic": "Preparando el micrófono. Puedes continuar sin hablar.",
+      "failed": "No pudimos completar la evaluación. Inténtalo de nuevo.",
+      "levels": {
+        "A1": "Estoy empezando con palabras y frases básicas.",
+        "A2": "Puedo mantener conversaciones sencillas del día a día.",
+        "B1": "Puedo hablar de temas conocidos.",
+        "B2": "Puedo debatir ideas y explicar mis opiniones.",
+        "C1": "Puedo expresarme con fluidez y precisión."
+      },
+      "stepLabel": "Nivelación",
+      "title": "Prueba rápida",
+      "subtitle": "Una mezcla de 3 minutos entre hablar y tocar da una mejor estimación que un simple cuestionario.",
+      "sayThisLabel": "Di esto en voz alta",
+      "tapToSpeak": "Toca para hablar",
+      "listening": "Escuchando…",
+      "rateLabel": "A grandes rasgos, ¿cómo te calificarías?",
+      "seeMyLevel": "Ver mi nivel",
+      "skipBeginner": "Saltar, soy principiante",
+      "micPermissionDenied": "Activa el acceso al micrófono en Ajustes para practicar hablando."
     },
     "levelResult": {
-      "title": "Tu nivel",
-      "subtitle": "Según tus respuestas, este es tu punto de partida."
+      "reminderTimeLabel": "¿Qué hora te viene bien?",
+      "startingLevelLabel": "Tu nivel de partida",
+      "aiSuggestsLabel": "La IA sugiere",
+      "suggestion": "Empieza en {{level}}. Puedes cambiarlo cuando quieras.",
+      "acceptLevel": "Aceptar {{level}}",
+      "pickOwn": "Elegir el mío",
+      "dailyMinutesLabel": "¿Cuánto tiempo al día?",
+      "reminderTitle": "Recordatorio diario",
+      "reminderOn": "Todos los días · 8:00 p. m.",
+      "reminderOff": "Desactivado",
+      "onLabel": "ON",
+      "offLabel": "OFF",
+      "nextChooseVoice": "Siguiente: elegir una voz"
     },
     "chooseVoice": {
       "title": "Elige tu voz",
-      "subtitle": "Elige la voz con la que practicarás para hablar.",
-      "cta": "Finalizar"
+      "subtitle": "Es quien te lee, conversa contigo y te corrige. Elige la voz con la que aprenderás {{language}}. Toca reproducir para escuchar un ejemplo.",
+      "speedLabel": "Velocidad de habla",
+      "footnote": "Puedes cambiar tu voz y la velocidad cuando quieras en Ajustes.",
+      "tags": {
+        "warm": "cálida",
+        "clear": "clara",
+        "natural": "natural",
+        "patient": "paciente",
+        "energetic": "enérgica"
+      },
+      "voices": {
+        "lena": "Alemán estándar amigable · Berlín",
+        "jonas": "Tranquila y precisa · ideal para empezar",
+        "mara": "Relajada y expresiva · Múnich",
+        "finn": "Lenta y paciente · enfocada en la pronunciación",
+        "sofia": "Enérgica · ritmo cotidiano"
+      },
+      "speeds": {
+        "slow": "Lenta",
+        "normal": "Normal",
+        "fast": "Rápida"
+      }
     }
   },
   "auth": {
     "login": {
       "title": "Bienvenido de nuevo",
-      "subtitle": "Inicia sesión para continuar tu progreso.",
+      "subtitle": "Inicia sesión y continúa donde lo dejaste.",
       "emailLabel": "Correo electrónico",
       "passwordLabel": "Contraseña",
+      "emailPlaceholder": "tu@email.com",
+      "passwordPlaceholder": "Tu contraseña",
       "submit": "Iniciar sesión",
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "noAccount": "¿No tienes una cuenta?",
-      "signUp": "Regístrate"
+      "orDivider": "o",
+      "continueWithApple": "Apple",
+      "continueWithGoogle": "Google",
+      "newHere": "¿Nuevo aquí?",
+      "signUp": "Regístrate",
+      "createAccount": "Crear cuenta"
     },
     "signup": {
       "title": "Crea tu cuenta",
-      "subtitle": "Guarda tu progreso y continúa donde lo dejaste.",
+      "subtitle": "Guarda tu progreso y sincronízalo entre el móvil y la web.",
       "nameLabel": "Nombre",
       "emailLabel": "Correo electrónico",
       "passwordLabel": "Contraseña",
+      "namePlaceholder": "Alex",
+      "emailPlaceholder": "tu@email.com",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
       "submit": "Crear cuenta",
+      "trustCard": "Una sola cuenta funciona en iPhone, Android y la web. Tus palabras, racha e historial se mantienen sincronizados.",
+      "termsPrefix": "Al continuar, aceptas nuestros",
+      "termsLink": "Términos",
+      "termsAnd": "y nuestra",
+      "privacyLink": "Política de Privacidad",
+      "termsSuffix": ".",
       "haveAccount": "¿Ya tienes una cuenta?",
       "logIn": "Iniciar sesión"
     },
@@ -91,7 +162,10 @@
       "subtitle": "Ingresa el código que enviamos a tu correo para verificar tu cuenta.",
       "codeLabel": "Código de verificación",
       "submit": "Verificar",
-      "resend": "Reenviar código"
+      "resend": "Reenviar código",
+      "resendIn": "Reenviar código en {{seconds}}s",
+      "wrongAddress": "¿Dirección incorrecta?",
+      "changeEmail": "Cambiar correo"
     },
     "errors": {
       "nameRequired": "El nombre es obligatorio",

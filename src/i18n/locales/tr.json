@@ -1,6 +1,8 @@
 {
   "common": {
     "appName": "Sprachbar",
+    "stop": "Durdur",
+    "preview": "Sesi önizle",
     "continue": "Devam et",
     "cancel": "İptal",
     "save": "Kaydet",
@@ -35,7 +37,7 @@
       "learnLabel": "Öğrenmek istediğim dil…",
       "available": "kullanılabilir",
       "comingSoon": "yakında",
-      "footnote": "Daha fazla dil geliyor — Sprachbar sadece Almanca değil, \"dil çubuğu\" anlamına gelir.",
+      "footnote": "Daha fazla dil geliyor. Sprachbar sadece Almanca değil, \"dil çubuğu\" anlamına gelir.",
       "courses": {
         "de": "Almanca",
         "fr": "Fransızca",
@@ -44,38 +46,107 @@
       }
     },
     "placementTest": {
-      "title": "Seviyeni bulalım",
-      "subtitle": "Kısa bir seviye tespit sınavı, dersleri sana göre uyarlamamıza yardımcı olur.",
-      "cta": "Sınavı başlat"
+      "promptFailed": "Konuşma göreviniz yüklenemedi.",
+      "selfAssessmentSubtitle": "Sana en yakın açıklamayı seç. Seviyeni daha sonra değiştirebilirsin.",
+      "speakingTitle": "Seni duyalım",
+      "speakingSubtitle": "Bunu {{language}} dilinde nasıl söylersin? Kendi kelimelerini kullan.",
+      "promptLabel": "Bu anlamı ifade et",
+      "skipSpeaking": "Konuşmadan devam et",
+      "preparingMic": "Mikrofon hazırlanıyor. Konuşmadan devam edebilirsin.",
+      "failed": "Değerlendirme tamamlanamadı. Lütfen tekrar dene.",
+      "levels": {
+        "A1": "Temel kelime ve ifadelerle başlıyorum.",
+        "A2": "Günlük basit konuşmalar yapabiliyorum.",
+        "B1": "Bildiğim konular hakkında konuşabiliyorum.",
+        "B2": "Fikirleri tartışıp görüşlerimi açıklayabiliyorum.",
+        "C1": "Kendimi akıcı ve net ifade edebiliyorum."
+      },
+      "stepLabel": "Seviye Tespiti",
+      "title": "Hızlı kontrol",
+      "subtitle": "3 dakikalık konuşma ve dokunma karışımı, tek başına bir sınavdan daha iyi bir tahmin verir.",
+      "sayThisLabel": "Bunu sesli söyle",
+      "tapToSpeak": "Konuşmak için dokun",
+      "listening": "Dinleniyor…",
+      "rateLabel": "Kabaca, kendini nasıl değerlendirirsin?",
+      "seeMyLevel": "Seviyemi gör",
+      "skipBeginner": "Atla, ben başlangıç seviyesindeyim",
+      "micPermissionDenied": "Konuşma pratiği yapmak için Ayarlar'dan mikrofon erişimini aç."
     },
     "levelResult": {
-      "title": "Seviyen",
-      "subtitle": "Cevaplarına göre başlangıç noktan burada."
+      "reminderTimeLabel": "Hangi saat sizin için uygun?",
+      "startingLevelLabel": "Başlangıç seviyen",
+      "aiSuggestsLabel": "Yapay zeka öneriyor",
+      "suggestion": "{{level}} seviyesinden başla. Bunu istediğin zaman değiştirebilirsin.",
+      "acceptLevel": "{{level}} seviyesini kabul et",
+      "pickOwn": "Kendim seçeyim",
+      "dailyMinutesLabel": "Günde ne kadar?",
+      "reminderTitle": "Günlük hatırlatma",
+      "reminderOn": "Her gün · 20:00",
+      "reminderOff": "Kapalı",
+      "onLabel": "AÇIK",
+      "offLabel": "KAPALI",
+      "nextChooseVoice": "Sonraki: ses seç"
     },
     "chooseVoice": {
       "title": "Sesini seç",
-      "subtitle": "Konuşma pratiği yapacağın sesi seç.",
-      "cta": "Bitir"
+      "subtitle": "Sana okuyan, seninle konuşan ve seni düzelten ses bu. {{language}} öğreneceğin sesi seç. Örnek dinlemek için oynat'a dokun.",
+      "speedLabel": "Konuşma hızı",
+      "footnote": "Sesini ve hızını istediğin zaman Ayarlar'dan değiştirebilirsin.",
+      "tags": {
+        "warm": "sıcak",
+        "clear": "net",
+        "natural": "doğal",
+        "patient": "sabırlı",
+        "energetic": "enerjik"
+      },
+      "voices": {
+        "lena": "Samimi Hochdeutsch · Berlin",
+        "jonas": "Sakin ve net · başlangıç için ideal",
+        "mara": "Rahat, anlatımlı · Münih",
+        "finn": "Yavaş ve sabırlı · telaffuza odaklı",
+        "sofia": "Enerjik · günlük hız"
+      },
+      "speeds": {
+        "slow": "Yavaş",
+        "normal": "Normal",
+        "fast": "Hızlı"
+      }
     }
   },
   "auth": {
     "login": {
       "title": "Tekrar hoş geldin",
-      "subtitle": "İlerlemene devam etmek için giriş yap.",
+      "subtitle": "Kaldığın yerden devam etmek için giriş yap.",
       "emailLabel": "E-posta",
       "passwordLabel": "Şifre",
+      "emailPlaceholder": "sen@email.com",
+      "passwordPlaceholder": "Şifren",
       "submit": "Giriş yap",
       "forgotPassword": "Şifreni mi unuttun?",
       "noAccount": "Hesabın yok mu?",
-      "signUp": "Kaydol"
+      "orDivider": "veya",
+      "continueWithApple": "Apple",
+      "continueWithGoogle": "Google",
+      "newHere": "Yeni misin?",
+      "signUp": "Kaydol",
+      "createAccount": "Hesap oluştur"
     },
     "signup": {
       "title": "Hesabını oluştur",
-      "subtitle": "İlerlemeni kaydet ve kaldığın yerden devam et.",
+      "subtitle": "İlerlemeni kaydet, telefon ve web arasında senkronize et.",
       "nameLabel": "Ad",
       "emailLabel": "E-posta",
       "passwordLabel": "Şifre",
+      "namePlaceholder": "Alex",
+      "emailPlaceholder": "sen@email.com",
+      "passwordPlaceholder": "En az 8 karakter",
       "submit": "Hesap oluştur",
+      "trustCard": "Tek hesap iPhone, Android ve web'de çalışır. Kelimelerin, serin ve geçmişin senkronize kalır.",
+      "termsPrefix": "Devam ederek",
+      "termsLink": "Şartlar'ı",
+      "termsAnd": "ve",
+      "privacyLink": "Gizlilik Politikası'nı",
+      "termsSuffix": " kabul edersin.",
       "haveAccount": "Zaten bir hesabın var mı?",
       "logIn": "Giriş yap"
     },
@@ -91,12 +162,15 @@
       "subtitle": "Hesabını doğrulamak için e-postana gönderdiğimiz kodu gir.",
       "codeLabel": "Doğrulama kodu",
       "submit": "Doğrula",
-      "resend": "Kodu tekrar gönder"
+      "resend": "Kodu tekrar gönder",
+      "resendIn": "{{seconds}} sn içinde tekrar gönder",
+      "wrongAddress": "Yanlış adres mi?",
+      "changeEmail": "E-postayı değiştir"
     },
     "errors": {
       "nameRequired": "Ad gerekli",
       "emailRequired": "E-posta gerekli",
-      "emailInvalid": "Geçerli bir e-posta adresi girin",
+      "emailInvalid": "Geçerli bir e-posta adresi gir",
       "passwordRequired": "Şifre gerekli",
       "passwordTooShort": "Şifre en az 8 karakter olmalı",
       "codeInvalid": "Sana gönderdiğimiz kodu gir"

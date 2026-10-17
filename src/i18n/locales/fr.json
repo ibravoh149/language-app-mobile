@@ -1,6 +1,8 @@
 {
   "common": {
     "appName": "Sprachbar",
+    "stop": "Arrêter",
+    "preview": "Écouter la voix",
     "continue": "Continuer",
     "cancel": "Annuler",
     "save": "Enregistrer",
@@ -19,7 +21,7 @@
     "stepIndicator": "Étape {{step}} sur {{total}}",
     "welcome": {
       "title": "Apprendre en parlant, pas en tapant.",
-      "subtitle": "L'application où, chaque jour, vous produisez vraiment la langue et comprenez enfin pourquoi.",
+      "subtitle": "L'application où, chaque jour, tu produis vraiment la langue et comprends enfin pourquoi.",
       "cta": "Commencer",
       "haveAccount": "J'ai déjà un compte",
       "features": {
@@ -30,12 +32,12 @@
       }
     },
     "language": {
-      "title": "Définissez vos langues",
+      "title": "Définis tes langues",
       "speakLabel": "Je parle…",
       "learnLabel": "Je veux apprendre…",
       "available": "disponible",
       "comingSoon": "bientôt",
-      "footnote": "D'autres langues arrivent bientôt — Sprachbar signifie « barre de langue », pas seulement l'allemand.",
+      "footnote": "D'autres langues arrivent bientôt. Sprachbar signifie « barre de langue », pas seulement l'allemand.",
       "courses": {
         "de": "Allemand",
         "fr": "Français",
@@ -44,62 +46,134 @@
       }
     },
     "placementTest": {
-      "title": "Trouvons votre niveau",
-      "subtitle": "Un test de positionnement rapide nous aide à adapter les leçons pour vous.",
-      "cta": "Commencer le test"
+      "promptFailed": "Impossible de charger votre exercice oral.",
+      "selfAssessmentSubtitle": "Choisis la description qui te correspond. Tu pourras changer de niveau plus tard.",
+      "speakingTitle": "À toi de parler",
+      "speakingSubtitle": "Comment dirais-tu cela en {{language}} ? Utilise tes propres mots.",
+      "promptLabel": "Exprime cette idée",
+      "skipSpeaking": "Continuer sans parler",
+      "preparingMic": "Préparation du microphone. Tu peux continuer sans parler.",
+      "failed": "L'évaluation n'a pas pu être terminée. Réessaie.",
+      "levels": {
+        "A1": "Je débute avec des mots et des phrases simples.",
+        "A2": "Je peux avoir des conversations simples du quotidien.",
+        "B1": "Je peux parler de sujets familiers.",
+        "B2": "Je peux discuter d'idées et expliquer mes opinions.",
+        "C1": "Je peux m'exprimer avec fluidité et précision."
+      },
+      "stepLabel": "Positionnement",
+      "title": "Petit test",
+      "subtitle": "Un mélange de 3 minutes entre parler et taper donne une meilleure estimation qu'un simple quiz.",
+      "sayThisLabel": "Dis ça à voix haute",
+      "tapToSpeak": "Appuie pour parler",
+      "listening": "Écoute en cours…",
+      "rateLabel": "À vue de nez, comment t'évaluerais-tu ?",
+      "seeMyLevel": "Voir mon niveau",
+      "skipBeginner": "Passer, je suis débutant",
+      "micPermissionDenied": "Active l'accès au micro dans les réglages pour t'entraîner à parler."
     },
     "levelResult": {
-      "title": "Votre niveau",
-      "subtitle": "D'après vos réponses, voici votre point de départ."
+      "reminderTimeLabel": "Quelle heure vous convient ?",
+      "startingLevelLabel": "Ton niveau de départ",
+      "aiSuggestsLabel": "L'IA suggère",
+      "suggestion": "Commence à {{level}}. Tu peux changer ça à tout moment.",
+      "acceptLevel": "Accepter {{level}}",
+      "pickOwn": "Choisir moi-même",
+      "dailyMinutesLabel": "Combien de temps par jour ?",
+      "reminderTitle": "Rappel quotidien",
+      "reminderOn": "Chaque jour · 20 h 00",
+      "reminderOff": "Désactivé",
+      "onLabel": "ON",
+      "offLabel": "OFF",
+      "nextChooseVoice": "Suivant : choisir une voix"
     },
     "chooseVoice": {
-      "title": "Choisissez votre voix",
-      "subtitle": "Choisissez la voix avec laquelle vous allez vous entraîner.",
-      "cta": "Terminer"
+      "title": "Choisis ta voix",
+      "subtitle": "C'est elle qui te lit, discute avec toi et te corrige. Choisis la voix avec laquelle tu vas apprendre {{language}}. Appuie sur lecture pour écouter un exemple.",
+      "speedLabel": "Vitesse de parole",
+      "footnote": "Tu peux changer ta voix et la vitesse à tout moment dans les réglages.",
+      "tags": {
+        "warm": "chaleureuse",
+        "clear": "claire",
+        "natural": "naturelle",
+        "patient": "patiente",
+        "energetic": "énergique"
+      },
+      "voices": {
+        "lena": "Bon allemand standard · Berlin",
+        "jonas": "Calme et précise · idéale pour débuter",
+        "mara": "Décontractée, expressive · Munich",
+        "finn": "Lente et patiente · axée prononciation",
+        "sofia": "Énergique · rythme du quotidien"
+      },
+      "speeds": {
+        "slow": "Lente",
+        "normal": "Normale",
+        "fast": "Rapide"
+      }
     }
   },
   "auth": {
     "login": {
-      "title": "Content de vous revoir",
-      "subtitle": "Connectez-vous pour continuer votre progression.",
+      "title": "Content de te revoir",
+      "subtitle": "Connecte-toi pour reprendre où tu en étais.",
       "emailLabel": "E-mail",
       "passwordLabel": "Mot de passe",
+      "emailPlaceholder": "toi@email.com",
+      "passwordPlaceholder": "Ton mot de passe",
       "submit": "Se connecter",
       "forgotPassword": "Mot de passe oublié ?",
       "noAccount": "Pas encore de compte ?",
-      "signUp": "S'inscrire"
+      "orDivider": "ou",
+      "continueWithApple": "Apple",
+      "continueWithGoogle": "Google",
+      "newHere": "Nouveau ici ?",
+      "signUp": "S'inscrire",
+      "createAccount": "Créer un compte"
     },
     "signup": {
-      "title": "Créer votre compte",
-      "subtitle": "Enregistrez votre progression et reprenez où vous en étiez.",
+      "title": "Crée ton compte",
+      "subtitle": "Enregistre ta progression et synchronise-la sur mobile et web.",
       "nameLabel": "Nom",
       "emailLabel": "E-mail",
       "passwordLabel": "Mot de passe",
+      "namePlaceholder": "Alex",
+      "emailPlaceholder": "toi@email.com",
+      "passwordPlaceholder": "8 caractères minimum",
       "submit": "Créer le compte",
-      "haveAccount": "Vous avez déjà un compte ?",
+      "trustCard": "Un seul compte fonctionne sur iPhone, Android et le web. Tes mots, ta série et ton historique restent synchronisés.",
+      "termsPrefix": "En continuant, tu acceptes nos",
+      "termsLink": "Conditions",
+      "termsAnd": "et notre",
+      "privacyLink": "Politique de confidentialité",
+      "termsSuffix": ".",
+      "haveAccount": "Tu as déjà un compte ?",
       "logIn": "Se connecter"
     },
     "forgotPassword": {
-      "title": "Réinitialiser le mot de passe",
-      "subtitle": "Entrez votre e-mail et nous vous enverrons un lien de réinitialisation.",
+      "title": "Réinitialise ton mot de passe",
+      "subtitle": "Entre ton e-mail et nous t'enverrons un lien de réinitialisation.",
       "emailLabel": "E-mail",
       "submit": "Envoyer le lien",
       "backToLogin": "Retour à la connexion"
     },
     "verifyEmail": {
-      "title": "Vérifiez votre e-mail",
-      "subtitle": "Entrez le code que nous avons envoyé à votre e-mail pour vérifier votre compte.",
+      "title": "Vérifie ton e-mail",
+      "subtitle": "Entre le code que nous avons envoyé à ton e-mail pour vérifier ton compte.",
       "codeLabel": "Code de vérification",
       "submit": "Vérifier",
-      "resend": "Renvoyer le code"
+      "resend": "Renvoyer le code",
+      "resendIn": "Renvoyer le code dans {{seconds}}s",
+      "wrongAddress": "Mauvaise adresse ?",
+      "changeEmail": "Changer l'e-mail"
     },
     "errors": {
       "nameRequired": "Le nom est requis",
       "emailRequired": "L'e-mail est requis",
-      "emailInvalid": "Saisissez une adresse e-mail valide",
+      "emailInvalid": "Saisis une adresse e-mail valide",
       "passwordRequired": "Le mot de passe est requis",
       "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
-      "codeInvalid": "Saisissez le code que nous vous avons envoyé"
+      "codeInvalid": "Saisis le code que nous t'avons envoyé"
     }
   }
 }

@@ -1,6 +1,8 @@
 {
   "common": {
     "appName": "Sprachbar",
+    "stop": "Stoppen",
+    "preview": "Stimme vorhören",
     "continue": "Weiter",
     "cancel": "Abbrechen",
     "save": "Speichern",
@@ -35,7 +37,7 @@
       "learnLabel": "Ich möchte lernen…",
       "available": "verfügbar",
       "comingSoon": "bald",
-      "footnote": "Weitere Sprachen folgen — Sprachbar bedeutet „Sprachleiste“, nicht nur Deutsch.",
+      "footnote": "Weitere Sprachen folgen. Sprachbar bedeutet „Sprachleiste“, nicht nur Deutsch.",
       "courses": {
         "de": "Deutsch",
         "fr": "Französisch",
@@ -44,38 +46,107 @@
       }
     },
     "placementTest": {
-      "title": "Finden wir dein Niveau",
-      "subtitle": "Ein kurzer Einstufungstest hilft uns, die Lektionen auf dich abzustimmen.",
-      "cta": "Test starten"
+      "promptFailed": "Deine Sprechaufgabe konnte nicht geladen werden.",
+      "selfAssessmentSubtitle": "Wähle die Beschreibung, die am besten passt. Du kannst dein Niveau später ändern.",
+      "speakingTitle": "Lass uns dich hören",
+      "speakingSubtitle": "Wie würdest du das auf {{language}} sagen? Nutze deine eigenen Worte.",
+      "promptLabel": "Drücke diesen Gedanken aus",
+      "skipSpeaking": "Ohne Sprechprobe fortfahren",
+      "preparingMic": "Das Mikrofon wird vorbereitet. Du kannst ohne Sprechprobe fortfahren.",
+      "failed": "Die Einstufung konnte nicht abgeschlossen werden. Bitte versuche es erneut.",
+      "levels": {
+        "A1": "Ich beginne mit einfachen Wörtern und Sätzen.",
+        "A2": "Ich kann einfache Alltagsgespräche führen.",
+        "B1": "Ich kann über vertraute Themen sprechen.",
+        "B2": "Ich kann Ideen diskutieren und meine Meinung erklären.",
+        "C1": "Ich kann mich fließend und präzise ausdrücken."
+      },
+      "stepLabel": "Einstufung",
+      "title": "Kurzer Check",
+      "subtitle": "Eine 3-minütige Mischung aus Sprechen und Tippen liefert eine bessere Einschätzung als ein Quiz allein.",
+      "sayThisLabel": "Sag das laut",
+      "tapToSpeak": "Zum Sprechen tippen",
+      "listening": "Hört zu…",
+      "rateLabel": "Wie würdest du dich grob einschätzen?",
+      "seeMyLevel": "Mein Niveau anzeigen",
+      "skipBeginner": "Überspringen, ich bin Anfänger",
+      "micPermissionDenied": "Aktiviere den Mikrofonzugriff in den Einstellungen, um Sprechen zu üben."
     },
     "levelResult": {
-      "title": "Dein Niveau",
-      "subtitle": "Basierend auf deinen Antworten, hier ist dein Ausgangspunkt."
+      "reminderTimeLabel": "Welche Uhrzeit passt dir?",
+      "startingLevelLabel": "Dein Startniveau",
+      "aiSuggestsLabel": "Die KI schlägt vor",
+      "suggestion": "Starte bei {{level}}. Du kannst das jederzeit ändern.",
+      "acceptLevel": "{{level}} übernehmen",
+      "pickOwn": "Selbst wählen",
+      "dailyMinutesLabel": "Wie viel pro Tag?",
+      "reminderTitle": "Tägliche Erinnerung",
+      "reminderOn": "Jeden Tag · 20:00 Uhr",
+      "reminderOff": "Aus",
+      "onLabel": "AN",
+      "offLabel": "AUS",
+      "nextChooseVoice": "Weiter: Stimme wählen"
     },
     "chooseVoice": {
       "title": "Wähle deine Stimme",
-      "subtitle": "Wähle die Stimme, mit der du üben möchtest.",
-      "cta": "Fertig"
+      "subtitle": "Sie liest dir vor, spricht mit dir und korrigiert dich. Wähle die Stimme, mit der du {{language}} lernst. Tippe auf Play, um ein Beispiel zu hören.",
+      "speedLabel": "Sprechgeschwindigkeit",
+      "footnote": "Du kannst Stimme & Geschwindigkeit jederzeit in den Einstellungen ändern.",
+      "tags": {
+        "warm": "warm",
+        "clear": "klar",
+        "natural": "natürlich",
+        "patient": "geduldig",
+        "energetic": "energiegeladen"
+      },
+      "voices": {
+        "lena": "Freundliches Hochdeutsch · Berlin",
+        "jonas": "Ruhig & präzise · ideal für Anfänger",
+        "mara": "Locker, ausdrucksstark · München",
+        "finn": "Langsam & geduldig · Fokus auf Aussprache",
+        "sofia": "Energiegeladen · Alltagstempo"
+      },
+      "speeds": {
+        "slow": "Langsam",
+        "normal": "Normal",
+        "fast": "Schnell"
+      }
     }
   },
   "auth": {
     "login": {
       "title": "Willkommen zurück",
-      "subtitle": "Melde dich an, um deinen Fortschritt fortzusetzen.",
+      "subtitle": "Melde dich an und mach dort weiter, wo du aufgehört hast.",
       "emailLabel": "E-Mail",
       "passwordLabel": "Passwort",
+      "emailPlaceholder": "du@email.com",
+      "passwordPlaceholder": "Dein Passwort",
       "submit": "Anmelden",
       "forgotPassword": "Passwort vergessen?",
       "noAccount": "Noch kein Konto?",
-      "signUp": "Registrieren"
+      "orDivider": "oder",
+      "continueWithApple": "Apple",
+      "continueWithGoogle": "Google",
+      "newHere": "Neu hier?",
+      "signUp": "Registrieren",
+      "createAccount": "Konto erstellen"
     },
     "signup": {
       "title": "Konto erstellen",
-      "subtitle": "Speichere deinen Fortschritt und mach dort weiter, wo du aufgehört hast.",
+      "subtitle": "Speichere deinen Fortschritt und synchronisiere ihn auf Handy & Web.",
       "nameLabel": "Name",
       "emailLabel": "E-Mail",
       "passwordLabel": "Passwort",
+      "namePlaceholder": "Alex",
+      "emailPlaceholder": "du@email.com",
+      "passwordPlaceholder": "Mindestens 8 Zeichen",
       "submit": "Konto erstellen",
+      "trustCard": "Ein Konto funktioniert auf iPhone, Android & im Web. Deine Wörter, Serie & Verlauf bleiben synchron.",
+      "termsPrefix": "Mit deiner Fortsetzung akzeptierst du unsere",
+      "termsLink": "Nutzungsbedingungen",
+      "termsAnd": "&",
+      "privacyLink": "Datenschutzrichtlinien",
+      "termsSuffix": ".",
       "haveAccount": "Hast du bereits ein Konto?",
       "logIn": "Anmelden"
     },
@@ -91,7 +162,10 @@
       "subtitle": "Gib den Code ein, den wir an deine E-Mail-Adresse gesendet haben, um dein Konto zu bestätigen.",
       "codeLabel": "Bestätigungscode",
       "submit": "Bestätigen",
-      "resend": "Code erneut senden"
+      "resend": "Code erneut senden",
+      "resendIn": "Code erneut senden in {{seconds}}s",
+      "wrongAddress": "Falsche Adresse?",
+      "changeEmail": "E-Mail ändern"
     },
     "errors": {
       "nameRequired": "Name ist erforderlich",

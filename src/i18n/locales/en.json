@@ -5,6 +5,8 @@
     "cancel": "Cancel",
     "save": "Save",
     "back": "Back",
+    "stop": "Stop",
+    "preview": "Preview voice",
     "loading": "Loading…",
     "retry": "Retry"
   },
@@ -35,7 +37,7 @@
       "learnLabel": "I want to learn…",
       "available": "available",
       "comingSoon": "soon",
-      "footnote": "More languages are coming — Sprachbar means \"language bar,\" not just German.",
+      "footnote": "More languages are coming. Sprachbar means \"language bar,\" not just German.",
       "courses": {
         "de": "German",
         "fr": "French",
@@ -44,38 +46,107 @@
       }
     },
     "placementTest": {
-      "title": "Let's find your level",
-      "subtitle": "A quick placement test helps us tailor lessons to you.",
-      "cta": "Start test"
+      "promptFailed": "We couldn't load your speaking prompt.",
+      "selfAssessmentSubtitle": "Choose the description that feels closest. You can adjust your level later.",
+      "speakingTitle": "Let's hear you",
+      "speakingSubtitle": "How would you say this in {{language}}? Use your own words.",
+      "promptLabel": "Express this meaning",
+      "skipSpeaking": "Continue without speaking",
+      "preparingMic": "Preparing the microphone. You can continue without speaking.",
+      "failed": "We couldn't finish the assessment. Please try again.",
+      "levels": {
+        "A1": "I'm starting with basic words and phrases.",
+        "A2": "I can manage simple everyday conversations.",
+        "B1": "I can talk about familiar topics.",
+        "B2": "I can discuss ideas and explain my opinions.",
+        "C1": "I can express myself fluently and precisely."
+      },
+      "stepLabel": "Placement",
+      "title": "Quick check",
+      "subtitle": "A 3-minute mix of speaking and tapping gives a better estimate than a quiz alone.",
+      "sayThisLabel": "Say this out loud",
+      "tapToSpeak": "Tap to speak",
+      "listening": "Listening…",
+      "rateLabel": "Roughly, how would you rate yourself?",
+      "seeMyLevel": "See my level",
+      "skipBeginner": "Skip, I'm a beginner",
+      "micPermissionDenied": "Turn on microphone access in Settings to practice speaking."
     },
     "levelResult": {
-      "title": "Your level",
-      "subtitle": "Based on your answers, here's where you're starting from."
+      "reminderTimeLabel": "What time works for you?",
+      "startingLevelLabel": "Your starting level",
+      "aiSuggestsLabel": "The AI suggests",
+      "suggestion": "Start at {{level}}. You can change this anytime.",
+      "acceptLevel": "Accept {{level}}",
+      "pickOwn": "Pick my own",
+      "dailyMinutesLabel": "How much per day?",
+      "reminderTitle": "Daily reminder",
+      "reminderOn": "Every day · 8:00 pm",
+      "reminderOff": "Off",
+      "onLabel": "ON",
+      "offLabel": "OFF",
+      "nextChooseVoice": "Next: choose a voice"
     },
     "chooseVoice": {
       "title": "Choose your voice",
-      "subtitle": "Pick the voice you'll practice speaking with.",
-      "cta": "Finish"
+      "subtitle": "This is who reads to you, talks with you, and corrects you. Pick the voice you'll learn {{language}} with. Tap play to hear a sample.",
+      "speedLabel": "Speaking speed",
+      "footnote": "You can change your voice & speed anytime in Settings.",
+      "tags": {
+        "warm": "warm",
+        "clear": "clear",
+        "natural": "natural",
+        "patient": "patient",
+        "energetic": "energetic"
+      },
+      "voices": {
+        "lena": "Friendly Hochdeutsch · Berlin",
+        "jonas": "Calm & precise · great for beginners",
+        "mara": "Casual, expressive · Munich",
+        "finn": "Slow & patient · pronunciation focus",
+        "sofia": "Energetic · everyday speed"
+      },
+      "speeds": {
+        "slow": "Slow",
+        "normal": "Normal",
+        "fast": "Fast"
+      }
     }
   },
   "auth": {
     "login": {
       "title": "Welcome back",
-      "subtitle": "Log in to continue your progress.",
+      "subtitle": "Log in to pick up where you left off.",
       "emailLabel": "Email",
       "passwordLabel": "Password",
+      "emailPlaceholder": "you@email.com",
+      "passwordPlaceholder": "Your password",
       "submit": "Log in",
       "forgotPassword": "Forgot password?",
       "noAccount": "Don't have an account?",
-      "signUp": "Sign up"
+      "orDivider": "or",
+      "continueWithApple": "Apple",
+      "continueWithGoogle": "Google",
+      "newHere": "New here?",
+      "signUp": "Sign up",
+      "createAccount": "Create account"
     },
     "signup": {
       "title": "Create your account",
-      "subtitle": "Save your progress and pick up where you left off.",
+      "subtitle": "Save your progress, and sync it across phone & web.",
       "nameLabel": "Name",
       "emailLabel": "Email",
       "passwordLabel": "Password",
+      "namePlaceholder": "Alex",
+      "emailPlaceholder": "you@email.com",
+      "passwordPlaceholder": "At least 8 characters",
       "submit": "Create account",
+      "trustCard": "One account works on iPhone, Android & the web. Your words, streak & history stay in sync.",
+      "termsPrefix": "By continuing you agree to our",
+      "termsLink": "Terms",
+      "termsAnd": "&",
+      "privacyLink": "Privacy Policy",
+      "termsSuffix": ".",
       "haveAccount": "Already have an account?",
       "logIn": "Log in"
     },
@@ -91,7 +162,10 @@
       "subtitle": "Enter the code we sent to your email to verify your account.",
       "codeLabel": "Verification code",
       "submit": "Verify",
-      "resend": "Resend code"
+      "resend": "Resend code",
+      "resendIn": "Resend code in {{seconds}}s",
+      "wrongAddress": "Wrong address?",
+      "changeEmail": "Change email"
     },
     "errors": {
       "nameRequired": "Name is required",
