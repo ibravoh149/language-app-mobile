@@ -15,11 +15,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { Colors, FontFamily, Spacing } from '@/constants/theme';
+import { AppIcon } from '@/components/app-icon';
+import { FontFamily, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-
-/** The app icon is a fixed brand mark — it doesn't change with light/dark theme. */
-const BRAND = Colors.dark;
 
 const DURATION = 900;
 const BOUNCE_HEIGHT = 8;
@@ -31,23 +29,6 @@ const splashKeyframe = new Keyframe({
   75: { opacity: 1 },
   100: { opacity: 0, easing: Easing.out(Easing.ease) },
 });
-
-export function AppIcon() {
-  const theme = useTheme();
-
-  return (
-    <View
-      style={[
-        styles.iconBadge,
-        { experimental_backgroundImage: `linear-gradient(135deg, ${BRAND.accentBright}, ${BRAND.accent})` },
-      ]}>
-      <Text style={[styles.iconLetter, { color: BRAND.textOnAccent }]}>S</Text>
-      <View
-        style={[styles.iconDot, { backgroundColor: BRAND.highlight, borderColor: theme.background }]}
-      />
-    </View>
-  );
-}
 
 function BouncingDot({ delay, color }: { delay: number; color: string }) {
   const progress = useSharedValue(0);
@@ -107,6 +88,15 @@ export function AnimatedSplashOverlay() {
   const [animate, setAnimate] = useState(false);
   const [visible, setVisible] = useState(true);
 
+  useEffect(() => {
+    if (!animate) return;
+    // The Keyframe `finished` callback isn't guaranteed to fire if the animation
+    // gets interrupted (e.g. by a re-render during rapid navigation), which would
+    // leave this overlay stuck on screen forever. Force it closed as a fallback.
+    const timeout = setTimeout(() => setVisible(false), DURATION + 200);
+    return () => clearTimeout(timeout);
+  }, [animate]);
+
   if (!visible) return null;
 
   return animate ? (
@@ -117,7 +107,8 @@ export function AnimatedSplashOverlay() {
           scheduleOnRN(setVisible, false);
         }
       })}
-      style={[styles.splashOverlay, { backgroundColor: theme.background }]}>
+      style={[styles.splashOverlay, { backgroundColor: theme.background }]}
+      pointerEvents="none">
       <SplashContent />
     </Animated.View>
   ) : (
@@ -143,26 +134,6 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
     gap: 20,
-  },
-  iconBadge: {
-    width: 96,
-    height: 96,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconLetter: {
-    fontFamily: FontFamily.displayBold,
-    fontSize: 44,
-  },
-  iconDot: {
-    position: 'absolute',
-    top: -3,
-    right: -3,
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderWidth: 3,
   },
   title: {
     fontFamily: FontFamily.displaySemiBold,
