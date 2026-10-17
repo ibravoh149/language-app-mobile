@@ -140,7 +140,9 @@
       "continueWithGoogle": "Google",
       "newHere": "Yeni misin?",
       "signUp": "Kaydol",
-      "createAccount": "Hesap oluştur"
+      "createAccount": "Hesap oluştur",
+      "continueWithAppleA11y": "Apple ile devam et",
+      "continueWithGoogleA11y": "Google ile devam et"
     },
     "signup": {
       "title": "Hesabını oluştur",

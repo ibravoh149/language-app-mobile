@@ -140,7 +140,9 @@
       "continueWithGoogle": "Google",
       "newHere": "Neu hier?",
       "signUp": "Registrieren",
-      "createAccount": "Konto erstellen"
+      "createAccount": "Konto erstellen",
+      "continueWithAppleA11y": "Mit Apple fortfahren",
+      "continueWithGoogleA11y": "Mit Google fortfahren"
     },
     "signup": {
       "title": "Konto erstellen",

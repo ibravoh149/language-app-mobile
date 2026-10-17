@@ -140,7 +140,9 @@
       "continueWithGoogle": "Google",
       "newHere": "جديد هنا؟",
       "signUp": "إنشاء حساب",
-      "createAccount": "إنشاء حساب"
+      "createAccount": "إنشاء حساب",
+      "continueWithAppleA11y": "المتابعة باستخدام Apple",
+      "continueWithGoogleA11y": "المتابعة باستخدام Google"
     },
     "signup": {
       "title": "أنشئ حسابك",

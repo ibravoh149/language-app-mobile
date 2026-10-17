@@ -140,7 +140,9 @@
       "continueWithGoogle": "Google",
       "newHere": "Nouveau ici ?",
       "signUp": "S'inscrire",
-      "createAccount": "Créer un compte"
+      "createAccount": "Créer un compte",
+      "continueWithAppleA11y": "Continuer avec Apple",
+      "continueWithGoogleA11y": "Continuer avec Google"
     },
     "signup": {
       "title": "Crée ton compte",

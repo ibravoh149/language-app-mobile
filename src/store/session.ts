@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { setSessionExpiredHandler } from '@/services/api';
 import { toApiError } from '@/services/api-error';
 import { authApi, type AuthResult, type Me, type Profile, type User } from '@/services/auth-api';
+import { signOutOfGoogle } from '@/services/social-auth';
 import { tokenStorage } from '@/services/token-storage';
 
 import { applyProfile } from './profile';
@@ -74,6 +75,7 @@ export const useSessionStore = create<SessionState>()(
         const refreshToken = tokenStorage.get()?.refreshToken;
         if (refreshToken) await authApi.logout(refreshToken).catch(() => undefined);
         await tokenStorage.clear();
+        await signOutOfGoogle();
         set(signedOut);
       },
     }),

@@ -2,24 +2,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
 import { ControlledTextField } from '@/components/controlled-text-field';
 import { FormError } from '@/components/form-error';
+import { SocialSignIn } from '@/components/social-sign-in';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
 import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { type LoginFormValues, loginSchema } from '@/schemas/auth';
 import { authApi } from '@/services/auth-api';
+import { hasSocialProviders } from '@/services/social-auth';
 import { routeAfterAuth, useSessionStore } from '@/store/session';
 
 export function LoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const theme = useTheme();
   const signIn = useSessionStore((state) => state.signIn);
   const { control, handleSubmit, setError } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -72,25 +72,7 @@ export function LoginScreen() {
       </Link>
       {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.login.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
-
-      <View style={styles.dividerRow}>
-        <View style={[styles.dividerLine, { backgroundColor: theme.border }]} />
-        <ThemedText type="small" themeColor="textMuted">
-          {t('auth.login.orDivider')}
-        </ThemedText>
-        <View style={[styles.dividerLine, { backgroundColor: theme.border }]} />
-      </View>
-
-      <View style={styles.socialRow}>
-        <View style={styles.socialButton}>
-          {/* TODO: wire up Sign in with Apple (expo-apple-authentication) once backend auth exists */}
-          <Button title={t('auth.login.continueWithApple')} variant="secondary" onPress={() => {}} />
-        </View>
-        <View style={styles.socialButton}>
-          {/* TODO: wire up Google sign-in (expo-auth-session) once backend auth exists */}
-          <Button title={t('auth.login.continueWithGoogle')} variant="secondary" onPress={() => {}} />
-        </View>
-      </View>
+      {hasSocialProviders ? <SocialSignIn /> : null}
     </AuthScreen>
   );
 }
@@ -99,21 +81,5 @@ const styles = StyleSheet.create({
   forgotPassword: {
     alignSelf: 'flex-end',
     marginTop: -Spacing.xs,
-  },
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.md,
-  },
-  dividerLine: {
-    flex: 1,
-    height: StyleSheet.hairlineWidth,
-  },
-  socialRow: {
-    flexDirection: 'row',
-    gap: Spacing.sm,
-  },
-  socialButton: {
-    flex: 1,
   },
 });
