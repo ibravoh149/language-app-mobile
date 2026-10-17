@@ -70,7 +70,9 @@
       "rateLabel": "À vue de nez, comment t'évaluerais-tu ?",
       "seeMyLevel": "Voir mon niveau",
       "skipBeginner": "Passer, je suis débutant",
-      "micPermissionDenied": "Active l'accès au micro dans les réglages pour t'entraîner à parler."
+      "micPermissionDenied": "Active l'accès au micro dans les réglages pour t'entraîner à parler.",
+      "scoring": "On écoute ton allemand…",
+      "expired": "Cette consigne a expiré, en voici une nouvelle."
     },
     "levelResult": {
       "reminderTimeLabel": "Quelle heure vous convient ?",
@@ -85,7 +87,12 @@
       "reminderOff": "Désactivé",
       "onLabel": "ON",
       "offLabel": "OFF",
-      "nextChooseVoice": "Suivant : choisir une voix"
+      "nextChooseVoice": "Suivant : choisir une voix",
+      "beginnerLabel": "On part du début",
+      "beginnerNote": "On commence au niveau A1 et on progresse à partir de là. Tu peux changer cela à tout moment.",
+      "selfRatedLabel": "D'après ton auto-évaluation",
+      "strengthsLabel": "Points forts",
+      "focusLabel": "À travailler"
     },
     "chooseVoice": {
       "title": "Choisis ta voix",

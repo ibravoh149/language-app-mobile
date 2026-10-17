@@ -70,7 +70,9 @@
       "rateLabel": "Kabaca, kendini nasıl değerlendirirsin?",
       "seeMyLevel": "Seviyemi gör",
       "skipBeginner": "Atla, ben başlangıç seviyesindeyim",
-      "micPermissionDenied": "Konuşma pratiği yapmak için Ayarlar'dan mikrofon erişimini aç."
+      "micPermissionDenied": "Konuşma pratiği yapmak için Ayarlar'dan mikrofon erişimini aç.",
+      "scoring": "Almancanı dinliyoruz…",
+      "expired": "Bu cümlenin süresi doldu, işte yenisi."
     },
     "levelResult": {
       "reminderTimeLabel": "Hangi saat sizin için uygun?",
@@ -85,7 +87,12 @@
       "reminderOff": "Kapalı",
       "onLabel": "AÇIK",
       "offLabel": "KAPALI",
-      "nextChooseVoice": "Sonraki: ses seç"
+      "nextChooseVoice": "Sonraki: ses seç",
+      "beginnerLabel": "En baştan başlıyoruz",
+      "beginnerNote": "A1'den başlayıp üzerine koyarak ilerleyeceğiz. Bunu istediğin zaman değiştirebilirsin.",
+      "selfRatedLabel": "Kendi değerlendirmene göre",
+      "strengthsLabel": "Güçlü yönler",
+      "focusLabel": "Geliştir"
     },
     "chooseVoice": {
       "title": "Sesini seç",

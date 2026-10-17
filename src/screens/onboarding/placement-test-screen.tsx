@@ -15,12 +15,17 @@ export function PlacementTestScreen() {
   const setSelfRatedLevel = useAssessmentStore((state) => state.setSelfRatedLevel);
   const setAiSuggestedLevel = useAssessmentStore((state) => state.setAiSuggestedLevel);
   const setChosenLevel = useAssessmentStore((state) => state.setChosenLevel);
+  const setAssessmentId = useAssessmentStore((state) => state.setAssessmentId);
+  const setPlacementFeedback = useAssessmentStore((state) => state.setPlacementFeedback);
 
   function startAsBeginner() {
     setSelfRatedLevel(BEGINNER_LEVEL);
     setChosenLevel(BEGINNER_LEVEL);
     setAiSuggestedLevel(null);
-    router.push('/(onboarding)/choose-voice');
+    setAssessmentId(null);
+    setPlacementFeedback(null);
+    // Still via the result screen, so the daily goal and reminder get set (B-FLOW-5).
+    router.push('/(onboarding)/level-result');
   }
 
   return (

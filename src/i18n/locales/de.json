@@ -70,7 +70,9 @@
       "rateLabel": "Wie würdest du dich grob einschätzen?",
       "seeMyLevel": "Mein Niveau anzeigen",
       "skipBeginner": "Überspringen, ich bin Anfänger",
-      "micPermissionDenied": "Aktiviere den Mikrofonzugriff in den Einstellungen, um Sprechen zu üben."
+      "micPermissionDenied": "Aktiviere den Mikrofonzugriff in den Einstellungen, um Sprechen zu üben.",
+      "scoring": "Wir hören uns dein Deutsch an …",
+      "expired": "Die Aufgabe ist abgelaufen, hier ist eine neue."
     },
     "levelResult": {
       "reminderTimeLabel": "Welche Uhrzeit passt dir?",
@@ -85,7 +87,12 @@
       "reminderOff": "Aus",
       "onLabel": "AN",
       "offLabel": "AUS",
-      "nextChooseVoice": "Weiter: Stimme wählen"
+      "nextChooseVoice": "Weiter: Stimme wählen",
+      "beginnerLabel": "Start bei null",
+      "beginnerNote": "Wir beginnen bei A1 und bauen darauf auf. Du kannst das jederzeit ändern.",
+      "selfRatedLabel": "Nach deiner Selbsteinschätzung",
+      "strengthsLabel": "Stärken",
+      "focusLabel": "Daran arbeiten"
     },
     "chooseVoice": {
       "title": "Wähle deine Stimme",

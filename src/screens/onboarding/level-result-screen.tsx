@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   FadeInDown,
+  ZoomIn,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
@@ -22,7 +23,7 @@ import { SelectablePill } from '@/components/selectable-pill';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
-import { CEFR_LEVELS, DAILY_MINUTES_OPTIONS, type CEFRLevel } from '@/constants/levels';
+import { BEGINNER_LEVEL, CEFR_LEVELS, DAILY_MINUTES_OPTIONS, type CEFRLevel } from '@/constants/levels';
 import { Motion } from '@/constants/motion';
 import { useTheme } from '@/hooks/use-theme';
 import { haptics } from '@/services/haptics';
@@ -76,6 +77,36 @@ function LevelReveal({ level, onRevealed }: { level: CEFRLevel; onRevealed: () =
   );
 }
 
+/** Strengths / focus areas from placement scoring, popping in one by one. */
+function FeedbackChips({ groups }: { groups: { label: string; items: string[]; tone: 'success' | 'accent' }[] }) {
+  const theme = useTheme();
+  let order = 0;
+  return (
+    <View style={styles.chipGroups}>
+      {groups.filter((group) => group.items.length > 0).map((group) => (
+        <View key={group.label} style={styles.chipRow}>
+          <ThemedText type="small" themeColor="textMuted" style={styles.chipLabel}>
+            {group.label}
+          </ThemedText>
+          {group.items.map((item) => (
+            <Animated.View
+              key={item}
+              entering={ZoomIn.delay(Motion.countUp.duration + order++ * Motion.stagger)
+                .springify()
+                .damping(Motion.pop.damping)
+                .stiffness(Motion.pop.stiffness)}
+              style={[styles.chip, { backgroundColor: group.tone === 'success' ? theme.successSoft : theme.surface, borderColor: theme.border }]}>
+              <ThemedText type="small" themeColor={group.tone === 'success' ? 'success' : 'accentBright'}>
+                {item}
+              </ThemedText>
+            </Animated.View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+}
+
 export function LevelResultScreen() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -90,7 +121,12 @@ export function LevelResultScreen() {
   const reminderMinute = useAssessmentStore((state) => state.reminderMinute);
   const setReminderTime = useAssessmentStore((state) => state.setReminderTime);
 
-  const suggestedLevel = aiSuggestedLevel ?? 'B1';
+  const feedback = useAssessmentStore((state) => state.placementFeedback);
+  // No suggestion means the learner chose "start as beginner" (B-FLOW-5).
+  const isBeginnerPath = aiSuggestedLevel === null;
+  const suggestedLevel = aiSuggestedLevel ?? BEGINNER_LEVEL;
+  const scored = !!feedback?.scored;
+  const cardLabel = isBeginnerPath ? 'beginnerLabel' : scored ? 'aiSuggestsLabel' : 'selfRatedLabel';
   const [pickingOwn, setPickingOwn] = useState(chosenLevel !== suggestedLevel);
   const [burst, setBurst] = useState(0);
 
@@ -110,11 +146,26 @@ export function LevelResultScreen() {
             entering={FadeInDown.delay(150).duration(300)}
             style={[styles.suggestionCard, { backgroundColor: theme.accentSoft, borderColor: theme.accentBorder }]}>
             <ThemedText type="small" themeColor="textMuted" style={styles.sectionLabel}>
-              {t('onboarding.levelResult.aiSuggestsLabel')}
+              {t(`onboarding.levelResult.${cardLabel}`)}
             </ThemedText>
             <ThemedText style={styles.suggestionText}>
-              {t('onboarding.levelResult.suggestion', { level: suggestedLevel })}
+              {isBeginnerPath
+                ? t('onboarding.levelResult.beginnerNote')
+                : t('onboarding.levelResult.suggestion', { level: suggestedLevel })}
             </ThemedText>
+            {scored && feedback?.reason ? (
+              <ThemedText type="small" themeColor="textSecondary" style={styles.reason}>
+                {feedback.reason}
+              </ThemedText>
+            ) : null}
+            {scored && feedback ? (
+              <FeedbackChips
+                groups={[
+                  { label: t('onboarding.levelResult.strengthsLabel'), items: feedback.strengths, tone: 'success' },
+                  { label: t('onboarding.levelResult.focusLabel'), items: feedback.focusAreas, tone: 'accent' },
+                ]}
+              />
+            ) : null}
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(200).duration(300)} style={styles.choiceRow}>
@@ -228,6 +279,29 @@ const styles = StyleSheet.create({
   suggestionText: {
     fontSize: 15,
     lineHeight: 21,
+  },
+  reason: {
+    lineHeight: 19,
+  },
+  chipGroups: {
+    gap: Spacing.xs,
+    marginTop: Spacing.xs,
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    gap: Spacing.xs,
+  },
+  chipLabel: {
+    fontSize: 11,
+    textTransform: 'uppercase',
+  },
+  chip: {
+    paddingVertical: 2,
+    paddingHorizontal: Spacing.sm,
+    borderRadius: BorderRadius.pill,
+    borderWidth: 1,
   },
   choiceRow: {
     flexDirection: 'row',

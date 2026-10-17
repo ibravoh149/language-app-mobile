@@ -70,7 +70,9 @@
       "rateLabel": "بشكل تقريبي، كيف تقيّم نفسك؟",
       "seeMyLevel": "عرض مستواي",
       "skipBeginner": "تخطّي، أنا مبتدئ",
-      "micPermissionDenied": "فعّل إذن الميكروفون من الإعدادات لتتدرّب على التحدث."
+      "micPermissionDenied": "فعّل إذن الميكروفون من الإعدادات لتتدرّب على التحدث.",
+      "scoring": "نستمع إلى ألمانيتك…",
+      "expired": "انتهت صلاحية هذه الجملة، إليك جملة جديدة."
     },
     "levelResult": {
       "reminderTimeLabel": "ما الوقت المناسب لك؟",
@@ -85,7 +87,12 @@
       "reminderOff": "متوقف",
       "onLabel": "تشغيل",
       "offLabel": "إيقاف",
-      "nextChooseVoice": "التالي: اختيار صوت"
+      "nextChooseVoice": "التالي: اختيار صوت",
+      "beginnerLabel": "نبدأ من البداية",
+      "beginnerNote": "سنبدأ من المستوى A1 ونبني عليه. يمكنك تغيير ذلك في أي وقت.",
+      "selfRatedLabel": "بناءً على تقييمك الذاتي",
+      "strengthsLabel": "نقاط القوة",
+      "focusLabel": "للتحسين"
     },
     "chooseVoice": {
       "title": "اختر صوتك",

@@ -70,7 +70,9 @@
       "rateLabel": "A grandes rasgos, ¿cómo te calificarías?",
       "seeMyLevel": "Ver mi nivel",
       "skipBeginner": "Saltar, soy principiante",
-      "micPermissionDenied": "Activa el acceso al micrófono en Ajustes para practicar hablando."
+      "micPermissionDenied": "Activa el acceso al micrófono en Ajustes para practicar hablando.",
+      "scoring": "Escuchando tu alemán…",
+      "expired": "Esa frase caducó, aquí tienes una nueva."
     },
     "levelResult": {
       "reminderTimeLabel": "¿Qué hora te viene bien?",
@@ -85,7 +87,12 @@
       "reminderOff": "Desactivado",
       "onLabel": "ON",
       "offLabel": "OFF",
-      "nextChooseVoice": "Siguiente: elegir una voz"
+      "nextChooseVoice": "Siguiente: elegir una voz",
+      "beginnerLabel": "Empezamos desde el principio",
+      "beginnerNote": "Empezaremos en A1 e iremos subiendo. Puedes cambiarlo cuando quieras.",
+      "selfRatedLabel": "Según tu autoevaluación",
+      "strengthsLabel": "Puntos fuertes",
+      "focusLabel": "A mejorar"
     },
     "chooseVoice": {
       "title": "Elige tu voz",

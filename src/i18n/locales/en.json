@@ -70,7 +70,9 @@
       "rateLabel": "Roughly, how would you rate yourself?",
       "seeMyLevel": "See my level",
       "skipBeginner": "Skip, I'm a beginner",
-      "micPermissionDenied": "Turn on microphone access in Settings to practice speaking."
+      "micPermissionDenied": "Turn on microphone access in Settings to practice speaking.",
+      "scoring": "Listening back to your German…",
+      "expired": "That prompt expired, so here's a fresh one."
     },
     "levelResult": {
       "reminderTimeLabel": "What time works for you?",
@@ -85,7 +87,12 @@
       "reminderOff": "Off",
       "onLabel": "ON",
       "offLabel": "OFF",
-      "nextChooseVoice": "Next: choose a voice"
+      "nextChooseVoice": "Next: choose a voice",
+      "beginnerLabel": "Starting from the beginning",
+      "beginnerNote": "We'll start at A1 and build up from there. You can change this anytime.",
+      "selfRatedLabel": "Based on your self-rating",
+      "strengthsLabel": "Strengths",
+      "focusLabel": "Work on"
     },
     "chooseVoice": {
       "title": "Choose your voice",
