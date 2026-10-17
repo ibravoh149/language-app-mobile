@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -14,6 +15,7 @@ import { useTheme } from '@/hooks/use-theme';
 import '@/i18n';
 import { queryClient } from '@/services/query-client';
 import { useLanguageStore, useThemeStore } from '@/store';
+import { useSessionStore } from '@/store/session';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +27,7 @@ export default function TabLayout() {
   const languageHydrated = useLanguageStore((state) => state.hasHydrated);
   const rtlEpoch = useLanguageStore((state) => state.rtlEpoch);
   const themeHydrated = useThemeStore((state) => state.hasHydrated);
+  const restoreSession = useSessionStore((state) => state.restore);
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_500Medium,
     SpaceGrotesk_600SemiBold,
@@ -35,6 +38,10 @@ export default function TabLayout() {
     Manrope_700Bold,
     Manrope_800ExtraBold,
   });
+
+  useEffect(() => {
+    restoreSession();
+  }, [restoreSession]);
 
   if (!fontsLoaded || !languageHydrated || !themeHydrated) return null;
 
