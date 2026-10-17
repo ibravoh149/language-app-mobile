@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppIcon } from '@/components/app-icon';
@@ -8,6 +9,7 @@ import { Button } from '@/components/button';
 import { Icon, type IconName } from '@/components/icon';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Motion } from '@/constants/motion';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -29,6 +31,11 @@ function FeaturePill({ icon, label }: { icon: IconName; label: string }) {
   );
 }
 
+/** Entrance presets for this screen, offset by `step` stagger beats. */
+const pop = (step: number) =>
+  ZoomIn.delay(step * Motion.stagger).springify().damping(Motion.pop.damping).stiffness(Motion.pop.stiffness);
+const rise = (step: number) => FadeInDown.delay(step * Motion.stagger).duration(Motion.enter.duration);
+
 export function WelcomeScreen() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -37,25 +44,27 @@ export function WelcomeScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
-          <AppIcon />
-          <ThemedText type="title" style={styles.title}>
-            {t('onboarding.welcome.title')}
-          </ThemedText>
-          <ThemedText themeColor="textSecondary" style={styles.subtitle}>
-            {t('onboarding.welcome.subtitle')}
-          </ThemedText>
+          <Animated.View entering={pop(0)}>
+            <AppIcon />
+          </Animated.View>
+          <Animated.View entering={rise(3)} style={styles.copy}>
+            <ThemedText type="title" style={styles.title}>
+              {t('onboarding.welcome.title')}
+            </ThemedText>
+            <ThemedText themeColor="textSecondary" style={styles.subtitle}>
+              {t('onboarding.welcome.subtitle')}
+            </ThemedText>
+          </Animated.View>
           <View style={styles.pillsRow}>
-            {FEATURES.map((feature) => (
-              <FeaturePill
-                key={feature.key}
-                icon={feature.icon}
-                label={t(`onboarding.welcome.features.${feature.key}`)}
-              />
+            {FEATURES.map((feature, index) => (
+              <Animated.View key={feature.key} entering={pop(6 + index * 2)}>
+                <FeaturePill icon={feature.icon} label={t(`onboarding.welcome.features.${feature.key}`)} />
+              </Animated.View>
             ))}
           </View>
         </View>
 
-        <View style={styles.actions}>
+        <Animated.View entering={rise(15)} style={styles.actions}>
           <Button
             title={t('onboarding.welcome.cta')}
             onPress={() => router.push('/(onboarding)/language')}
@@ -65,7 +74,7 @@ export function WelcomeScreen() {
             variant="secondary"
             onPress={() => router.push('/(auth)/login')}
           />
-        </View>
+        </Animated.View>
       </SafeAreaView>
     </ThemedView>
   );
@@ -84,6 +93,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: Spacing.lg,
+  },
+  copy: {
     gap: Spacing.lg,
   },
   title: {

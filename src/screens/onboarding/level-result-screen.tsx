@@ -1,14 +1,20 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   FadeInDown,
-  ZoomIn,
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 
 import { Button } from '@/components/button';
+import { ConfettiBurst } from '@/components/celebrate';
 import { ReminderTimePicker } from '@/components/reminder-time-picker';
 import { OnboardingProgress } from '@/components/onboarding-screen';
 import { ONBOARDING_STEPS } from '@/constants/onboarding';
@@ -17,8 +23,58 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
 import { CEFR_LEVELS, DAILY_MINUTES_OPTIONS, type CEFRLevel } from '@/constants/levels';
+import { Motion } from '@/constants/motion';
 import { useTheme } from '@/hooks/use-theme';
+import { haptics } from '@/services/haptics';
 import { useAssessmentStore } from '@/store';
+
+/**
+ * The starting level: on first show it counts up the CEFR ladder to `level`
+ * and lands with a spring; later changes just pop.
+ */
+function LevelReveal({ level, onRevealed }: { level: CEFRLevel; onRevealed: () => void }) {
+  const reducedMotion = useReducedMotion();
+  const target = Math.max(0, CEFR_LEVELS.indexOf(level));
+  const [shown, setShown] = useState(reducedMotion ? target : 0);
+  const revealed = useRef(reducedMotion);
+  const scale = useSharedValue(reducedMotion ? 1 : 0.7);
+  const style = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+
+  useEffect(() => {
+    if (revealed.current) {
+      setShown(target);
+      scale.value = withSequence(withTiming(1.12, Motion.press), withSpring(1, Motion.pop));
+      return;
+    }
+    // Count up A1 → … → level, then land.
+    const stepMs = Motion.countUp.duration / (target + 1);
+    let step = 0;
+    const timer = setInterval(() => {
+      if (step >= target) {
+        clearInterval(timer);
+        revealed.current = true;
+        scale.value = withSpring(1, Motion.pop);
+        haptics.success();
+        onRevealed();
+        return;
+      }
+      step += 1;
+      setShown(step);
+      haptics.select();
+    }, stepMs);
+    scale.value = withTiming(0.92, Motion.countUp);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- onRevealed is a fire-once callback
+  }, [target, scale]);
+
+  return (
+    <Animated.View style={style} accessible accessibilityLabel={level} accessibilityLiveRegion="polite">
+      <ThemedText themeColor="accent" style={styles.levelDisplay}>
+        {CEFR_LEVELS[shown]}
+      </ThemedText>
+    </Animated.View>
+  );
+}
 
 export function LevelResultScreen() {
   const { t } = useTranslation();
@@ -36,6 +92,7 @@ export function LevelResultScreen() {
 
   const suggestedLevel = aiSuggestedLevel ?? 'B1';
   const [pickingOwn, setPickingOwn] = useState(chosenLevel !== suggestedLevel);
+  const [burst, setBurst] = useState(0);
 
   return (
     <ThemedView style={styles.container}>
@@ -46,11 +103,7 @@ export function LevelResultScreen() {
             <ThemedText type="small" themeColor="textMuted" style={styles.sectionLabel}>
               {t('onboarding.levelResult.startingLevelLabel')}
             </ThemedText>
-            <Animated.View entering={ZoomIn.delay(100).duration(400)}>
-              <ThemedText themeColor="accent" style={styles.levelDisplay}>
-                {chosenLevel ?? suggestedLevel}
-              </ThemedText>
-            </Animated.View>
+            <LevelReveal level={chosenLevel ?? suggestedLevel} onRevealed={() => setBurst((n) => n + 1)} />
           </Animated.View>
 
           <Animated.View
@@ -132,6 +185,7 @@ export function LevelResultScreen() {
           onPress={() => router.push('/(onboarding)/choose-voice')}
         />
       </SafeAreaView>
+      {burst > 0 ? <ConfettiBurst burstKey={burst} /> : null}
     </ThemedView>
   );
 }

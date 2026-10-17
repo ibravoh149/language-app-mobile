@@ -1,11 +1,13 @@
-import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
+import { Children, type ReactNode } from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { AppIcon } from '@/components/app-icon';
+import { MotionReveal } from '@/components/motion-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Motion } from '@/constants/motion';
 import { FontFamily, Spacing } from '@/constants/theme';
 
 type AuthScreenProps = {
@@ -26,6 +28,8 @@ export function AuthScreen({
   variant = 'centered',
 }: Readonly<AuthScreenProps>) {
   const isCompact = variant === 'compact';
+  // Each field/control rises in turn after the header (D16 entrance choreography).
+  const items = Children.toArray(children);
 
   return (
     <ThemedView style={styles.container}>
@@ -49,7 +53,9 @@ export function AuthScreen({
               </Animated.View>
             ) : (
               <Animated.View entering={FadeInDown.duration(300)} style={styles.header}>
-                <AppIcon size={58} />
+                <Animated.View entering={ZoomIn.springify().damping(Motion.pop.damping).stiffness(Motion.pop.stiffness)}>
+                  <AppIcon size={58} />
+                </Animated.View>
                 <ThemedText type="title" style={styles.title}>
                   {title}
                 </ThemedText>
@@ -60,10 +66,18 @@ export function AuthScreen({
                 ) : null}
               </Animated.View>
             )}
-            <Animated.View entering={FadeInDown.delay(80).duration(300)} style={styles.form}>
-              {children}
-            </Animated.View>
-            {footer ? <ThemedView style={styles.footer}>{footer}</ThemedView> : null}
+            <View style={styles.form}>
+              {items.map((child, index) => (
+                <MotionReveal key={(child as { key?: string }).key ?? index} index={index + 1}>
+                  {child}
+                </MotionReveal>
+              ))}
+            </View>
+            {footer ? (
+              <Animated.View entering={FadeIn.delay(Motion.stagger * (items.length + 1)).duration(Motion.enter.duration)}>
+                <ThemedView style={styles.footer}>{footer}</ThemedView>
+              </Animated.View>
+            ) : null}
           </ScrollView>
         </SafeAreaView>
       </KeyboardAvoidingView>
