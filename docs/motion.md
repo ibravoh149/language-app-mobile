@@ -28,6 +28,25 @@ Respect the system's Reduce Motion setting: shared configurations use
 `ReduceMotion.System`, content entrances and recording pulses honor
 `useReducedMotion`, and the root stack disables transitions when requested.
 
+## Fun layer (D16)
+
+- `Motion.pop`: bouncy spring for wins (a selection, a typed code digit, a
+  revealed result). `Motion.shake` + `shakeDistance`: error shake (`useShake`).
+  `Motion.countUp`: rolling a value up to its final state. `Motion.confetti`
+  and `celebrateDismissMs`: the celebration overlay.
+- `celebrate({ title, subtitle, icon })` (`src/store/celebration.ts`) shows the
+  prototype's `<Celebrate>` overlay: scrim, falling confetti, a popping card,
+  a success haptic and a screen-reader announcement. It auto-dismisses after
+  2.4 s or on tap. `CelebrationHost` sits above the root stack, so call it and
+  navigate in the same tick; it never delays navigation.
+- `ConfettiBurst` is the confetti on its own (touch-transparent), e.g. on the
+  level reveal. Both render no confetti when Reduce Motion is on.
+- `FormError` slides in, shakes and buzzes on every failed attempt. `OtpInput`
+  pops each digit and shakes when `errorKey` increments.
+- Haptics live in `src/services/haptics.ts` (`press`, `select`, `success`,
+  `error`): Button press-in, choice/pill selection, celebrations and errors.
+  Android uses the system haptic constants.
+
 # Onboarding
 
 The route order is `language` -> `target-language` -> `placement-test`
