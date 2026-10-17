@@ -26,8 +26,10 @@ export const Colors = {
     textOnAccent: '#ffffff',
 
     // Accent (brand)
-    accent: '#7c3aed',
-    accentBright: '#8b5cf6',
+    accent: '#6d28d9',
+    accentBright: '#6d28d9',
+    accentGradientStart: '#8b5cf6',
+    accentGradientEnd: '#4c1d95',
     accentSoft: 'rgba(124,58,237,0.10)',
     accentBorder: 'rgba(124,58,237,0.28)',
     accentGlow: 'rgba(124,58,237,0.34)',
@@ -67,9 +69,11 @@ export const Colors = {
     // Accent (brand)
     accent: '#8b5cf6',
     accentBright: '#a78bfa',
-    accentSoft: 'rgba(139,92,246,0.15)',
-    accentBorder: 'rgba(139,92,246,0.40)',
-    accentGlow: 'rgba(124,58,237,0.50)',
+    accentGradientStart: '#8b5cf6',
+    accentGradientEnd: '#5b21b6',
+    accentSoft: 'rgba(124,58,237,0.16)',
+    accentBorder: 'rgba(124,58,237,0.42)',
+    accentGlow: 'rgba(124,58,237,0.55)',
     highlight: '#facc15',
 
     // Status
