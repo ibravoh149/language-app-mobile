@@ -15,7 +15,10 @@ export type ApiErrorCode =
   | 'ACCOUNT_USES_SOCIAL'
   | 'RATE_LIMITED'
   | 'INTERNAL'
-  | 'NETWORK';
+  | 'NETWORK'
+  // Roleplay (docs/api/roleplay.md)
+  | 'SESSION_ENDED'
+  | 'TUTOR_UNAVAILABLE';
 
 interface ErrorEnvelope {
   error?: { code?: string; message?: string; fields?: Record<string, string> };
