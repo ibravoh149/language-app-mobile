@@ -25,6 +25,7 @@ export function ControlledTextField<T extends FieldValues>({
   return (
     <View style={styles.container}>
       <TextField
+        ref={field.ref}
         value={field.value ?? ''}
         onChangeText={field.onChange}
         onBlur={field.onBlur}

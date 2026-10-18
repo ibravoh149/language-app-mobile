@@ -71,6 +71,9 @@ export function ResetPasswordScreen() {
         placeholder={t('auth.signup.passwordPlaceholder')}
         secureTextEntry
         textContentType="newPassword"
+        autoComplete="new-password"
+        returnKeyType="done"
+        onSubmitEditing={handleSubmit(onSubmit)}
       />
       {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.resetPassword.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />

@@ -1,6 +1,6 @@
 import {
   Activity, ArrowRight, ArrowUp, Bell, Book, BookOpen, CalendarDays,
-  Camera, Check, ChevronLeft, ChevronRight, Compass, Copy, Flame,
+  Camera, Check, ChevronLeft, ChevronRight, Compass, Copy, Eye, EyeOff, Flame,
   Globe, Hand, Headphones, House, Layers, LayoutGrid, Link, Lock,
   MessageCircle, Mic, Moon, Pencil, Play, Plus, QrCode, Search,
   Settings, SlidersHorizontal, Sparkles, Square, Sun, User, Video,
@@ -52,6 +52,8 @@ export const icons = {
   camera: Camera,
   settings: Settings,
   explore: Compass,
+  eye: Eye,
+  eyeOff: EyeOff,
 } as const;
 
 export type IconName = keyof typeof icons;

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -15,9 +15,11 @@ import { authApi } from '@/services/auth-api';
 export function ForgotPasswordScreen() {
   const { t } = useTranslation();
   const router = useRouter();
+  // Prefilled from the login screen when the learner already typed their email.
+  const { email: prefill = '' } = useLocalSearchParams<{ email?: string }>();
   const { control, handleSubmit, setError } = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
-    defaultValues: { email: '' },
+    defaultValues: { email: prefill },
     mode: 'onChange',
   });
 
@@ -49,6 +51,9 @@ export function ForgotPasswordScreen() {
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
+        autoComplete="email"
+        returnKeyType="send"
+        onSubmitEditing={handleSubmit(onSubmit)}
       />
       {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.forgotPassword.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />

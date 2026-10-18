@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import { AuthScreen } from '@/components/auth-screen';
 import { Button } from '@/components/button';
@@ -21,7 +21,7 @@ export function LoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const signIn = useSessionStore((state) => state.signIn);
-  const { control, handleSubmit, setError } = useForm<LoginFormValues>({
+  const { control, handleSubmit, setError, setFocus, getValues } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
     mode: 'onChange',
@@ -56,6 +56,10 @@ export function LoginScreen() {
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
+        autoComplete="email"
+        returnKeyType="next"
+        submitBehavior="submit"
+        onSubmitEditing={() => setFocus('password')}
       />
       <ControlledTextField
         control={control}
@@ -64,12 +68,20 @@ export function LoginScreen() {
         placeholder={t('auth.login.passwordPlaceholder')}
         secureTextEntry
         textContentType="password"
+        autoComplete="current-password"
+        returnKeyType="go"
+        onSubmitEditing={handleSubmit(onSubmit)}
       />
-      <Link href="/(auth)/forgot-password" style={styles.forgotPassword}>
+      <Pressable
+        accessibilityRole="link"
+        hitSlop={8}
+        style={styles.forgotPassword}
+        // Read the email at tap time so the reset screen starts with what was typed.
+        onPress={() => router.push({ pathname: '/(auth)/forgot-password', params: { email: getValues('email').trim() } })}>
         <ThemedText type="smallBold" themeColor="accentBright">
           {t('auth.login.forgotPassword')}
         </ThemedText>
-      </Link>
+      </Pressable>
       {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
       <Button title={t('auth.login.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
       {hasSocialProviders ? <SocialSignIn /> : null}
