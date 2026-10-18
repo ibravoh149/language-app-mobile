@@ -46,6 +46,10 @@ export function ensureVoice(model: PiperModel, onProgress?: (percent: number) =>
       if (result.statusCode < 200 || result.statusCode >= 300) {
         throw new Error(`Voice download failed (${result.statusCode})`);
       }
+      if (model.sha256) {
+        const actual = (await FS.hash(archive, 'sha256')).toLowerCase();
+        if (actual !== model.sha256.toLowerCase()) throw new Error(`Voice archive checksum mismatch for ${model.id}`);
+      }
       // The archive holds a single folder named after the model, so unpack into VOICES_DIR.
       const extracted = await extractArchive({ modelId: model.id, archivePath: archive, format: 'tar.bz2' }, VOICES_DIR, {
         onProgress: ({ percent }) => onProgress?.(90 + percent / 10),

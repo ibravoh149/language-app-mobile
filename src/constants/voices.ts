@@ -6,8 +6,13 @@ export interface PiperModel {
   sizeMB: number;
   /** Dataset licence from the voice's MODEL_CARD (recorded in BACKLOG B-VOICE-1). */
   licence: string;
-  /** Archive URL when it isn't a sherpa-onnx release (e.g. a model we converted ourselves). */
+  /**
+   * Archive URL when it isn't a sherpa-onnx release (e.g. a model we converted ourselves,
+   * published as a `voices-vN` release on the mobile repo; assets are never replaced in place).
+   */
   url?: string;
+  /** SHA-256 of the archive; checked after download when set (B-VOICE-5). */
+  sha256?: string;
   /** Speaker for multi-speaker models (e.g. thorsten_emotional: 4 = neutral). */
   sid?: number;
   /** Piper VITS settings; omitted values use PIPER_DEFAULTS. Tuned by ear in the voice lab. */

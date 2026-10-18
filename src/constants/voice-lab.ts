@@ -3,21 +3,7 @@
  * persona so the normal preview hook can play it. Delete this file and the screen
  * once the user has picked voices and settings by ear (BACKLOG B-VOICE-1).
  */
-import { resolveApiBaseUrl } from '@/services/api-url';
-
 import { type PiperModel, type Voice } from './voices';
-
-/**
- * de_DE-mls-medium isn't published by sherpa-onnx; we converted it ourselves
- * (languageapp/.voice-lab/convert_piper.py) and serve it from the Mac while testing:
- * `cd ~/Projects/languageapp/.voice-lab && python3 -m http.server 8099`. Defaults to the
- * API host (the Mac's LAN IP) on port 8099; override with EXPO_PUBLIC_VOICE_LAB_URL.
- */
-function voiceLabBaseUrl(): string {
-  if (process.env.EXPO_PUBLIC_VOICE_LAB_URL) return process.env.EXPO_PUBLIC_VOICE_LAB_URL;
-  const host = resolveApiBaseUrl().replace(/^(https?:\/\/[^/:]+).*$/, '$1');
-  return `${host}:8099`;
-}
 
 const RAMONA: PiperModel = { id: 'vits-piper-de_DE-ramona-low', sizeMB: 64, licence: 'M-AILABS (BSD-style)' };
 const KERSTIN: PiperModel = { id: 'vits-piper-de_DE-kerstin-low', sizeMB: 64, licence: 'CC0' };
@@ -28,7 +14,10 @@ const MLS: PiperModel = {
   id: 'vits-piper-de_DE-mls-medium',
   sizeMB: 77,
   licence: 'CC-BY 4.0 (credit needed)',
-  url: `${voiceLabBaseUrl()}/vits-piper-de_DE-mls-medium.tar.bz2`,
+  // Not published by sherpa-onnx: converted with languageapp/.voice-lab/convert_piper.py
+  // and released on the mobile repo (tag voices-v1).
+  url: 'https://github.com/ibravoh149/language-app-mobile/releases/download/voices-v1/vits-piper-de_DE-mls-medium.tar.bz2',
+  sha256: '3dfa0936119d216b85766ec532ca24568c7ca52a34a16a4e508df2480a8ce787',
   // MLS's own defaults (its .onnx.json); much lower than the single-speaker voices.
   vits: { noiseScale: 0.333, noiseScaleW: 0.333 },
 };
@@ -60,7 +49,7 @@ export const VOICE_LAB: VoiceLabSection[] = [
     ],
   },
   {
-    title: 'Female, medium quality (MLS, served from your Mac)',
+    title: 'Female, medium quality (MLS)',
     entries: [68, 118, 72, 223, 10].map((sid, i) =>
       entry(`mls-${sid}`, `MLS speaker #${sid}`, ['#ec4899', '#f472b6', '#db2777', '#be185d', '#f9a8d4'][i], { ...MLS, sid }, 'Cleanest female speakers by background noise')
     ),
