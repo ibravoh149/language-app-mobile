@@ -1,14 +1,15 @@
-// react-native-executorch is native-only (no web implementation) and requires a
-// dev-client build, so voice preview is unavailable in the web/Expo-Go target.
+import { type VoiceSpeed } from '@/constants/levels';
+import { type Voice } from '@/constants/voices';
+
+// sherpa-onnx is native-only (no web implementation) and requires a dev-client
+// build, so voice preview is unavailable in the web target.
 export function useVoiceSample() {
   return {
-    isReady: false,
+    activeVoiceId: null as string | null,
+    phase: 'idle' as 'idle' | 'downloading' | 'loading' | 'playing',
     downloadProgress: 0,
-    error: undefined,
     isPlaying: false,
-    isBusy: false,
-    isPreparing: false,
-    play: async (_text: string, _speed: number) => {},
+    play: async (_voice: Voice, _text: string, _speed: VoiceSpeed) => {},
     stop: () => {},
   };
 }

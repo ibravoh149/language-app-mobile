@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -155,7 +155,6 @@ export function ChooseVoiceScreen() {
   const setVoiceSpeed = useAssessmentStore((state) => state.setVoiceSpeed);
   const theme = useTheme();
   const sample = useVoiceSample();
-  const [previewingId, setPreviewingId] = useState<string | null>(null);
   const isSignedIn = useSessionStore((state) => state.status === 'signedIn');
   const setMe = useSessionStore((state) => state.setMe);
   const save = useAuthSubmit();
@@ -176,42 +175,19 @@ export function ChooseVoiceScreen() {
     });
   }
 
+  const previewingId = sample.activeVoiceId;
   const previewVoice = AVAILABLE_VOICES.find((voice) => voice.id === previewingId);
   const sampleText = previewVoice ? voiceSampleText(targetLanguage, previewVoice.name) : '';
-  // Tapped before the voice model finished loading: play as soon as it's ready.
-  const playWhenReady = useRef(false);
-  const wasBusy = useRef(false);
-
-  function startPreview(voice: Voice) {
-    void sample.play(voiceSampleText(targetLanguage, voice.name), voiceSpeed);
-  }
-
-  useEffect(() => {
-    if (!sample.isReady || !playWhenReady.current || !previewVoice) return;
-    playWhenReady.current = false;
-    startPreview(previewVoice);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once when the model becomes ready
-  }, [sample.isReady]);
-
-  useEffect(() => {
-    // The preview finished (or was stopped): reset the button.
-    if (wasBusy.current && !sample.isBusy) setPreviewingId(null);
-    wasBusy.current = sample.isBusy;
-  }, [sample.isBusy]);
 
   function handlePreview(id: string) {
     if (previewingId === id) {
-      playWhenReady.current = false;
       sample.stop();
-      setPreviewingId(null);
       return;
     }
     const voice = AVAILABLE_VOICES.find((v) => v.id === id);
     if (!voice) return;
-    if (sample.isBusy) sample.stop();
-    setPreviewingId(id);
-    if (sample.isReady) startPreview(voice);
-    else playWhenReady.current = true;
+    if (previewingId) sample.stop();
+    void sample.play(voice, voiceSampleText(targetLanguage, voice.name), voiceSpeed);
   }
 
   function previewState(id: string): 'idle' | 'loading' | 'playing' {
@@ -252,16 +228,16 @@ export function ChooseVoiceScreen() {
 
           {previewingId ? (
             <Animated.View key={previewingId} entering={FadeIn.duration(Motion.enter.duration)} style={[styles.caption, { borderColor: theme.border }]}>
-              {sample.isReady ? (
+              {sample.phase === 'playing' ? (
                 // The sample is German learning content, so it's shown as is, not translated.
                 <ThemedText type="small" themeColor="textSecondary" style={styles.captionText}>
                   „{sampleText}“
                 </ThemedText>
               ) : (
                 <ThemedText type="small" themeColor="textMuted">
-                  {/* Download first (percent), then the model loads into memory before it's ready. */}
-                  {sample.downloadProgress < 100
-                    ? t('onboarding.chooseVoice.loadingVoice', { percent: Math.round(sample.downloadProgress) })
+                  {/* First use downloads the voice (percent), then it loads and renders the sample. */}
+                  {sample.phase === 'downloading'
+                    ? t('onboarding.chooseVoice.loadingVoice', { percent: sample.downloadProgress })
                     : t('onboarding.chooseVoice.loadingVoiceModel')}
                 </ThemedText>
               )}

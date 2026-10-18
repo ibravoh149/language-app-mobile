@@ -24,7 +24,11 @@ function concat(parts: Float32Array[]): Float32Array {
  * played back unchanged. Streaming chunk by chunk left audible gaps whenever the next
  * part wasn't ready in time. Rendered samples are cached, so replays are instant.
  */
-export function useVoiceSample() {
+/**
+ * Superseded by the Piper preview (use-voice-sample.ts, D21). Unused; kept until the user
+ * approves Piper by ear, then delete it along with the executorch TTS model.
+ */
+export function useKokoroVoiceSample() {
   const tts = useTextToSpeech(models.textToSpeech.KOKORO.DE.DEFAULT);
   const player = useTtsBufferPlayer(KOKORO_SAMPLE_RATE);
   /** Rendering in progress (the first run is slow while the model warms up). */

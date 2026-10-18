@@ -16,7 +16,7 @@ German-learning app.
 - **State:** Zustand with AsyncStorage persistence (`src/store/`)
 - **Server state:** TanStack Query (`src/services/query-client.ts`)
 - **API client:** Axios (`src/services/api.ts`)
-- **Speech:** `react-native-executorch` (Whisper STT, Kokoro TTS) + `react-native-audio-api`
+- **Speech:** `react-native-executorch` (Whisper STT) + `react-native-sherpa-onnx` (Piper TTS) + `react-native-audio-api`
 - **Forms:** react-hook-form + zod; **i18n:** i18next (en, de, fr, es, tr, ar; RTL for Arabic)
 - **Package manager:** yarn · **Builds:** EAS
 
@@ -24,8 +24,8 @@ German-learning app.
 
 - The app talks **only to the NestJS gateway** (`languageapp-backend/apps/api`,
   `/api/v1`). Never call the Python services directly.
-- **Speech runs on the device** (Whisper for the learner, Kokoro `df_anna` for
-  German playback). Explanations in the learner's language are text, not speech.
+- **Speech runs on the device** (Whisper for the learner, Piper voices via
+  sherpa-onnx for German playback, downloaded per voice on first use, D21). Explanations in the learner's language are text, not speech.
 - Routes in `src/app/` are thin re-exports of components in `src/screens/`.
 
 ## Project structure

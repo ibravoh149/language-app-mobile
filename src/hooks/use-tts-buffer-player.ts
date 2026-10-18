@@ -11,8 +11,11 @@ export interface AudioChunk {
 
 export interface AudioPlayerState {
   isPlaying: boolean;
-  /** Consumes an async generator of TTS chunks, enqueuing and playing them in real-time. */
-  playStream: <T extends AudioChunk>(chunks: AsyncIterable<T>) => Promise<void>;
+  /**
+   * Consumes an async generator of TTS chunks, enqueuing and playing them in real-time.
+   * Pass `sampleRate` when it differs from the hook's (e.g. per Piper voice).
+   */
+  playStream: <T extends AudioChunk>(chunks: AsyncIterable<T>, sampleRate?: number) => Promise<void>;
   /** Immediately stops audio playback, clears remaining buffers, and resets state. */
   stop: () => void;
 }
@@ -35,9 +38,14 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   /** Backup for onBufferEnded, which can arrive late or not at all: ends playback by the clock. */
   const endTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const getAudioContext = useCallback(async () => {
+  const getAudioContext = useCallback(async (rate: number) => {
+    // Recreate the context when the rate changes, so audio is never played at the wrong pitch.
+    if (audioCtxRef.current && audioCtxRef.current.state !== 'closed' && audioCtxRef.current.sampleRate !== rate) {
+      await audioCtxRef.current.close().catch(() => {});
+      audioCtxRef.current = null;
+    }
     if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
-      audioCtxRef.current = new AudioContext({ sampleRate });
+      audioCtxRef.current = new AudioContext({ sampleRate: rate });
     }
     if (audioCtxRef.current.state === 'suspended') {
       await audioCtxRef.current.resume();
@@ -63,9 +71,9 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   }, []);
 
   const playStream = useCallback(
-    async <T extends AudioChunk>(chunks: AsyncIterable<T>) => {
+    async <T extends AudioChunk>(chunks: AsyncIterable<T>, rate: number = sampleRate) => {
       stop();
-      const ctx = await getAudioContext();
+      const ctx = await getAudioContext(rate);
       const source = ctx.createBufferQueueSource();
       source.connect(ctx.destination);
       queueSourceRef.current = source;
@@ -134,7 +142,7 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
 
       await playbackFinished;
     },
-    [getAudioContext, stop]
+    [getAudioContext, stop, sampleRate]
   );
 
   useEffect(() => {
