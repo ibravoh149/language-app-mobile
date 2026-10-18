@@ -5,14 +5,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/button';
 import { MotionReveal } from '@/components/motion-reveal';
+import { StreakCard } from '@/components/streak-card';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useSessionStore } from '@/store/session';
 
 /**
- * Placeholder home until the real one is designed (after F1). It confirms who is
- * signed in and offers log out, so the F1 phone test can do logout → login.
+ * Placeholder home until the real one is designed. It confirms who is signed in,
+ * shows the speaking streak (F2), and offers log out / delete account.
  */
 export function HomeScreen() {
   const { t } = useTranslation();
@@ -36,6 +37,9 @@ export function HomeScreen() {
               <ThemedText themeColor="textSecondary">{t('home.level', { level })}</ThemedText>
             </MotionReveal>
           ) : null}
+          <MotionReveal index={3} style={styles.streak}>
+            <StreakCard />
+          </MotionReveal>
         </View>
         {/* Development only: compare voices by ear (not shown in release builds). */}
         {__DEV__ ? <Button title="Voice lab (dev)" variant="secondary" onPress={() => router.push('/voice-lab')} /> : null}
@@ -56,4 +60,5 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1, paddingHorizontal: Spacing.xl, paddingBottom: Spacing.lg, gap: Spacing.sm },
   content: { flex: 1, justifyContent: 'center', gap: Spacing.sm },
   deleteLink: { alignSelf: 'center', paddingVertical: Spacing.xs },
+  streak: { marginTop: Spacing.lg },
 });
