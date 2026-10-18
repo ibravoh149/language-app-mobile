@@ -86,10 +86,21 @@ export interface SessionSummary {
   durationSec: number;
 }
 
+export interface ProgressDay {
+  /** 'YYYY-MM-DD' (UTC for now). */
+  date: string;
+  secondsPracticed: number;
+  turns: number;
+}
+
 export interface Progress {
   streak: Streak;
   spokenTurnsToday: number;
   sessionsCompleted: number;
+  /** Requested for the home goal ring (contract v2.1); absent until the backend adds it. */
+  secondsPracticedToday?: number;
+  /** Last 7 days, oldest first (contract v2.1); absent until the backend adds it. */
+  week?: ProgressDay[];
 }
 
 export type InputMode = 'voice' | 'text';
