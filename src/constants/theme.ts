@@ -28,7 +28,8 @@ export const Colors = {
     // Accent (brand)
     accent: '#6d28d9',
     accentBright: '#6d28d9',
-    accentGradientStart: '#8b5cf6',
+    // Prototype theme.css (light): linear-gradient(135deg, #7c3aed, #4c1d95)
+    accentGradientStart: '#7c3aed',
     accentGradientEnd: '#4c1d95',
     accentSoft: 'rgba(124,58,237,0.10)',
     accentBorder: 'rgba(124,58,237,0.28)',
@@ -67,7 +68,8 @@ export const Colors = {
     textOnAccent: '#ffffff',
 
     // Accent (brand)
-    accent: '#8b5cf6',
+    // Prototype theme.css (dark): --accent #7c3aed (solid fills); --accent-2 #a78bfa (text on dark)
+    accent: '#7c3aed',
     accentBright: '#a78bfa',
     accentGradientStart: '#8b5cf6',
     accentGradientEnd: '#5b21b6',

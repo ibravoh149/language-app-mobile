@@ -353,7 +353,9 @@ export function ConversationScreen() {
                     />
                     <Pressable onPress={() => void send()} disabled={!draft.trim() || !!sending || speech.isRecording}
                       accessibilityRole="button" accessibilityLabel={t('roleplay.convo.send')}
-                      style={({ pressed }) => [styles.sendButton, { backgroundColor: theme.accent, opacity: !draft.trim() || speech.isRecording ? 0.4 : 1, transform: [{ scale: pressed ? 0.92 : 1 }] }]}>
+                      style={({ pressed }) => [styles.sendButton, { opacity: !draft.trim() || speech.isRecording ? 0.4 : 1, transform: [{ scale: pressed ? 0.92 : 1 }] }]}>
+                      <LinearGradient colors={[theme.accentGradientStart, theme.accentGradientEnd]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                        style={[StyleSheet.absoluteFill, styles.sendButton]} />
                       <Icon name="up" size={18} themeColor="textOnAccent" />
                     </Pressable>
                   </View>

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -53,9 +54,10 @@ export function HomeScreen() {
                 <ThemedText style={styles.avatarLetter}>{initial}</ThemedText>
               </View>
               {level ? (
-                <View style={[styles.levelBadge, { backgroundColor: theme.accent, borderColor: theme.background }]}>
+                <LinearGradient colors={[theme.accentGradientStart, theme.accentGradientEnd]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                  style={[styles.levelBadge, { borderColor: theme.background }]}>
                   <ThemedText themeColor="textOnAccent" style={styles.levelText}>{level}</ThemedText>
-                </View>
+                </LinearGradient>
               ) : null}
             </Pressable>
             <View style={styles.flex}>
@@ -127,7 +129,11 @@ function StreakStrip({ progress, dailyMinutes }: { progress?: Progress; dailyMin
         </View>
         <View style={styles.days}>
           {days.map((on, i) => (
-            <View key={i} style={[styles.day, { backgroundColor: on ? theme.accent : theme.surfaceSunken }]} />
+            on ? (
+              <LinearGradient key={i} colors={[theme.accentGradientStart, theme.accentGradientEnd]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.day} />
+            ) : (
+              <View key={i} style={[styles.day, { backgroundColor: theme.surfaceSunken }]} />
+            )
           ))}
         </View>
         <ThemedText type="small" themeColor={producedToday ? 'success' : 'textSecondary'} style={styles.stripNote}>
