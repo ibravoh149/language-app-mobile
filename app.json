@@ -14,7 +14,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSMicrophoneUsageDescription": "Sprachbar uses the microphone so you can practice speaking during lessons and the placement test."
-      }
+      },
+      "appleTeamId": "LK42P468FB"
     },
     "android": {
       "adaptiveIcon": {
