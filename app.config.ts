@@ -13,6 +13,9 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
 export default ({ config }: ConfigContext): ExpoConfig => {
   const plugins = [...(config.plugins ?? [])];
 
+  // Both sherpa-onnx and react-native-audio-api bundle FFmpeg on Android; keep only audio-api's.
+  plugins.push('./plugins/with-sherpa-onnx-no-ffmpeg');
+
   const googleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
   if (googleIosClientId) {
     // "123-abc.apps.googleusercontent.com" → "com.googleusercontent.apps.123-abc"
