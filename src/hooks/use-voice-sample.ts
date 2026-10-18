@@ -88,7 +88,8 @@ export function useVoiceSample() {
       setIsPreparing(true);
       try {
         const audio = await render(text, speed);
-        setIsPreparing(false);
+        // isPreparing stays true until playback starts (the finally resets it), so isBusy
+        // never dips to false between rendering and playing.
         if (token !== playToken.current) return;
         await player.playStream(
           (async function* () {
