@@ -7,6 +7,8 @@ export function useSpeechRecognition(_options: { language?: string } = {}) {
   const level = useSharedValue(0);
   return {
     isReady: false,
+    isFinalizing: false,
+    finish: async () => '',
     downloadProgress: 0,
     isRecording: false,
     committedText: '',
