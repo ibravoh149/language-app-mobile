@@ -58,12 +58,19 @@ export const VOICES: Voice[] = [
   },
   {
     id: 'jonas', name: 'Jonas', tagKey: 'clear', descriptionKey: 'jonas', color: '#6366f1',
-    piper: { id: 'vits-piper-de_DE-thorsten-medium', sizeMB: 64, licence: 'CC0' },
+    // Chosen by ear over medium and the emotional model (2026-10-18).
+    piper: { id: 'vits-piper-de_DE-thorsten-high', sizeMB: 110, licence: 'CC0' },
   },
   {
     id: 'mara', name: 'Mara', tagKey: 'natural', descriptionKey: 'mara', color: '#d946ef',
     // M-AILABS licence: commercial use allowed; keep the copyright notice, no endorsement (verified 2026-10-18).
-    piper: { id: 'vits-piper-de_DE-ramona-low', sizeMB: 64, licence: 'M-AILABS (BSD-style)' },
+    // "Expressive" preset chosen by ear (2026-10-18); pace comes from PIPER_DEFAULTS (1.3).
+    piper: {
+      id: 'vits-piper-de_DE-ramona-low',
+      sizeMB: 64,
+      licence: 'M-AILABS (BSD-style)',
+      vits: { noiseScale: 0.8, noiseScaleW: 0.9 },
+    },
   },
   { id: 'finn', name: 'Finn', tagKey: 'patient', descriptionKey: 'finn', color: '#10b981' },
   { id: 'sofia', name: 'Sofia', tagKey: 'energetic', descriptionKey: 'sofia', color: '#f59e0b' },
