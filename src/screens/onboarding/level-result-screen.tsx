@@ -31,9 +31,10 @@ import { useAssessmentStore } from '@/store';
 
 /**
  * The starting level: on first show it counts up the CEFR ladder to `level`
- * and lands with a spring; later changes just pop.
+ * and lands with a spring; later changes just pop. `celebrate` adds the success
+ * haptic and the confetti callback on landing.
  */
-function LevelReveal({ level, onRevealed }: { level: CEFRLevel; onRevealed: () => void }) {
+function LevelReveal({ level, celebrate, onRevealed }: { level: CEFRLevel; celebrate: boolean; onRevealed: () => void }) {
   const reducedMotion = useReducedMotion();
   const target = Math.max(0, CEFR_LEVELS.indexOf(level));
   const [shown, setShown] = useState(reducedMotion ? target : 0);
@@ -55,8 +56,12 @@ function LevelReveal({ level, onRevealed }: { level: CEFRLevel; onRevealed: () =
         clearInterval(timer);
         revealed.current = true;
         scale.value = withSpring(1, Motion.pop);
-        haptics.success();
-        onRevealed();
+        if (celebrate) {
+          haptics.success();
+          onRevealed();
+        } else {
+          haptics.select();
+        }
         return;
       }
       step += 1;
@@ -129,6 +134,11 @@ export function LevelResultScreen() {
   const cardLabel = isBeginnerPath ? 'beginnerLabel' : scored ? 'aiSuggestsLabel' : 'selfRatedLabel';
   const [pickingOwn, setPickingOwn] = useState(chosenLevel !== suggestedLevel);
   const [burst, setBurst] = useState(0);
+  // Confetti only when the placement result is at or above the learner's own rating;
+  // scoring below it isn't a win to celebrate.
+  const selfRatedLevel = useAssessmentStore((state) => state.selfRatedLevel);
+  const metSelfRating = !aiSuggestedLevel || !selfRatedLevel
+    || CEFR_LEVELS.indexOf(aiSuggestedLevel) >= CEFR_LEVELS.indexOf(selfRatedLevel);
 
   return (
     <ThemedView style={styles.container}>
@@ -139,7 +149,7 @@ export function LevelResultScreen() {
             <ThemedText type="small" themeColor="textMuted" style={styles.sectionLabel}>
               {t('onboarding.levelResult.startingLevelLabel')}
             </ThemedText>
-            <LevelReveal level={chosenLevel ?? suggestedLevel} onRevealed={() => setBurst((n) => n + 1)} />
+            <LevelReveal level={chosenLevel ?? suggestedLevel} celebrate={metSelfRating} onRevealed={() => setBurst((n) => n + 1)} />
           </Animated.View>
 
           <Animated.View
