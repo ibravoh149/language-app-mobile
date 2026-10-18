@@ -24,3 +24,6 @@ export const TTS_ENGINE_SPEED: Record<VoiceSpeed, number> = { 0.75: 0.88, 1: 1, 
 
 /** Silence inserted between sentences, per speed setting. */
 export const TTS_SENTENCE_PAUSE_MS: Record<VoiceSpeed, number> = { 0.75: 550, 1: 300, 1.25: 180 };
+
+/** Silence after a comma, semicolon or colon: the voice barely pauses there on its own. */
+export const TTS_CLAUSE_PAUSE_MS: Record<VoiceSpeed, number> = { 0.75: 260, 1: 160, 1.25: 100 };
