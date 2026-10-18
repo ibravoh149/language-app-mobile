@@ -17,13 +17,8 @@ export const DEFAULT_VOICE_SPEED: VoiceSpeed = 1;
 /**
  * Kokoro speed factor for each saved speed setting (the saved values 0.75 / 1 / 1.25
  * are what the backend profile stores). Kokoro sounds robotic when stretched much
- * below its natural rate, so "slow" comes mostly from longer pauses between sentences
- * (TTS_SENTENCE_PAUSE_MS), not from stretching the voice.
+ * below its natural rate, so the settings stay close to 1. Don't add pauses or splice
+ * the audio to slow it down: that broke the voice's intonation (tried 2026-10-18).
  */
 export const TTS_ENGINE_SPEED: Record<VoiceSpeed, number> = { 0.75: 0.88, 1: 1, 1.25: 1.12 };
 
-/** Silence inserted between sentences, per speed setting. */
-export const TTS_SENTENCE_PAUSE_MS: Record<VoiceSpeed, number> = { 0.75: 550, 1: 300, 1.25: 180 };
-
-/** Silence after a comma, semicolon or colon: the voice barely pauses there on its own. */
-export const TTS_CLAUSE_PAUSE_MS: Record<VoiceSpeed, number> = { 0.75: 260, 1: 160, 1.25: 100 };

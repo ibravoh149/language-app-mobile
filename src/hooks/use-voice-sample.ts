@@ -1,48 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
 import { KOKORO_SAMPLE_RATE, models, useTextToSpeech } from 'react-native-executorch';
 
-import { TTS_CLAUSE_PAUSE_MS, TTS_ENGINE_SPEED, TTS_SENTENCE_PAUSE_MS, type VoiceSpeed } from '@/constants/levels';
+import { TTS_ENGINE_SPEED, type VoiceSpeed } from '@/constants/levels';
 import { useTtsBufferPlayer } from '@/hooks/use-tts-buffer-player';
 
 const VOICE = 'df_anna';
-/** Leading samples quieter than this are dropped (the model starts with a little silence). */
-const LEAD_SILENCE_THRESHOLD = 0.003;
-const LEAD_MARGIN_MS = 30;
-/** Short raised-cosine fades so segment joins don't click. Long enough to smooth, too short to hear. */
-const FADE_IN_MS = 8;
-const FADE_OUT_MS = 20;
-
-type PauseKind = 'sentence' | 'clause' | null;
-
-/**
- * Splits text at sentence (. ! ? …) and clause (, ; :) punctuation, keeping the
- * punctuation so the voice uses the right intonation ("Schön," rises, "bist." falls).
- */
-function splitSegments(text: string): { text: string; pause: PauseKind }[] {
-  const parts = (text.match(/[^.!?…,;:]+[.!?…,;:]*/g) ?? [text]).map((p) => p.trim()).filter(Boolean);
-  return parts.map((part, i) => {
-    const last = part.at(-1) ?? '';
-    const pause: PauseKind = i === parts.length - 1 ? null : '.!?…'.includes(last) ? 'sentence' : ',;:'.includes(last) ? 'clause' : null;
-    return { text: part, pause };
-  });
-}
-
-/**
- * Drops leading silence only. The tail is kept as the model rendered it: trimming
- * "quiet" samples there cut off final consonants and the natural fall-off ("bis|t",
- * "Hallo|!"), which sounded like a sudden brake.
- */
-function shapeEdges(audio: Float32Array, sampleRate: number): Float32Array {
-  let start = 0;
-  while (start < audio.length && Math.abs(audio[start]) < LEAD_SILENCE_THRESHOLD) start++;
-  start = Math.max(0, start - Math.round((LEAD_MARGIN_MS / 1000) * sampleRate));
-  const out = audio.slice(start);
-  const fadeIn = Math.min(out.length, Math.round((FADE_IN_MS / 1000) * sampleRate));
-  const fadeOut = Math.min(out.length, Math.round((FADE_OUT_MS / 1000) * sampleRate));
-  for (let i = 0; i < fadeIn; i++) out[i] *= 0.5 - 0.5 * Math.cos((Math.PI * i) / fadeIn);
-  for (let i = 0; i < fadeOut; i++) out[out.length - 1 - i] *= 0.5 - 0.5 * Math.cos((Math.PI * i) / fadeOut);
-  return out;
-}
 
 function concat(parts: Float32Array[]): Float32Array {
   const out = new Float32Array(parts.reduce((n, p) => n + p.length, 0));
@@ -58,11 +20,9 @@ function concat(parts: Float32Array[]): Float32Array {
  * Voice preview with Kokoro German (df_anna). Needs a dev-client build
  * (react-native-executorch is native, not available in Expo Go).
  *
- * The preview is rendered completely before it plays: each sentence and clause is
- * synthesized at a natural speed, its edges smoothed (not trimmed), and joined with a
- * pause that depends on the punctuation and the speed setting. Streaming chunk by
- * chunk left audible gaps whenever the next sentence wasn't ready in time. Rendered
- * samples are cached, so replays are instant.
+ * The preview is rendered completely before it plays, in one synthesis call, and
+ * played back unchanged. Streaming chunk by chunk left audible gaps whenever the next
+ * part wasn't ready in time. Rendered samples are cached, so replays are instant.
  */
 export function useVoiceSample() {
   const tts = useTextToSpeech(models.textToSpeech.KOKORO.DE.DEFAULT);
@@ -83,18 +43,13 @@ export function useVoiceSample() {
 
       const synthesize = tts.synthesize;
       if (!synthesize) throw new Error('Voice model is not ready');
-      const silence = (ms: number) => new Float32Array(Math.round((ms / 1000) * KOKORO_SAMPLE_RATE));
-      const pauses = { sentence: silence(TTS_SENTENCE_PAUSE_MS[speed]), clause: silence(TTS_CLAUSE_PAUSE_MS[speed]) };
-      const parts: Float32Array[] = [];
-      for (const segment of splitSegments(text)) {
-        const chunks: Float32Array[] = [];
-        for await (const chunk of synthesize(segment.text, { voice: VOICE, speed: TTS_ENGINE_SPEED[speed] })) {
-          chunks.push(chunk.audio);
-        }
-        parts.push(shapeEdges(concat(chunks), KOKORO_SAMPLE_RATE));
-        if (segment.pause) parts.push(pauses[segment.pause]);
+      // One call for the whole text: the model then phrases sentences and pauses itself.
+      // Splitting, trimming or inserting silence broke its intonation and made audible seams.
+      const chunks: Float32Array[] = [];
+      for await (const chunk of synthesize(text, { voice: VOICE, speed: TTS_ENGINE_SPEED[speed] })) {
+        chunks.push(chunk.audio);
       }
-      const audio = concat(parts);
+      const audio = concat(chunks);
       cache.current.set(key, audio);
       return audio;
     },
