@@ -117,7 +117,8 @@
         "slow": "Lenta",
         "normal": "Normal",
         "fast": "Rápida"
-      }
+      },
+      "loadingVoice": "Preparando la voz… {{percent}} %"
     },
     "done": {
       "celebrateTitle": "¡Todo listo!",

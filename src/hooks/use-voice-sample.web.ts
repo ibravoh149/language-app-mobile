@@ -6,7 +6,9 @@ export function useVoiceSample() {
     downloadProgress: 0,
     error: undefined,
     isPlaying: false,
-    play: async () => {},
+    isBusy: false,
+    isPreparing: false,
+    play: async (_text: string, _speed: number) => {},
     stop: () => {},
   };
 }

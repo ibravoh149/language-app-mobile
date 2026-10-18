@@ -1,10 +1,11 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   Easing,
+  FadeIn,
   FadeInDown,
   useAnimatedStyle,
   useSharedValue,
@@ -23,7 +24,8 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
 import { VOICE_SPEED_OPTIONS, type VoiceSpeed } from '@/constants/levels';
-import { AVAILABLE_VOICES, type Voice } from '@/constants/voices';
+import { AVAILABLE_VOICES, type Voice, voiceSampleText } from '@/constants/voices';
+import { Motion } from '@/constants/motion';
 import { useTheme } from '@/hooks/use-theme';
 import { useVoiceSample } from '@/hooks/use-voice-sample';
 import { useAuthSubmit } from '@/hooks/use-auth-submit';
@@ -78,14 +80,14 @@ function WaveBar({ delay, color }: { delay: number; color: string }) {
 function VoiceRow({
   voice,
   selected,
-  isPreviewing,
+  preview,
   onSelect,
   onPreview,
   index,
 }: {
   voice: Voice;
   selected: boolean;
-  isPreviewing: boolean;
+  preview: 'idle' | 'loading' | 'playing';
   onSelect: () => void;
   onPreview: () => void;
   index: number;
@@ -122,12 +124,15 @@ function VoiceRow({
         </View>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={`${t(isPreviewing ? 'common.stop' : 'common.preview')}: ${voice.name}`}
+          accessibilityLabel={`${t(preview === 'idle' ? 'common.preview' : 'common.stop')}: ${voice.name}`}
+          accessibilityState={{ busy: preview === 'loading' }}
           onPress={(event) => { event.stopPropagation(); onPreview(); }}
           hitSlop={8}
           style={[styles.playButton, { backgroundColor: theme.accentSoft }]}>
-          {isPreviewing ? (
+          {preview === 'playing' ? (
             <WaveformBars />
+          ) : preview === 'loading' ? (
+            <ActivityIndicator size="small" color={theme.accentBright} />
           ) : (
             <Icon name="play" size={17} themeColor="accentBright" filled />
           )}
@@ -148,6 +153,7 @@ export function ChooseVoiceScreen() {
   const setVoiceId = useAssessmentStore((state) => state.setVoiceId);
   const voiceSpeed = useAssessmentStore((state) => state.voiceSpeed);
   const setVoiceSpeed = useAssessmentStore((state) => state.setVoiceSpeed);
+  const theme = useTheme();
   const sample = useVoiceSample();
   const [previewingId, setPreviewingId] = useState<string | null>(null);
   const isSignedIn = useSessionStore((state) => state.status === 'signedIn');
@@ -170,18 +176,47 @@ export function ChooseVoiceScreen() {
     });
   }
 
-  useEffect(() => {
-    if (!sample.isPlaying) setPreviewingId(null);
-  }, [sample.isPlaying]);
+  const previewVoice = AVAILABLE_VOICES.find((voice) => voice.id === previewingId);
+  const sampleText = previewVoice ? voiceSampleText(targetLanguage, previewVoice.name) : '';
+  // Tapped before the voice model finished loading: play as soon as it's ready.
+  const playWhenReady = useRef(false);
+  const wasBusy = useRef(false);
 
-  async function handlePreview(id: string) {
+  function startPreview(voice: Voice) {
+    void sample.play(voiceSampleText(targetLanguage, voice.name), voiceSpeed);
+  }
+
+  useEffect(() => {
+    if (!sample.isReady || !playWhenReady.current || !previewVoice) return;
+    playWhenReady.current = false;
+    startPreview(previewVoice);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once when the model becomes ready
+  }, [sample.isReady]);
+
+  useEffect(() => {
+    // The preview finished (or was stopped): reset the button.
+    if (wasBusy.current && !sample.isBusy) setPreviewingId(null);
+    wasBusy.current = sample.isBusy;
+  }, [sample.isBusy]);
+
+  function handlePreview(id: string) {
     if (previewingId === id) {
+      playWhenReady.current = false;
       sample.stop();
       setPreviewingId(null);
       return;
     }
+    const voice = AVAILABLE_VOICES.find((v) => v.id === id);
+    if (!voice) return;
+    if (sample.isBusy) sample.stop();
     setPreviewingId(id);
-    await sample.play(voiceSpeed);
+    if (sample.isReady) startPreview(voice);
+    else playWhenReady.current = true;
+  }
+
+  function previewState(id: string): 'idle' | 'loading' | 'playing' {
+    if (previewingId !== id) return 'idle';
+    return sample.isPlaying ? 'playing' : 'loading';
   }
 
   return (
@@ -205,7 +240,7 @@ export function ChooseVoiceScreen() {
                 voice={voice}
                 index={index}
                 selected={voiceId === voice.id}
-                isPreviewing={previewingId === voice.id && sample.isPlaying}
+                preview={previewState(voice.id)}
                 onSelect={() => {
                   if (voiceId !== voice.id) haptics.select();
                   setVoiceId(voice.id);
@@ -214,6 +249,21 @@ export function ChooseVoiceScreen() {
               />
             ))}
           </View>
+
+          {previewingId ? (
+            <Animated.View key={previewingId} entering={FadeIn.duration(Motion.enter.duration)} style={[styles.caption, { borderColor: theme.border }]}>
+              {sample.isReady ? (
+                // The sample is German learning content, so it's shown as is, not translated.
+                <ThemedText type="small" themeColor="textSecondary" style={styles.captionText}>
+                  „{sampleText}“
+                </ThemedText>
+              ) : (
+                <ThemedText type="small" themeColor="textMuted">
+                  {t('onboarding.chooseVoice.loadingVoice', { percent: Math.round((sample.downloadProgress ?? 0) * 100) })}
+                </ThemedText>
+              )}
+            </Animated.View>
+          ) : null}
 
           <View style={styles.speedSection}>
             <ThemedText type="small" themeColor="textMuted" style={styles.sectionLabel}>
@@ -334,6 +384,15 @@ const styles = StyleSheet.create({
     width: 3,
     height: 16,
     borderRadius: 2,
+  },
+  caption: {
+    borderLeftWidth: 2,
+    paddingStart: Spacing.md,
+    paddingVertical: Spacing.xs,
+  },
+  captionText: {
+    lineHeight: 20,
+    fontStyle: 'italic',
   },
   speedSection: {
     gap: Spacing.sm,

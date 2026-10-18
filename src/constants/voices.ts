@@ -22,3 +22,17 @@ export const VOICES: Voice[] = [
 export const AVAILABLE_VOICES = VOICES.filter((voice) => voice.available);
 
 export const DEFAULT_VOICE_ID = 'lena';
+
+/**
+ * What each persona says on the choose-voice screen, per learning language.
+ * Short sentences and commas give the learner time to follow.
+ */
+const VOICE_SAMPLES: Record<string, (name: string) => string> = {
+  de: (name) =>
+    `Hallo! Schön, dass du da bist. Ich bin ${name}, und ich lerne mit dir Deutsch. ` +
+    'Wir sprechen jeden Tag ein bisschen, ganz entspannt und in deinem Tempo. Bist du bereit? Dann los!',
+};
+
+export function voiceSampleText(targetLanguage: string, voiceName: string): string {
+  return (VOICE_SAMPLES[targetLanguage] ?? VOICE_SAMPLES.de)(voiceName);
+}

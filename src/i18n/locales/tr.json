@@ -117,7 +117,8 @@
         "slow": "Yavaş",
         "normal": "Normal",
         "fast": "Hızlı"
-      }
+      },
+      "loadingVoice": "Ses hazırlanıyor… %{{percent}}"
     },
     "done": {
       "celebrateTitle": "Her şey hazır",
