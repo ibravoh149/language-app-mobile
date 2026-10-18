@@ -175,7 +175,7 @@ export function SpeakingSampleScreen() {
     }
   }
 
-  const micDisabled = !speech.isReady || mutation.isPending || !promptReady;
+  const micDisabled = !speech.isReady || mutation.isPending || !promptReady || speech.isFinalizing;
 
   return (
     <OnboardingScreen step={ONBOARDING_STEPS.speaking} icon="mic"
@@ -189,7 +189,7 @@ export function SpeakingSampleScreen() {
           </ThemedText>
         ) : null}
         <Button title={t('onboarding.placementTest.seeMyLevel')} loading={mutation.isPending}
-          disabled={speech.isRecording || !transcript || !promptReady} onPress={() => void finish(false)} />
+          disabled={speech.isRecording || speech.isFinalizing || !transcript || !promptReady} onPress={() => void finish(false)} />
         <Button title={t('onboarding.placementTest.skipSpeaking')} variant="secondary"
           disabled={mutation.isPending} onPress={() => void finish(true)} />
       </>}>
@@ -214,7 +214,8 @@ export function SpeakingSampleScreen() {
             accessibilityState={{ disabled: micDisabled }}
             accessibilityLabel={t(speech.isRecording ? 'common.stop' : 'onboarding.placementTest.tapToSpeak')}
             onPressIn={() => haptics.press()}
-            onPress={() => { void (speech.isRecording ? speech.stop() : speech.start()); }}
+            // Stopping runs the whole-recording pass, which is more accurate than the live text.
+            onPress={() => { void (speech.isRecording ? speech.finish() : speech.start()); }}
             style={({ pressed }) => [styles.mic, { opacity: !speech.isReady || !promptReady ? 0.45 : 1, transform: [{ scale: pressed ? 0.95 : 1 }] }]}>
             <LinearGradient colors={[theme.accentGradientStart, theme.accentGradientEnd]}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[StyleSheet.absoluteFill, styles.mic]} />

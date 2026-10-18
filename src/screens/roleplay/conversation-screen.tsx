@@ -40,10 +40,6 @@ import { progressQueryKey, scenarioQueryKey } from './scenario-list-screen';
 import { sessionQueryKey } from './prep-screen';
 
 const MIC_SIZE = 84;
-/** Whisper's last words can arrive just after the recorder stops; wait this long for them. */
-const FINAL_TRANSCRIPT_SETTLE_MS = 450;
-/** When nothing is still pending, the text is final: send almost immediately. */
-const FINAL_TRANSCRIPT_READY_MS = 150;
 
 /** Live roleplay (prototype `SpeakConvo`): speak or type, the AI answers in character and in German. */
 export function ConversationScreen() {
@@ -76,8 +72,6 @@ export function ConversationScreen() {
   const [notUnderstood, setNotUnderstood] = useState<Set<string>>(new Set());
   const scrollRef = useRef<ScrollView>(null);
   const spokenOpening = useRef(false);
-  /** For the dev timing log: when the learner tapped to stop speaking. */
-  const micStoppedAt = useRef<number | null>(null);
   const stopRef = useRef(speech.stop);
   stopRef.current = speech.stop;
 
@@ -128,30 +122,12 @@ export function ConversationScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once per opening
   }, [turns.length]);
 
-  // Live transcript fills the draft while recording, and until the final text after stopping.
+  // Live transcript fills the draft while recording; the final pass replaces it after stopping.
   const transcript = `${speech.committedText}${speech.nonCommittedText}`.trim();
-  const [awaitingFinal, setAwaitingFinal] = useState(false);
   const [heardNothing, setHeardNothing] = useState(false);
   useEffect(() => {
-    if (speech.isRecording || awaitingFinal) setDraft(transcript);
-  }, [transcript, speech.isRecording, awaitingFinal]);
-
-  // After the learner stops speaking, send as soon as Whisper's text settles: no extra tap.
-  useEffect(() => {
-    if (!awaitingFinal || speech.isRecording) return;
-    // Whisper's text is final once nothing is pending; otherwise give it a moment more.
-    const settleMs = speech.nonCommittedText ? FINAL_TRANSCRIPT_SETTLE_MS : FINAL_TRANSCRIPT_READY_MS;
-    const timer = setTimeout(() => {
-      setAwaitingFinal(false);
-      if (__DEV__ && micStoppedAt.current) {
-        console.info(`[timing] mic stop → transcript sent: ${Math.round(performance.now() - micStoppedAt.current)} ms`);
-      }
-      if (transcript) void send(transcript, 'voice');
-      else setHeardNothing(true);
-    }, settleMs);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-armed whenever the text changes
-  }, [awaitingFinal, speech.isRecording, transcript]);
+    if (speech.isRecording) setDraft(transcript);
+  }, [transcript, speech.isRecording]);
 
   useEffect(() => {
     const timer = setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80);
@@ -161,9 +137,15 @@ export function ConversationScreen() {
   async function toggleMic() {
     haptics.press();
     if (speech.isRecording) {
-      micStoppedAt.current = performance.now();
-      setAwaitingFinal(true);
-      await speech.stop();
+      // Stop, transcribe the whole recording once (more accurate than the live chunks), send.
+      const stoppedAt = performance.now();
+      const text = await speech.finish();
+      if (__DEV__) console.info(`[timing] mic stop → final transcript: ${Math.round(performance.now() - stoppedAt)} ms`);
+      if (text) void send(text, 'voice');
+      else {
+        setDraft('');
+        setHeardNothing(true);
+      }
       return;
     }
     voice.stop(); // interrupt the AI
@@ -386,7 +368,7 @@ export function ConversationScreen() {
                 </Pressable>
                 <MicOrb
                   recording={speech.isRecording}
-                  disabled={!speech.isReady || !!sending}
+                  disabled={!speech.isReady || !!sending || speech.isFinalizing}
                   level={speech.level}
                   label={t(speech.isRecording ? 'common.stop' : 'roleplay.convo.tapToSpeak')}
                   onPress={() => void toggleMic()}
@@ -402,7 +384,7 @@ export function ConversationScreen() {
                       : t('onboarding.placementTest.preparingMic')
                     : speech.isRecording
                       ? t('roleplay.convo.tapToFinish')
-                      : awaitingFinal
+                      : speech.isFinalizing
                         ? t('roleplay.convo.finishing')
                         : heardNothing
                           ? t('roleplay.convo.heardNothing')
