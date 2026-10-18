@@ -15,8 +15,12 @@ export type VoiceSpeed = (typeof VOICE_SPEED_OPTIONS)[number];
 export const DEFAULT_VOICE_SPEED: VoiceSpeed = 1;
 
 /**
- * Kokoro speed factor for each saved speed setting. The saved values stay
- * 0.75 / 1 / 1.25 (they're in the backend profile), but df_anna is brisk at its
- * natural rate, so every setting plays slower than its label suggests.
+ * Kokoro speed factor for each saved speed setting (the saved values 0.75 / 1 / 1.25
+ * are what the backend profile stores). Kokoro sounds robotic when stretched much
+ * below its natural rate, so "slow" comes mostly from longer pauses between sentences
+ * (TTS_SENTENCE_PAUSE_MS), not from stretching the voice.
  */
-export const TTS_ENGINE_SPEED: Record<VoiceSpeed, number> = { 0.75: 0.6, 1: 0.8, 1.25: 1 };
+export const TTS_ENGINE_SPEED: Record<VoiceSpeed, number> = { 0.75: 0.88, 1: 1, 1.25: 1.12 };
+
+/** Silence inserted between sentences, per speed setting. */
+export const TTS_SENTENCE_PAUSE_MS: Record<VoiceSpeed, number> = { 0.75: 550, 1: 300, 1.25: 180 };
