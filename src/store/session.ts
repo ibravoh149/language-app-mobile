@@ -4,10 +4,11 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { setSessionExpiredHandler } from '@/services/api';
 import { toApiError } from '@/services/api-error';
-import { authApi, type AuthResult, type Me, type Profile, type User } from '@/services/auth-api';
+import { authApi, type AuthResult, type DeleteAccountInput, type Me, type Profile, type User } from '@/services/auth-api';
 import { signOutOfGoogle } from '@/services/social-auth';
 import { tokenStorage } from '@/services/token-storage';
 
+import { useAssessmentStore } from './index';
 import { applyProfile } from './profile';
 
 export type SessionStatus = 'restoring' | 'signedOut' | 'signedIn';
@@ -23,6 +24,8 @@ interface SessionState {
   signIn: (result: AuthResult) => Promise<void>;
   setMe: (me: Partial<Me>) => void;
   signOut: () => Promise<void>;
+  /** Deletes the account on the server, then wipes everything about the learner from the device. */
+  deleteAccount: (input: DeleteAccountInput) => Promise<void>;
 }
 
 const signedOut = { status: 'signedOut', user: null, profile: null } as const;
@@ -76,6 +79,16 @@ export const useSessionStore = create<SessionState>()(
         if (refreshToken) await authApi.logout(refreshToken).catch(() => undefined);
         await tokenStorage.clear();
         await signOutOfGoogle();
+        set(signedOut);
+      },
+
+      deleteAccount: async (input) => {
+        await authApi.deleteAccount(input);
+        // The server has revoked every session; also forget the onboarding answers and the
+        // placement result kept on the phone (personal data).
+        await tokenStorage.clear();
+        await signOutOfGoogle();
+        useAssessmentStore.setState(useAssessmentStore.getInitialState());
         set(signedOut);
       },
     }),

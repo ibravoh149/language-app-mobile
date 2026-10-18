@@ -74,6 +74,9 @@ export interface AppleSignInInput {
 
 export type ProfilePatch = Partial<Profile> & { assessmentId?: string };
 
+/** DELETE /me confirmation: password accounts may use either; social-only accounts need the emailed code. */
+export type DeleteAccountInput = { password: string } | { code: string };
+
 export interface AuthApi {
   signup(input: SignupInput): Promise<AuthResult>;
   login(email: string, password: string): Promise<AuthResult>;
@@ -86,6 +89,10 @@ export interface AuthApi {
   logout(refreshToken: string): Promise<void>;
   me(): Promise<Me>;
   updateProfile(patch: ProfilePatch): Promise<Me>;
+  /** Emails a 6-digit code to confirm deletion (contract v1.4). */
+  requestDeleteCode(): Promise<{ resendAvailableAt: string }>;
+  /** Permanently deletes the account, profile, sessions and placement attempts (contract v1.4). */
+  deleteAccount(input: DeleteAccountInput): Promise<void>;
 }
 
 const httpAuthApi: AuthApi = {
@@ -105,6 +112,10 @@ const httpAuthApi: AuthApi = {
   },
   me: async () => (await api.get<Me>('/me')).data,
   updateProfile: async (patch) => (await api.patch<Me>('/me/profile', patch)).data,
+  requestDeleteCode: async () => (await api.post<{ resendAvailableAt: string }>('/me/delete/code')).data,
+  deleteAccount: async (input) => {
+    await api.delete('/me', { data: input });
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -235,6 +246,19 @@ const mockAuthApi: AuthApi = {
     await delay(200);
     const { user, profile } = mockCurrent();
     return { user, profile };
+  },
+  async requestDeleteCode() {
+    await delay(300);
+    mockCurrent();
+    return { resendAvailableAt: new Date(Date.now() + 60_000).toISOString() };
+  },
+  async deleteAccount(input) {
+    await delay();
+    const account = mockCurrent();
+    if ('code' in input) mockCheckCode(input.code);
+    else if (account.password !== input.password) throw new ApiError('INVALID_CREDENTIALS', 'Wrong password', 401);
+    mockAccounts.delete(account.user.email);
+    mockSessions.delete(tokenStorage.get()?.accessToken ?? '');
   },
   async updateProfile({ assessmentId: _assessmentId, ...patch }) {
     await delay();

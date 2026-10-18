@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/button';
@@ -41,6 +41,11 @@ export function HomeScreen() {
         {__DEV__ ? <Button title="Voice lab (dev)" variant="secondary" onPress={() => router.push('/voice-lab')} /> : null}
         {/* The tabs gate sends the learner to welcome as soon as the session ends. */}
         <Button title={t('home.logOut')} variant="secondary" onPress={() => void signOut()} />
+        <Pressable onPress={() => router.push('/delete-account')} accessibilityRole="button" hitSlop={8} style={styles.deleteLink}>
+          <ThemedText type="small" themeColor="danger">
+            {t('account.delete.homeLink')}
+          </ThemedText>
+        </Pressable>
       </SafeAreaView>
     </ThemedView>
   );
@@ -50,4 +55,5 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   safeArea: { flex: 1, paddingHorizontal: Spacing.xl, paddingBottom: Spacing.lg, gap: Spacing.sm },
   content: { flex: 1, justifyContent: 'center', gap: Spacing.sm },
+  deleteLink: { alignSelf: 'center', paddingVertical: Spacing.xs },
 });

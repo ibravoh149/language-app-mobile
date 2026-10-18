@@ -9,7 +9,8 @@ import { haptics } from '@/services/haptics';
 
 type ButtonProps = Omit<PressableProps, 'style'> & {
   title: string;
-  variant?: 'primary' | 'secondary';
+  /** 'danger' is for destructive, irreversible actions (e.g. deleting the account). */
+  variant?: 'primary' | 'secondary' | 'danger';
   /** Shows a spinner in place of the title and blocks presses, e.g. while a request is in flight. */
   loading?: boolean;
 };
@@ -17,6 +18,8 @@ type ButtonProps = Omit<PressableProps, 'style'> & {
 export function Button({ title, variant = 'primary', loading = false, disabled: disabledProp, onPressIn, onPressOut, ...props }: ButtonProps) {
   const theme = useTheme();
   const isPrimary = variant === 'primary';
+  const isDanger = variant === 'danger';
+  const onFill = isPrimary || isDanger;
   const disabled = disabledProp || loading;
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
@@ -39,8 +42,8 @@ export function Button({ title, variant = 'primary', loading = false, disabled: 
       style={({ pressed }) => [
         styles.button,
         {
-          backgroundColor: isPrimary ? theme.accent : theme.surfaceAlt,
-          borderColor: isPrimary ? theme.accentBorder : theme.borderStrong,
+          backgroundColor: isDanger ? theme.danger : isPrimary ? theme.accent : theme.surfaceAlt,
+          borderColor: isDanger ? theme.danger : isPrimary ? theme.accentBorder : theme.borderStrong,
           boxShadow: isPrimary && !disabled ? `0px 8px 22px -8px ${theme.accentGlow}` : 'none',
         },
         { opacity: disabled && !loading ? 0.5 : pressed ? 0.85 : 1 },
@@ -55,9 +58,9 @@ export function Button({ title, variant = 'primary', loading = false, disabled: 
         />
       ) : null}
       {loading ? (
-        <ActivityIndicator color={isPrimary ? theme.textOnAccent : theme.textPrimary} accessibilityLabel={title} />
+        <ActivityIndicator color={onFill ? theme.textOnAccent : theme.textPrimary} accessibilityLabel={title} />
       ) : (
-        <Text style={[styles.label, { color: isPrimary ? theme.textOnAccent : theme.textPrimary }]}>
+        <Text style={[styles.label, { color: onFill ? theme.textOnAccent : theme.textPrimary }]}>
           {title}
         </Text>
       )}
