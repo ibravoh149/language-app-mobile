@@ -47,11 +47,18 @@ export interface PlacementApi {
   submitAttempt(id: string, input: SubmitAttemptInput): Promise<PlacementResult>;
 }
 
+/** Scoring includes a server-side LLM call; the default 10 s timeout cuts off slow networks. */
+const SUBMIT_TIMEOUT_MS = 30_000;
+
 const httpPlacementApi: PlacementApi = {
   createAttempt: async (input) =>
     (await api.post<{ attempt: PlacementAttempt }>('/placement/attempts', input)).data.attempt,
   submitAttempt: async (id, input) =>
-    (await api.post<{ result: PlacementResult }>(`/placement/attempts/${encodeURIComponent(id)}/submit`, input)).data.result,
+    (
+      await api.post<{ result: PlacementResult }>(`/placement/attempts/${encodeURIComponent(id)}/submit`, input, {
+        timeout: SUBMIT_TIMEOUT_MS,
+      })
+    ).data.result,
 };
 
 // ---------------------------------------------------------------------------

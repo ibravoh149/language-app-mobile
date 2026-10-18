@@ -73,7 +73,8 @@
       "micPermissionDenied": "Active l'accès au micro dans les réglages pour t'entraîner à parler.",
       "scoring": "On écoute ton allemand…",
       "expired": "Cette consigne a expiré, en voici une nouvelle.",
-      "preparingMicDownload": "Téléchargement de la reconnaissance vocale… {{percent}} %. Cela n’arrive qu’une fois. Tu peux continuer sans parler."
+      "preparingMicDownload": "Téléchargement de la reconnaissance vocale… {{percent}} %. Cela n’arrive qu’une fois. Tu peux continuer sans parler.",
+      "offline": "Pas de connexion, nous n'avons pas pu vérifier ta réponse. Réessaie ou continue sans parler."
     },
     "levelResult": {
       "reminderTimeLabel": "Quelle heure vous convient ?",

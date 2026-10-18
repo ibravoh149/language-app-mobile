@@ -73,7 +73,8 @@
       "micPermissionDenied": "Activa el acceso al micrófono en Ajustes para practicar hablando.",
       "scoring": "Escuchando tu alemán…",
       "expired": "Esa frase caducó, aquí tienes una nueva.",
-      "preparingMicDownload": "Descargando el reconocimiento de voz… {{percent}} %. Solo ocurre una vez. Puedes continuar sin hablar."
+      "preparingMicDownload": "Descargando el reconocimiento de voz… {{percent}} %. Solo ocurre una vez. Puedes continuar sin hablar.",
+      "offline": "Sin conexión, no pudimos revisar tu respuesta. Inténtalo de nuevo o continúa sin hablar."
     },
     "levelResult": {
       "reminderTimeLabel": "¿Qué hora te viene bien?",

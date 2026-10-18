@@ -73,7 +73,8 @@
       "micPermissionDenied": "Aktiviere den Mikrofonzugriff in den Einstellungen, um Sprechen zu üben.",
       "scoring": "Wir hören uns dein Deutsch an …",
       "expired": "Die Aufgabe ist abgelaufen, hier ist eine neue.",
-      "preparingMicDownload": "Spracherkennung wird geladen … {{percent}} %. Das passiert nur einmal. Du kannst auch ohne Sprechen weitermachen."
+      "preparingMicDownload": "Spracherkennung wird geladen … {{percent}} %. Das passiert nur einmal. Du kannst auch ohne Sprechen weitermachen.",
+      "offline": "Keine Verbindung, deshalb konnten wir deine Antwort nicht prüfen. Versuch es noch einmal oder mach ohne Sprechen weiter."
     },
     "levelResult": {
       "reminderTimeLabel": "Welche Uhrzeit passt dir?",

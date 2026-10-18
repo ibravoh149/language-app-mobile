@@ -73,7 +73,8 @@
       "micPermissionDenied": "Konuşma pratiği yapmak için Ayarlar'dan mikrofon erişimini aç.",
       "scoring": "Almancanı dinliyoruz…",
       "expired": "Bu cümlenin süresi doldu, işte yenisi.",
-      "preparingMicDownload": "Konuşma tanıma indiriliyor… %{{percent}}. Bu yalnızca bir kez olur. Konuşmadan da devam edebilirsin."
+      "preparingMicDownload": "Konuşma tanıma indiriliyor… %{{percent}}. Bu yalnızca bir kez olur. Konuşmadan da devam edebilirsin.",
+      "offline": "Bağlantı yok, bu yüzden cevabını kontrol edemedik. Tekrar dene ya da konuşmadan devam et."
     },
     "levelResult": {
       "reminderTimeLabel": "Hangi saat sizin için uygun?",

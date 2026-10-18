@@ -73,7 +73,8 @@
       "micPermissionDenied": "Turn on microphone access in Settings to practice speaking.",
       "scoring": "Listening back to your German…",
       "expired": "That prompt expired, so here's a fresh one.",
-      "preparingMicDownload": "Downloading speech recognition… {{percent}}%. This happens once. You can continue without speaking."
+      "preparingMicDownload": "Downloading speech recognition… {{percent}}%. This happens once. You can continue without speaking.",
+      "offline": "No connection, so we couldn't check your answer. Try again, or continue without speaking."
     },
     "levelResult": {
       "reminderTimeLabel": "What time works for you?",

@@ -108,6 +108,7 @@ export function SpeakingSampleScreen() {
   });
   const promptReady = !!attempt.data && !attempt.isFetching;
   const [expired, setExpired] = useState(false);
+  const [offline, setOffline] = useState(false);
 
   const setAiSuggestedLevel = useAssessmentStore((state) => state.setAiSuggestedLevel);
   const setChosenLevel = useAssessmentStore((state) => state.setChosenLevel);
@@ -141,22 +142,34 @@ export function SpeakingSampleScreen() {
   });
 
   const finishing = useRef(false);
+
+  // Start from the self-rating without the server, e.g. no prompt could be loaded or the learner is offline.
+  function startFromSelfRating() {
+    const level: CEFRLevel = selfRatedLevel ?? BEGINNER_LEVEL;
+    applyResult({ suggestedLevel: level, scored: false, reason: null, strengths: [], focusAreas: [] }, null);
+  }
+
   async function finish(skip: boolean) {
     if (finishing.current || mutation.isPending || (!skip && !promptReady)) return;
     finishing.current = true;
     setExpired(false);
+    setOffline(false);
     try {
       await speech.stop();
       if (!active.current) return;
       if (!attempt.data) {
-        // No prompt could be loaded, so there's nothing to submit: start from the self-rating.
-        const level: CEFRLevel = selfRatedLevel ?? BEGINNER_LEVEL;
-        applyResult({ suggestedLevel: level, scored: false, reason: null, strengths: [], focusAreas: [] }, null);
+        startFromSelfRating();
         return;
       }
       await mutation.mutateAsync({ id: attempt.data.id, skipped: skip });
-    } catch {
-      // Errors render below; a retry is safe because submission is idempotent.
+    } catch (error) {
+      // Skipping has nothing to score, so never let the network block onboarding.
+      if (skip && active.current) {
+        startFromSelfRating();
+        return;
+      }
+      if (toApiError(error).code === 'NETWORK') setOffline(true);
+      // Otherwise errors render below; a retry is safe because submission is idempotent.
     } finally {
       finishing.current = false;
     }
@@ -170,7 +183,11 @@ export function SpeakingSampleScreen() {
       subtitle={t('onboarding.placementTest.speakingSubtitle', { language: t(`onboarding.language.courses.${targetLanguage}`) })}
       footer={<>
         {mutation.isPending ? <ThinkingDots label={t('onboarding.placementTest.scoring')} /> : null}
-        {mutation.isError && !expired ? <ThemedText type="small" themeColor="danger">{t('onboarding.placementTest.failed')}</ThemedText> : null}
+        {mutation.isError && !expired ? (
+          <ThemedText type="small" themeColor="danger">
+            {t(offline ? 'onboarding.placementTest.offline' : 'onboarding.placementTest.failed')}
+          </ThemedText>
+        ) : null}
         <Button title={t('onboarding.placementTest.seeMyLevel')} loading={mutation.isPending}
           disabled={speech.isRecording || !transcript || !promptReady} onPress={() => void finish(false)} />
         <Button title={t('onboarding.placementTest.skipSpeaking')} variant="secondary"
