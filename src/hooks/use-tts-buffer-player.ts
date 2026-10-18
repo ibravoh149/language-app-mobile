@@ -39,14 +39,14 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   const endTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const getAudioContext = useCallback(async (rate: number) => {
-    // Recreate the context when the rate changes, so audio is never played at the wrong pitch.
-    if (audioCtxRef.current && audioCtxRef.current.state !== 'closed' && audioCtxRef.current.sampleRate !== rate) {
+    // A fresh context per clip. Stopping the microphone rebuilds react-native-audio-api's
+    // shared iOS engine (NativeAudioRecorder.stop → restartAudioEngine), which left an
+    // older context silent: replies after the learner spoke weren't heard. A new context
+    // also guarantees the clip's sample rate.
+    if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
       await audioCtxRef.current.close().catch(() => {});
-      audioCtxRef.current = null;
     }
-    if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
-      audioCtxRef.current = new AudioContext({ sampleRate: rate });
-    }
+    audioCtxRef.current = new AudioContext({ sampleRate: rate });
     if (audioCtxRef.current.state === 'suspended') {
       await audioCtxRef.current.resume();
     }
