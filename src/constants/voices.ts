@@ -28,8 +28,12 @@ export interface PiperVits {
   lengthScale: number;
 }
 
-/** Piper's own defaults (inference block of the voices' .onnx.json). */
-export const PIPER_DEFAULTS: PiperVits = { noiseScale: 0.667, noiseScaleW: 0.8, lengthScale: 1 };
+/**
+ * Piper's own expressiveness/rhythm defaults (the voices' .onnx.json), with a slower
+ * pace: at Piper's 1.0 the user found every voice slightly rushed and chose 1.3 by ear
+ * (2026-10-18). Slow/Fast in settings scale from this via TTS_ENGINE_SPEED.
+ */
+export const PIPER_DEFAULTS: PiperVits = { noiseScale: 0.667, noiseScaleW: 0.8, lengthScale: 1.3 };
 
 export interface Voice {
   id: string;

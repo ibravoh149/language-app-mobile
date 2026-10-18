@@ -22,7 +22,7 @@ import { haptics } from '@/services/haptics';
 export function VoiceLabScreen() {
   const theme = useTheme();
   const sample = useVoiceSample();
-  const [pace, setPace] = useState<number>(1.1);
+  const [pace, setPace] = useState<number>(1.3);
 
   if (!__DEV__) return <Redirect href="/" />;
 
@@ -59,7 +59,7 @@ export function VoiceLabScreen() {
               <SelectablePill
                 key={p}
                 variant="soft"
-                label={p === 1 ? 'Pace 1.0 (today)' : `Pace ${p.toFixed(1)}`}
+                label={p === 1.3 ? 'Pace 1.3 (chosen)' : `Pace ${p.toFixed(1)}`}
                 selected={pace === p}
                 onPress={() => {
                   if (sample.activeVoiceId) sample.stop();

@@ -27,7 +27,7 @@ const entry = (key: string, name: string, color: string, piper: PiperModel, deta
 });
 
 /** Pace options (Piper lengthScale; higher = slower), applied to every entry in the lab. */
-export const VOICE_LAB_PACES = [1, 1.1, 1.2, 1.3] as const;
+export const VOICE_LAB_PACES = [1.2, 1.3, 1.4, 1.5] as const;
 
 /** Finalists the user shortlisted by ear (2026-10-18): pick one per persona plus a pace. */
 export const VOICE_LAB: VoiceLabSection[] = [
