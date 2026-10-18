@@ -49,8 +49,10 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
 ## Routing
 
 - `(tabs)/_layout.tsx` gates on the session (`src/store/session.ts`, restored
-  on launch via `GET /me`): signed out or no profile → `/(onboarding)/welcome`,
-  unverified → `/(auth)/verify-email`, else tabs.
+  on launch via `GET /me`): signed out → `/(onboarding)/welcome` on a fresh
+  device, or `/(auth)/login` once anyone has had an account here
+  (`hasHadAccount`, reset by account deletion); unverified →
+  `/(auth)/verify-email`; no profile → `/(onboarding)/language`; else tabs.
 - Onboarding: welcome → language → target-language → placement-test →
   speaking-sample → level-result → choose-voice → `/(auth)/signup` →
   `/(auth)/verify-email`. A signed-in learner finishing onboarding saves the
