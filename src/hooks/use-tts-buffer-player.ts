@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AudioContext, type AudioBufferQueueSourceNode } from 'react-native-audio-api';
 
 /** An audio chunk yielded by a speech synthesis stream. */
@@ -155,5 +155,6 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
     };
   }, [stop]);
 
-  return { isPlaying, playStream, stop };
+  // Stable object: callers put `stop` in effect cleanups, which must not fire on every render.
+  return useMemo(() => ({ isPlaying, playStream, stop }), [isPlaying, playStream, stop]);
 }

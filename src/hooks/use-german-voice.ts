@@ -32,9 +32,15 @@ export function useGermanVoice() {
     [sample, voice, speed]
   );
 
+  /** Downloads/loads the voice ahead of time so the first line plays without a wait. */
+  const prepare = useCallback(() => {
+    if (voice) void sample.prepare(voice);
+  }, [sample, voice]);
+
   return {
     voice,
     speak,
+    prepare,
     stop: sample.stop,
     /** Downloading, preparing or playing. */
     isBusy: sample.phase !== 'idle',

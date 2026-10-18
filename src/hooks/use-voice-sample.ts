@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createTTS, type TtsEngine } from 'react-native-sherpa-onnx/tts';
 
 import { TTS_ENGINE_SPEED, type VoiceSpeed } from '@/constants/levels';
@@ -27,6 +27,7 @@ interface RenderedClip {
  */
 export function useVoiceSample() {
   const player = useTtsBufferPlayer(DEFAULT_SAMPLE_RATE);
+  const { playStream, stop: stopPlayer } = player;
   const [phase, setPhase] = useState<VoiceSamplePhase>('idle');
   const [activeVoiceId, setActiveVoiceId] = useState<string | null>(null);
   /** First-time download of the active voice, 0–100. */
@@ -99,7 +100,7 @@ export function useVoiceSample() {
         if (token !== playToken.current) return;
         setPhase('playing');
         const rendered = clip;
-        await player.playStream(
+        await playStream(
           (async function* () {
             yield { audio: rendered.samples, sampleRate: rendered.sampleRate };
           })(),
@@ -116,23 +117,57 @@ export function useVoiceSample() {
         if (next) void playRef.current(next.voice, next.text, next.speed);
       }
     },
-    [loadEngine, player]
+    [loadEngine, playStream]
   );
   playRef.current = play;
+
+  /**
+   * Downloads (first time) and loads a voice without playing, so the first line
+   * spoken later doesn't wait for it. Plays queued during warm-up run right after.
+   */
+  const prepare = useCallback(
+    async (voice: Voice) => {
+      const model = voice.piper;
+      if (!model || busy.current) return;
+      busy.current = true;
+      try {
+        if (!(await isVoiceDownloaded(model))) {
+          setDownloadProgress(0);
+          setPhase('downloading');
+        }
+        const dir = await ensureVoice(model, (p) => setDownloadProgress(Math.round(p)));
+        setPhase('loading');
+        await loadEngine(model, dir);
+      } catch {
+        // The next play() retries and surfaces nothing worse than silence.
+      } finally {
+        busy.current = false;
+        setPhase('idle');
+        const next = pending.current;
+        pending.current = null;
+        if (next) void playRef.current(next.voice, next.text, next.speed);
+      }
+    },
+    [loadEngine]
+  );
 
   const stop = useCallback(() => {
     pending.current = null;
     playToken.current++;
-    player.stop();
-  }, [player]);
+    stopPlayer();
+  }, [stopPlayer]);
 
-  return {
-    /** The voice being downloaded, prepared or played; null when idle. */
-    activeVoiceId,
-    phase,
-    downloadProgress,
-    isPlaying: player.isPlaying,
-    play,
-    stop,
-  };
+  return useMemo(
+    () => ({
+      /** The voice being downloaded, prepared or played; null when idle or warming up. */
+      activeVoiceId,
+      phase,
+      downloadProgress,
+      isPlaying: player.isPlaying,
+      play,
+      prepare,
+      stop,
+    }),
+    [activeVoiceId, phase, downloadProgress, player.isPlaying, play, prepare, stop]
+  );
 }

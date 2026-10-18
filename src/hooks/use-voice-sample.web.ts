@@ -10,6 +10,7 @@ export function useVoiceSample() {
     downloadProgress: 0,
     isPlaying: false,
     play: async (_voice: Voice, _text: string, _speed: VoiceSpeed) => {},
+    prepare: async (_voice: Voice) => {},
     stop: () => {},
   };
 }
