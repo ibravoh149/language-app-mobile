@@ -3,5 +3,5 @@ import type { NativeTabsTriggerIconProps } from 'expo-router/unstable-native-tab
 // Native tab bars accept platform symbols, not arbitrary SVG components.
 export const nativeTabIcons = {
   home: { sf: 'house', md: 'home' },
-  explore: { sf: 'safari', md: 'explore' },
+  practice: { sf: 'mic', md: 'mic' },
 } as const satisfies Record<string, NativeTabsTriggerIconProps>;
