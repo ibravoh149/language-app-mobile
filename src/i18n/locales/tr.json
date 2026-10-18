@@ -317,7 +317,9 @@
       "corrections_one": "{{count}} düzeltme · neden?",
       "corrections_other": "{{count}} düzeltme · neden?",
       "streakTitle_one": "{{count}} günlük seri!",
-      "streakTitle_other": "{{count}} günlük seri!"
+      "streakTitle_other": "{{count}} günlük seri!",
+      "finishing": "Sözlerin alınıyor…",
+      "heardNothing": "Anlayamadım. Mikrofona dokunup tekrar dene ya da yaz."
     },
     "errors": {
       "tutorUnavailable": "Öğretmen bu sefer cevap vermedi. Cümlen duruyor: tekrar dene.",

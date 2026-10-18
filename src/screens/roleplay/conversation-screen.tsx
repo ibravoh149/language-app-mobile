@@ -40,6 +40,8 @@ import { progressQueryKey, scenarioQueryKey } from './scenario-list-screen';
 import { sessionQueryKey } from './prep-screen';
 
 const MIC_SIZE = 84;
+/** Whisper's last words can arrive just after the recorder stops; wait this long for them. */
+const FINAL_TRANSCRIPT_SETTLE_MS = 450;
 
 /** Live roleplay (prototype `SpeakConvo`): speak or type, the AI answers in character and in German. */
 export function ConversationScreen() {
@@ -88,7 +90,17 @@ export function ConversationScreen() {
   useFocusEffect(useCallback(() => () => {
     void stopRef.current();
   }, []));
-  useEffect(() => () => voice.stop(), [voice.stop]);
+  // Stop the voice only when leaving: a ref keeps this cleanup from running on re-renders.
+  const stopVoiceRef = useRef(voice.stop);
+  stopVoiceRef.current = voice.stop;
+  useEffect(() => () => stopVoiceRef.current(), []);
+
+  // Download/load the voice now, so the opening line and replies play without a wait.
+  const prepareVoice = voice.prepare;
+  useEffect(() => {
+    prepareVoice();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once on open
+  }, []);
 
   useEffect(() => {
     if (!voice.isBusy) setSpeakingTurnId(null);
@@ -111,11 +123,25 @@ export function ConversationScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once per opening
   }, [turns.length]);
 
-  // Live transcript fills the draft while recording.
+  // Live transcript fills the draft while recording, and until the final text after stopping.
   const transcript = `${speech.committedText}${speech.nonCommittedText}`.trim();
+  const [awaitingFinal, setAwaitingFinal] = useState(false);
+  const [heardNothing, setHeardNothing] = useState(false);
   useEffect(() => {
-    if (speech.isRecording) setDraft(transcript);
-  }, [transcript, speech.isRecording]);
+    if (speech.isRecording || awaitingFinal) setDraft(transcript);
+  }, [transcript, speech.isRecording, awaitingFinal]);
+
+  // After the learner stops speaking, send as soon as Whisper's text settles: no extra tap.
+  useEffect(() => {
+    if (!awaitingFinal || speech.isRecording) return;
+    const timer = setTimeout(() => {
+      setAwaitingFinal(false);
+      if (transcript) void send(transcript, 'voice');
+      else setHeardNothing(true);
+    }, FINAL_TRANSCRIPT_SETTLE_MS);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-armed whenever the text changes
+  }, [awaitingFinal, speech.isRecording, transcript]);
 
   useEffect(() => {
     const timer = setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80);
@@ -125,10 +151,12 @@ export function ConversationScreen() {
   async function toggleMic() {
     haptics.press();
     if (speech.isRecording) {
+      setAwaitingFinal(true);
       await speech.stop();
       return;
     }
     voice.stop(); // interrupt the AI
+    setHeardNothing(false);
     setTyping(false);
     setDraft('');
     setInputMode('voice');
@@ -361,7 +389,13 @@ export function ConversationScreen() {
                       : t('onboarding.placementTest.preparingMic')
                     : speech.isRecording
                       ? t('roleplay.convo.tapToFinish')
-                      : t('roleplay.convo.micHint')}
+                      : awaitingFinal
+                        ? t('roleplay.convo.finishing')
+                        : heardNothing
+                          ? t('roleplay.convo.heardNothing')
+                          : voice.phase === 'downloading' && !voice.isPlaying
+                            ? t('onboarding.chooseVoice.loadingVoice', { percent: voice.downloadProgress })
+                            : t('roleplay.convo.micHint')}
               </ThemedText>
             </View>
           ) : (

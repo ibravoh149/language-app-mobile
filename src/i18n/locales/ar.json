@@ -345,7 +345,9 @@
       "streakTitle_two": "يومان متتاليان!",
       "streakTitle_few": "{{count}} أيام متتالية!",
       "streakTitle_many": "{{count}} يومًا متتاليًا!",
-      "streakTitle_other": "{{count}} يوم متتالٍ!"
+      "streakTitle_other": "{{count}} يوم متتالٍ!",
+      "finishing": "جارٍ التقاط كلماتك…",
+      "heardNothing": "لم ألتقط ذلك. المس الميكروفون وحاول مرة أخرى، أو اكتب."
     },
     "errors": {
       "tutorUnavailable": "لم يُجب المعلم هذه المرة. جملتك محفوظة: حاول مرة أخرى.",

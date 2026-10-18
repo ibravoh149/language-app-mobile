@@ -317,7 +317,9 @@
       "corrections_one": "{{count}} correction · pourquoi ?",
       "corrections_other": "{{count}} corrections · pourquoi ?",
       "streakTitle_one": "{{count}} jour de suite !",
-      "streakTitle_other": "{{count}} jours de suite !"
+      "streakTitle_other": "{{count}} jours de suite !",
+      "finishing": "Je récupère tes mots…",
+      "heardNothing": "Je n'ai pas compris. Touche le micro et réessaie, ou écris."
     },
     "errors": {
       "tutorUnavailable": "Le tuteur n'a pas répondu cette fois. Ta phrase est gardée : réessaie.",

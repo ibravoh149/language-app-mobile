@@ -317,7 +317,9 @@
       "corrections_one": "{{count}} correction · see why",
       "corrections_other": "{{count}} corrections · see why",
       "streakTitle_one": "{{count}}-day streak!",
-      "streakTitle_other": "{{count}}-day streak!"
+      "streakTitle_other": "{{count}}-day streak!",
+      "finishing": "Getting your words…",
+      "heardNothing": "I didn't catch that. Tap the mic and try again, or type."
     },
     "errors": {
       "tutorUnavailable": "The tutor didn't answer this time. Your sentence is safe; try again.",

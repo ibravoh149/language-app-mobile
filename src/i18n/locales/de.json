@@ -317,7 +317,9 @@
       "corrections_one": "{{count}} Korrektur · warum?",
       "corrections_other": "{{count}} Korrekturen · warum?",
       "streakTitle_one": "{{count}} Tag in Folge!",
-      "streakTitle_other": "{{count}} Tage in Folge!"
+      "streakTitle_other": "{{count}} Tage in Folge!",
+      "finishing": "Deine Worte werden erkannt …",
+      "heardNothing": "Das habe ich nicht verstanden. Tippe aufs Mikro und versuch es nochmal, oder tippe."
     },
     "errors": {
       "tutorUnavailable": "Der Tutor hat diesmal nicht geantwortet. Dein Satz ist noch da: versuch es nochmal.",
