@@ -37,6 +37,9 @@ export function useVoiceSample() {
   /** One loaded engine at a time; voices are ~60 MB in memory. `vits` = settings last applied. */
   const engine = useRef<{ modelId: string; tts: TtsEngine; vits: string } | null>(null);
   const cache = useRef(new Map<string, RenderedClip>());
+  /** Latest request made while busy; played as soon as the current one finishes. */
+  const pending = useRef<{ voice: Voice; text: string; speed: VoiceSpeed } | null>(null);
+  const playRef = useRef<(voice: Voice, text: string, speed: VoiceSpeed) => Promise<void>>(async () => {});
 
   useEffect(() => {
     return () => {
@@ -69,7 +72,11 @@ export function useVoiceSample() {
   const play = useCallback(
     async (voice: Voice, text: string, speed: VoiceSpeed) => {
       const model = voice.piper;
-      if (!model || busy.current) return;
+      if (!model) return;
+      if (busy.current) {
+        pending.current = { voice, text, speed };
+        return;
+      }
       busy.current = true;
       const token = ++playToken.current;
       setActiveVoiceId(voice.id);
@@ -104,12 +111,17 @@ export function useVoiceSample() {
         busy.current = false;
         setPhase('idle');
         setActiveVoiceId(null);
+        const next = pending.current;
+        pending.current = null;
+        if (next) void playRef.current(next.voice, next.text, next.speed);
       }
     },
     [loadEngine, player]
   );
+  playRef.current = play;
 
   const stop = useCallback(() => {
+    pending.current = null;
     playToken.current++;
     player.stop();
   }, [player]);
