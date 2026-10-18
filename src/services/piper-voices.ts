@@ -35,7 +35,7 @@ export function ensureVoice(model: PiperModel, onProgress?: (percent: number) =>
     const archive = `${FS.CachesDirectoryPath}/${model.id}.tar.bz2`;
     try {
       const { promise } = FS.downloadFile({
-        fromUrl: `${RELEASE_URL}/${model.id}.tar.bz2`,
+        fromUrl: model.url ?? `${RELEASE_URL}/${model.id}.tar.bz2`,
         toFile: archive,
         progressInterval: 250,
         progress: ({ bytesWritten, contentLength }) => {

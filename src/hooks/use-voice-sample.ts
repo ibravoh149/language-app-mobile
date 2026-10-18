@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createTTS, type TtsEngine } from 'react-native-sherpa-onnx/tts';
 
 import { TTS_ENGINE_SPEED, type VoiceSpeed } from '@/constants/levels';
-import { type Voice } from '@/constants/voices';
+import { PIPER_DEFAULTS, type PiperModel, type Voice } from '@/constants/voices';
 import { useTtsBufferPlayer } from '@/hooks/use-tts-buffer-player';
 import { ensureVoice, isVoiceDownloaded } from '@/services/piper-voices';
 
@@ -34,8 +34,8 @@ export function useVoiceSample() {
   const busy = useRef(false);
   /** Bumped by stop(), so work that finishes after the learner stopped doesn't start playing. */
   const playToken = useRef(0);
-  /** One loaded engine at a time; voices are ~60 MB in memory. */
-  const engine = useRef<{ modelId: string; tts: TtsEngine } | null>(null);
+  /** One loaded engine at a time; voices are ~60 MB in memory. `vits` = settings last applied. */
+  const engine = useRef<{ modelId: string; tts: TtsEngine; vits: string } | null>(null);
   const cache = useRef(new Map<string, RenderedClip>());
 
   useEffect(() => {
@@ -45,13 +45,25 @@ export function useVoiceSample() {
     };
   }, []);
 
-  const loadEngine = useCallback(async (modelId: string, dir: string) => {
-    if (engine.current?.modelId === modelId) return engine.current.tts;
-    await engine.current?.tts.destroy().catch(() => undefined);
-    engine.current = null;
-    const tts = await createTTS({ modelPath: { type: 'file', path: dir }, modelType: 'vits', numThreads: 2 });
-    engine.current = { modelId, tts };
-    return tts;
+  const loadEngine = useCallback(async (model: PiperModel, dir: string) => {
+    const vits = { ...PIPER_DEFAULTS, ...model.vits };
+    const vitsKey = JSON.stringify(vits);
+    if (engine.current?.modelId !== model.id) {
+      await engine.current?.tts.destroy().catch(() => undefined);
+      engine.current = null;
+      const tts = await createTTS({
+        modelPath: { type: 'file', path: dir },
+        modelType: 'vits',
+        numThreads: 2,
+        modelOptions: { vits },
+      });
+      engine.current = { modelId: model.id, tts, vits: vitsKey };
+    } else if (engine.current.vits !== vitsKey) {
+      // Same model, different tuning: update in place instead of reloading ~60 MB.
+      await engine.current.tts.updateParams({ modelType: 'vits', modelOptions: { vits } });
+      engine.current.vits = vitsKey;
+    }
+    return engine.current.tts;
   }, []);
 
   const play = useCallback(
@@ -62,7 +74,7 @@ export function useVoiceSample() {
       const token = ++playToken.current;
       setActiveVoiceId(voice.id);
       try {
-        const key = `${model.id}|${speed}|${text}`;
+        const key = `${model.id}|${model.sid ?? 0}|${JSON.stringify(model.vits ?? {})}|${speed}|${text}`;
         let clip = cache.current.get(key);
         if (!clip) {
           if (!(await isVoiceDownloaded(model))) {
@@ -72,8 +84,8 @@ export function useVoiceSample() {
           const dir = await ensureVoice(model, (p) => setDownloadProgress(Math.round(p)));
           if (token !== playToken.current) return;
           setPhase('loading');
-          const tts = await loadEngine(model.id, dir);
-          const audio = await tts.generateSpeech(text, { speed: TTS_ENGINE_SPEED[speed] });
+          const tts = await loadEngine(model, dir);
+          const audio = await tts.generateSpeech(text, { speed: TTS_ENGINE_SPEED[speed], sid: model.sid ?? 0 });
           clip = { samples: Float32Array.from(audio.samples), sampleRate: audio.sampleRate };
           cache.current.set(key, clip);
         }

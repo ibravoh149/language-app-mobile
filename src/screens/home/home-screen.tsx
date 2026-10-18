@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +19,7 @@ export function HomeScreen() {
   const user = useSessionStore((state) => state.user);
   const level = useSessionStore((state) => state.profile?.chosenLevel);
   const signOut = useSessionStore((state) => state.signOut);
+  const router = useRouter();
 
   return (
     <ThemedView style={styles.container}>
@@ -35,6 +37,8 @@ export function HomeScreen() {
             </MotionReveal>
           ) : null}
         </View>
+        {/* Development only: compare voices by ear (not shown in release builds). */}
+        {__DEV__ ? <Button title="Voice lab (dev)" variant="secondary" onPress={() => router.push('/voice-lab')} /> : null}
         {/* The tabs gate sends the learner to welcome as soon as the session ends. */}
         <Button title={t('home.logOut')} variant="secondary" onPress={() => void signOut()} />
       </SafeAreaView>
@@ -44,6 +48,6 @@ export function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  safeArea: { flex: 1, paddingHorizontal: Spacing.xl, paddingBottom: Spacing.lg },
+  safeArea: { flex: 1, paddingHorizontal: Spacing.xl, paddingBottom: Spacing.lg, gap: Spacing.sm },
   content: { flex: 1, justifyContent: 'center', gap: Spacing.sm },
 });

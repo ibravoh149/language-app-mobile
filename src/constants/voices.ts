@@ -6,7 +6,25 @@ export interface PiperModel {
   sizeMB: number;
   /** Dataset licence from the voice's MODEL_CARD (recorded in BACKLOG B-VOICE-1). */
   licence: string;
+  /** Archive URL when it isn't a sherpa-onnx release (e.g. a model we converted ourselves). */
+  url?: string;
+  /** Speaker for multi-speaker models (e.g. thorsten_emotional: 4 = neutral). */
+  sid?: number;
+  /** Piper VITS settings; omitted values use PIPER_DEFAULTS. Tuned by ear in the voice lab. */
+  vits?: Partial<PiperVits>;
 }
+
+export interface PiperVits {
+  /** Expressiveness: variation in the voice itself. */
+  noiseScale: number;
+  /** Rhythm: variation in phoneme durations. */
+  noiseScaleW: number;
+  /** Pace: >1 slower, <1 faster (the speed setting multiplies on top). */
+  lengthScale: number;
+}
+
+/** Piper's own defaults (inference block of the voices' .onnx.json). */
+export const PIPER_DEFAULTS: PiperVits = { noiseScale: 0.667, noiseScaleW: 0.8, lengthScale: 1 };
 
 export interface Voice {
   id: string;
@@ -45,7 +63,8 @@ export const VOICES: Voice[] = [
 /** Personas with a real voice behind them. Only these are offered (B-VOICE-3, D13). */
 export const AVAILABLE_VOICES = VOICES.filter((voice) => voice.piper && (!voice.devOnly || __DEV__));
 
-export const DEFAULT_VOICE_ID = 'lena';
+/** Mara sounded most natural to the user (2026-10-18), so new learners start with her. */
+export const DEFAULT_VOICE_ID = 'mara';
 
 /**
  * What each persona says on the choose-voice screen, per learning language.
