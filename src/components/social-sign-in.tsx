@@ -11,18 +11,10 @@ import { useAuthSubmit } from '@/hooks/use-auth-submit';
 import { useTheme } from '@/hooks/use-theme';
 import { authApi, type AuthResult } from '@/services/auth-api';
 import { getAppleCredential, getGoogleIdToken, isAppleAvailable, isGoogleConfigured } from '@/services/social-auth';
-import { useAssessmentStore } from '@/store';
-import { buildProfile } from '@/store/profile';
+import { onboardingPayload } from '@/store/profile';
 import { routeAfterAuth, useSessionStore } from '@/store/session';
 
 type Provider = 'apple' | 'google';
-
-/** Onboarding answers from this device, if the learner went through onboarding first. */
-function onboardingPayload() {
-  const { chosenLevel, assessmentId } = useAssessmentStore.getState();
-  if (!chosenLevel) return {};
-  return { profile: buildProfile(), assessmentId: assessmentId ?? undefined };
-}
 
 /**
  * "or" divider plus Apple (iOS) and Google buttons, per the prototype's SocialRow.

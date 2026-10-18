@@ -44,3 +44,15 @@ export function applyProfile(profile: Profile) {
   assessment.setVoiceId(profile.voiceId);
   assessment.setVoiceSpeed(profile.voiceSpeed);
 }
+
+/**
+ * Profile + placement link for a new account, but only if the learner went through
+ * onboarding on this device (a chosen level exists). Signing up straight from the
+ * login screen sends nothing, so the account is routed into onboarding afterwards
+ * instead of being marked complete with default answers.
+ */
+export function onboardingPayload(): { profile?: Profile; assessmentId?: string } {
+  const { chosenLevel, assessmentId } = useAssessmentStore.getState();
+  if (!chosenLevel) return {};
+  return { profile: buildProfile(), assessmentId: assessmentId ?? undefined };
+}
