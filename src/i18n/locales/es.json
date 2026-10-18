@@ -227,7 +227,15 @@
     "streakKeep": "Di una frase hoy para mantenerla",
     "streakStart": "Ten una conversación para empezar tu racha",
     "streakDays_one": "día de racha",
-    "streakDays_other": "días de racha"
+    "streakDays_other": "días de racha",
+    "todayTitle": "Conversación de hoy",
+    "startTalking": "Empezar a hablar",
+    "weekTitle": "Esta semana",
+    "goalDone": "¡Meta de hoy cumplida!",
+    "weekMinutes_one": "minuto practicado",
+    "weekMinutes_other": "minutos practicados",
+    "goalLeft_one": "Falta {{count}} minuto para la meta de hoy",
+    "goalLeft_other": "Faltan {{count}} minutos para la meta de hoy"
   },
   "legal": {
     "title": "Aviso legal",
@@ -351,5 +359,9 @@
       "celebrateSubtitle_one": "{{count}} frase entendida",
       "celebrateSubtitle_other": "{{count}} frases entendidas"
     }
+  },
+  "profile": {
+    "title": "Perfil",
+    "legal": "Términos, privacidad y aviso legal"
   }
 }

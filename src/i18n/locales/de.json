@@ -227,7 +227,15 @@
     "streakKeep": "Sprich heute einen Satz, um dranzubleiben",
     "streakStart": "Führe ein Gespräch, um deine Serie zu starten",
     "streakDays_one": "Tag Sprechserie",
-    "streakDays_other": "Tage Sprechserie"
+    "streakDays_other": "Tage Sprechserie",
+    "todayTitle": "Heutiges Gespräch",
+    "startTalking": "Los sprechen",
+    "weekTitle": "Diese Woche",
+    "goalDone": "Tagesziel erreicht!",
+    "weekMinutes_one": "Minute geübt",
+    "weekMinutes_other": "Minuten geübt",
+    "goalLeft_one": "Noch {{count}} Minute bis zum Tagesziel",
+    "goalLeft_other": "Noch {{count}} Minuten bis zum Tagesziel"
   },
   "legal": {
     "title": "Rechtliches",
@@ -351,5 +359,9 @@
       "celebrateSubtitle_one": "{{count}} Satz verstanden",
       "celebrateSubtitle_other": "{{count}} Sätze verstanden"
     }
+  },
+  "profile": {
+    "title": "Profil",
+    "legal": "AGB, Datenschutz & Impressum"
   }
 }

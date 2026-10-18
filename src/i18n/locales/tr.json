@@ -227,7 +227,15 @@
     "streakKeep": "Seriyi sürdürmek için bugün bir cümle söyle",
     "streakStart": "Serini başlatmak için bir sohbet yap",
     "streakDays_one": "günlük konuşma serisi",
-    "streakDays_other": "günlük konuşma serisi"
+    "streakDays_other": "günlük konuşma serisi",
+    "todayTitle": "Bugünün sohbeti",
+    "startTalking": "Konuşmaya başla",
+    "weekTitle": "Bu hafta",
+    "goalDone": "Bugünün hedefine ulaştın!",
+    "weekMinutes_one": "dakika pratik",
+    "weekMinutes_other": "dakika pratik",
+    "goalLeft_one": "Bugünün hedefine {{count}} dakika kaldı",
+    "goalLeft_other": "Bugünün hedefine {{count}} dakika kaldı"
   },
   "legal": {
     "title": "Yasal",
@@ -351,5 +359,9 @@
       "celebrateSubtitle_one": "{{count}} cümle anlaşıldı",
       "celebrateSubtitle_other": "{{count}} cümle anlaşıldı"
     }
+  },
+  "profile": {
+    "title": "Profil",
+    "legal": "Koşullar, gizlilik ve künye"
   }
 }

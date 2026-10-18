@@ -58,8 +58,9 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
   `/(auth)/verify-email`. A signed-in learner finishing onboarding saves the
   profile with `PATCH /me/profile` instead of signing up.
 - Forgot password → `/(auth)/reset-password` (6-digit code + new password).
-- `/legal` (Terms / Privacy / Imprint placeholders, linked from signup) and
-  `/delete-account` (password or emailed code, `DELETE /me`; linked from home).
+- `/profile` (from the home avatar): legal, log out, delete account, dev voice lab.
+- `/legal` (Terms / Privacy / Imprint placeholders, linked from signup and profile) and
+  `/delete-account` (password or emailed code, `DELETE /me`; linked from profile).
 - Signup and social sign-in send the onboarding profile only if onboarding was
   done on this device (`onboardingPayload()`); otherwise the account goes through
   onboarding after verifying.
@@ -68,7 +69,10 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
   conversation (Whisper Base mic or typing; reply spoken with the learner's Piper
   voice via `useGermanVoice`) → `/roleplay/correction/[sessionId]` (the "why") and
   `/roleplay/summary/[sessionId]`. An unfinished conversation is remembered
-  (`store/roleplay.ts`) and offered on the Practice tab. Home shows the streak.
+  (`store/roleplay.ts`) and offered on the Practice tab.
+- Home (prototype `Home`): German greeting + avatar (→ profile), streak strip with the
+  daily-goal ring (`secondsPracticedToday` vs `profile.dailyMinutes`) and 7-day bars,
+  "Today's conversation" hero, "This week" practice time + sparkline (`/me/progress` v2.1).
 - `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth, placement and roleplay mocks (codes are `123456`).
 - Google / Apple sign-in (`src/services/social-auth.ts`, buttons on login) are
   **off until configured**: `app.config.ts` adds the Google plugin only when

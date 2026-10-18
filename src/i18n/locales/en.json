@@ -227,7 +227,15 @@
     "streakKeep": "Speak one sentence today to keep it going",
     "streakStart": "Have a conversation to start your streak",
     "streakDays_one": "day speaking streak",
-    "streakDays_other": "day speaking streak"
+    "streakDays_other": "day speaking streak",
+    "todayTitle": "Today's conversation",
+    "startTalking": "Start talking",
+    "weekTitle": "This week",
+    "goalDone": "Today's goal reached!",
+    "weekMinutes_one": "minute practised",
+    "weekMinutes_other": "minutes practised",
+    "goalLeft_one": "{{count}} more minute to hit today's goal",
+    "goalLeft_other": "{{count}} more minutes to hit today's goal"
   },
   "legal": {
     "title": "Legal",
@@ -351,5 +359,9 @@
       "celebrateSubtitle_one": "{{count}} sentence understood",
       "celebrateSubtitle_other": "{{count}} sentences understood"
     }
+  },
+  "profile": {
+    "title": "Profile",
+    "legal": "Terms, privacy & imprint"
   }
 }

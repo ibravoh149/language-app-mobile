@@ -67,6 +67,7 @@ export default function TabLayout() {
             <Stack.Screen name="(onboarding)/welcome" options={{ headerShown: false }} />
             <Stack.Screen name="voice-lab" options={{ title: 'Voice lab' }} />
             <Stack.Screen name="legal" options={{ title: t('legal.title') }} />
+            <Stack.Screen name="profile" options={{ title: t('profile.title') }} />
             <Stack.Screen name="delete-account" options={{ title: '' }} />
             <Stack.Screen name="roleplay/[scenario]" options={{ title: t('roleplay.prep.title') }} />
             <Stack.Screen name="roleplay/session/[sessionId]" options={{ headerShown: false, gestureEnabled: false }} />

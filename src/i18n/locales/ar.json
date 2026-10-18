@@ -231,7 +231,23 @@
     "streakDays_two": "يومان في سلسلة التحدث",
     "streakDays_few": "أيام في سلسلة التحدث",
     "streakDays_many": "يومًا في سلسلة التحدث",
-    "streakDays_other": "يوم في سلسلة التحدث"
+    "streakDays_other": "يوم في سلسلة التحدث",
+    "todayTitle": "محادثة اليوم",
+    "startTalking": "ابدأ الحديث",
+    "weekTitle": "هذا الأسبوع",
+    "goalDone": "حققت هدف اليوم!",
+    "weekMinutes_zero": "دقيقة تدريب",
+    "weekMinutes_one": "دقيقة تدريب",
+    "weekMinutes_two": "دقيقتا تدريب",
+    "weekMinutes_few": "دقائق تدريب",
+    "weekMinutes_many": "دقيقة تدريب",
+    "weekMinutes_other": "دقيقة تدريب",
+    "goalLeft_zero": "حققت هدف اليوم",
+    "goalLeft_one": "بقيت دقيقة واحدة لهدف اليوم",
+    "goalLeft_two": "بقيت دقيقتان لهدف اليوم",
+    "goalLeft_few": "بقيت {{count}} دقائق لهدف اليوم",
+    "goalLeft_many": "بقيت {{count}} دقيقة لهدف اليوم",
+    "goalLeft_other": "بقيت {{count}} دقيقة لهدف اليوم"
   },
   "legal": {
     "title": "الشؤون القانونية",
@@ -383,5 +399,9 @@
       "celebrateSubtitle_many": "فُهمت {{count}} جملة",
       "celebrateSubtitle_other": "فُهمت {{count}} جملة"
     }
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "legal": "الشروط والخصوصية وبيانات الناشر"
   }
 }

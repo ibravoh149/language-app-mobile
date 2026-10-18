@@ -227,7 +227,15 @@
     "streakKeep": "Dis une phrase aujourd'hui pour continuer",
     "streakStart": "Lance une conversation pour démarrer ta série",
     "streakDays_one": "jour de série",
-    "streakDays_other": "jours de série"
+    "streakDays_other": "jours de série",
+    "todayTitle": "Conversation du jour",
+    "startTalking": "Commencer à parler",
+    "weekTitle": "Cette semaine",
+    "goalDone": "Objectif du jour atteint !",
+    "weekMinutes_one": "minute de pratique",
+    "weekMinutes_other": "minutes de pratique",
+    "goalLeft_one": "Encore {{count}} minute pour l'objectif du jour",
+    "goalLeft_other": "Encore {{count}} minutes pour l'objectif du jour"
   },
   "legal": {
     "title": "Mentions légales",
@@ -351,5 +359,9 @@
       "celebrateSubtitle_one": "{{count}} phrase comprise",
       "celebrateSubtitle_other": "{{count}} phrases comprises"
     }
+  },
+  "profile": {
+    "title": "Profil",
+    "legal": "Conditions, confidentialité & mentions"
   }
 }
