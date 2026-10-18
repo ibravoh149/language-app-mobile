@@ -9,7 +9,7 @@ export function useVoiceSample() {
     phase: 'idle' as 'idle' | 'downloading' | 'loading' | 'playing',
     downloadProgress: 0,
     isPlaying: false,
-    play: async (_voice: Voice, _text: string, _speed: VoiceSpeed) => {},
+    play: async (_voice: Voice, _text: string, _speed: VoiceSpeed, _options?: { progressive?: boolean }) => {},
     prepare: async (_voice: Voice) => {},
     stop: () => {},
   };

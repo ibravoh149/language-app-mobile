@@ -42,6 +42,8 @@ import { sessionQueryKey } from './prep-screen';
 const MIC_SIZE = 84;
 /** Whisper's last words can arrive just after the recorder stops; wait this long for them. */
 const FINAL_TRANSCRIPT_SETTLE_MS = 450;
+/** When nothing is still pending, the text is final: send almost immediately. */
+const FINAL_TRANSCRIPT_READY_MS = 150;
 
 /** Live roleplay (prototype `SpeakConvo`): speak or type, the AI answers in character and in German. */
 export function ConversationScreen() {
@@ -74,6 +76,8 @@ export function ConversationScreen() {
   const [notUnderstood, setNotUnderstood] = useState<Set<string>>(new Set());
   const scrollRef = useRef<ScrollView>(null);
   const spokenOpening = useRef(false);
+  /** For the dev timing log: when the learner tapped to stop speaking. */
+  const micStoppedAt = useRef<number | null>(null);
   const stopRef = useRef(speech.stop);
   stopRef.current = speech.stop;
 
@@ -112,7 +116,8 @@ export function ConversationScreen() {
 
   function speakTurn(turn: Turn) {
     setSpeakingTurnId(turn.id);
-    voice.speak(turn.text);
+    // First sentence plays while the rest is synthesized.
+    voice.speak(turn.text, { progressive: true });
   }
 
   // Speak the opening line once, when a fresh conversation starts.
@@ -134,11 +139,16 @@ export function ConversationScreen() {
   // After the learner stops speaking, send as soon as Whisper's text settles: no extra tap.
   useEffect(() => {
     if (!awaitingFinal || speech.isRecording) return;
+    // Whisper's text is final once nothing is pending; otherwise give it a moment more.
+    const settleMs = speech.nonCommittedText ? FINAL_TRANSCRIPT_SETTLE_MS : FINAL_TRANSCRIPT_READY_MS;
     const timer = setTimeout(() => {
       setAwaitingFinal(false);
+      if (__DEV__ && micStoppedAt.current) {
+        console.info(`[timing] mic stop → transcript sent: ${Math.round(performance.now() - micStoppedAt.current)} ms`);
+      }
       if (transcript) void send(transcript, 'voice');
       else setHeardNothing(true);
-    }, FINAL_TRANSCRIPT_SETTLE_MS);
+    }, settleMs);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- re-armed whenever the text changes
   }, [awaitingFinal, speech.isRecording, transcript]);
@@ -151,6 +161,7 @@ export function ConversationScreen() {
   async function toggleMic() {
     haptics.press();
     if (speech.isRecording) {
+      micStoppedAt.current = performance.now();
       setAwaitingFinal(true);
       await speech.stop();
       return;
@@ -174,7 +185,9 @@ export function ConversationScreen() {
     setDraft('');
     setTyping(false);
     try {
+      const sentAt = performance.now();
       const result = await roleplayApi.sendTurn(sessionId, text, mode);
+      if (__DEV__) console.info(`[timing] turn round-trip: ${Math.round(performance.now() - sentAt)} ms`);
       queryClient.setQueryData<SessionDetail>(key, (old) =>
         old ? { ...old, turns: [...old.turns, result.userTurn, result.reply], corrections: [...old.corrections, ...result.corrections] } : old
       );

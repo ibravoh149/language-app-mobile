@@ -11,6 +11,27 @@ const DEFAULT_SAMPLE_RATE = 22050;
 
 export type VoiceSamplePhase = 'idle' | 'downloading' | 'loading' | 'playing';
 
+export interface PlayOptions {
+  /**
+   * Start playing the first sentence while the rest is synthesized (conversation replies:
+   * less wait). The voice preview keeps whole-text rendering.
+   */
+  progressive?: boolean;
+}
+
+/** "Hallo! Wie geht's?" → ["Hallo!", "Wie geht's?"]; null when there's only one sentence. */
+function splitFirstSentence(text: string): [string, string] | null {
+  const match = text.trim().match(/^(.+?[.!?…])\s+(\S[\s\S]*)$/);
+  return match ? [match[1], match[2]] : null;
+}
+
+function concatClips(a: RenderedClip, b: RenderedClip): RenderedClip {
+  const samples = new Float32Array(a.samples.length + b.samples.length);
+  samples.set(a.samples);
+  samples.set(b.samples, a.samples.length);
+  return { samples, sampleRate: a.sampleRate };
+}
+
 interface RenderedClip {
   samples: Float32Array;
   sampleRate: number;
@@ -39,8 +60,8 @@ export function useVoiceSample() {
   const engine = useRef<{ modelId: string; tts: TtsEngine; vits: string } | null>(null);
   const cache = useRef(new Map<string, RenderedClip>());
   /** Latest request made while busy; played as soon as the current one finishes. */
-  const pending = useRef<{ voice: Voice; text: string; speed: VoiceSpeed } | null>(null);
-  const playRef = useRef<(voice: Voice, text: string, speed: VoiceSpeed) => Promise<void>>(async () => {});
+  const pending = useRef<{ voice: Voice; text: string; speed: VoiceSpeed; options?: PlayOptions } | null>(null);
+  const playRef = useRef<(voice: Voice, text: string, speed: VoiceSpeed, options?: PlayOptions) => Promise<void>>(async () => {});
 
   useEffect(() => {
     return () => {
@@ -71,40 +92,56 @@ export function useVoiceSample() {
   }, []);
 
   const play = useCallback(
-    async (voice: Voice, text: string, speed: VoiceSpeed) => {
+    async (voice: Voice, text: string, speed: VoiceSpeed, options?: PlayOptions) => {
       const model = voice.piper;
       if (!model) return;
       if (busy.current) {
-        pending.current = { voice, text, speed };
+        pending.current = { voice, text, speed, options };
         return;
       }
       busy.current = true;
       const token = ++playToken.current;
+      const requestedAt = performance.now();
       setActiveVoiceId(voice.id);
       try {
         const key = `${model.id}|${model.sid ?? 0}|${JSON.stringify(model.vits ?? {})}|${speed}|${text}`;
-        let clip = cache.current.get(key);
-        if (!clip) {
-          if (!(await isVoiceDownloaded(model))) {
-            setDownloadProgress(0);
-            setPhase('downloading');
-          }
-          const dir = await ensureVoice(model, (p) => setDownloadProgress(Math.round(p)));
-          if (token !== playToken.current) return;
-          setPhase('loading');
-          const tts = await loadEngine(model, dir);
-          const audio = await tts.generateSpeech(text, { speed: TTS_ENGINE_SPEED[speed], sid: model.sid ?? 0 });
-          clip = { samples: Float32Array.from(audio.samples), sampleRate: audio.sampleRate };
-          cache.current.set(key, clip);
+        const cached = cache.current.get(key);
+        if (cached) {
+          setPhase('playing');
+          await playStream((async function* () { yield { audio: cached.samples, sampleRate: cached.sampleRate }; })(), cached.sampleRate);
+          return;
         }
+        if (!(await isVoiceDownloaded(model))) {
+          setDownloadProgress(0);
+          setPhase('downloading');
+        }
+        const dir = await ensureVoice(model, (p) => setDownloadProgress(Math.round(p)));
+        if (token !== playToken.current) return;
+        setPhase('loading');
+        const tts = await loadEngine(model, dir);
+        const synth = async (part: string): Promise<RenderedClip> => {
+          const audio = await tts.generateSpeech(part, { speed: TTS_ENGINE_SPEED[speed], sid: model.sid ?? 0 });
+          return { samples: Float32Array.from(audio.samples), sampleRate: audio.sampleRate };
+        };
+        const split = options?.progressive ? splitFirstSentence(text) : null;
+        const first = await synth(split ? split[0] : text);
+        if (__DEV__) console.info(`[timing] voice: first audio ready after ${Math.round(performance.now() - requestedAt)} ms`);
         if (token !== playToken.current) return;
         setPhase('playing');
-        const rendered = clip;
         await playStream(
           (async function* () {
-            yield { audio: rendered.samples, sampleRate: rendered.sampleRate };
+            yield { audio: first.samples, sampleRate: first.sampleRate };
+            if (!split) {
+              cache.current.set(key, first);
+              return;
+            }
+            // The rest renders while the first sentence plays.
+            const rest = await synth(split[1]);
+            if (token !== playToken.current) return;
+            cache.current.set(key, concatClips(first, rest));
+            yield { audio: rest.samples, sampleRate: rest.sampleRate };
           })(),
-          rendered.sampleRate
+          first.sampleRate
         );
       } catch {
         // A failed preview isn't worth an error screen; the button simply resets.
@@ -114,7 +151,7 @@ export function useVoiceSample() {
         setActiveVoiceId(null);
         const next = pending.current;
         pending.current = null;
-        if (next) void playRef.current(next.voice, next.text, next.speed);
+        if (next) void playRef.current(next.voice, next.text, next.speed, next.options);
       }
     },
     [loadEngine, playStream]
@@ -145,7 +182,7 @@ export function useVoiceSample() {
         setPhase('idle');
         const next = pending.current;
         pending.current = null;
-        if (next) void playRef.current(next.voice, next.text, next.speed);
+        if (next) void playRef.current(next.voice, next.text, next.speed, next.options);
       }
     },
     [loadEngine]

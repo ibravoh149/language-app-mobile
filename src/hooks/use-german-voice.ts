@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { DEFAULT_VOICE_SPEED } from '@/constants/levels';
 import { AVAILABLE_VOICES, DEFAULT_VOICE_ID } from '@/constants/voices';
-import { useVoiceSample } from '@/hooks/use-voice-sample';
+import { type PlayOptions, useVoiceSample } from '@/hooks/use-voice-sample';
 import { useAssessmentStore } from '@/store';
 import { useSessionStore } from '@/store/session';
 
@@ -24,10 +24,10 @@ export function useGermanVoice() {
 
   /** Speaks `text`, stopping whatever is playing first. */
   const speak = useCallback(
-    (text: string) => {
+    (text: string, options?: PlayOptions) => {
       if (!voice) return;
       if (sample.activeVoiceId) sample.stop();
-      void sample.play(voice, text, speed);
+      void sample.play(voice, text, speed, options);
     },
     [sample, voice, speed]
   );
