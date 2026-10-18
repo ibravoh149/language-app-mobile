@@ -222,7 +222,12 @@
     "greeting": "Willkommen!",
     "greetingName": "Willkommen, {{name}}!",
     "level": "Startniveau: {{level}}",
-    "logOut": "Abmelden"
+    "logOut": "Abmelden",
+    "streakDone": "Du hast heute gesprochen",
+    "streakKeep": "Sprich heute einen Satz, um dranzubleiben",
+    "streakStart": "Führe ein Gespräch, um deine Serie zu starten",
+    "streakDays_one": "Tag Sprechserie",
+    "streakDays_other": "Tage Sprechserie"
   },
   "legal": {
     "title": "Rechtliches",
@@ -250,6 +255,99 @@
       "confirm": "Mein Konto endgültig löschen",
       "wrongPassword": "Das Passwort stimmt nicht.",
       "homeLink": "Konto löschen"
+    }
+  },
+  "tabs": {
+    "home": "Start",
+    "practice": "Üben"
+  },
+  "roleplay": {
+    "list": {
+      "title": "Rollenspiel",
+      "intro": "Wähle eine echte Situation. Jede öffnet eine kurze Einführung (Szene, Ziel und nützliche Wörter), dann sprichst du.",
+      "statSessions": "Gespräche",
+      "statTurnsToday": "heute gesprochen",
+      "statStreak": "Tage in Folge",
+      "filterAll": "Alle",
+      "minutes": "~{{count}} Min.",
+      "notTried": "noch nicht geübt",
+      "loadFailed": "Die Szenarien konnten nicht geladen werden.",
+      "resume": "Gespräch fortsetzen",
+      "words_one": "{{count}} Wort",
+      "words_other": "{{count}} Wörter",
+      "practised_one": "{{count}}× geübt",
+      "practised_other": "{{count}}× geübt"
+    },
+    "prep": {
+      "title": "Bevor du sprichst",
+      "kicker": "{{level}} · Rollenspiel",
+      "youAre": "Du: {{role}}",
+      "aiIs": "KI: {{role}}",
+      "goals": "Was von dir erwartet wird",
+      "grammar": "Grammatik, die du wahrscheinlich brauchst",
+      "start": "Ich bin bereit, los geht’s",
+      "hint": "Du musst nichts auswendig lernen: Beim Sprechen ist alles einen Tipp entfernt.",
+      "loadFailed": "Dieses Szenario konnte nicht geladen werden.",
+      "words_one": "Nützliche Wörter · {{count}}",
+      "words_other": "Nützliche Wörter · {{count}}",
+      "phrases_one": "Redemittel · {{count}}",
+      "phrases_other": "Redemittel · {{count}}"
+    },
+    "convo": {
+      "live": "live",
+      "thinking": "{{name}} denkt nach …",
+      "wordsHint": "Fehlt dir ein Wort? Tippe, um es einzufügen",
+      "end": "Beenden & Korrekturen ansehen",
+      "listening": "Ich höre zu …",
+      "draftLabel": "Dein Satz",
+      "clear": "Löschen",
+      "typePlaceholder": "Auf Deutsch tippen …",
+      "send": "Senden",
+      "typeInstead": "Lieber tippen",
+      "tapToSpeak": "Zum Sprechen tippen",
+      "tapToFinish": "Tippe nochmal, wenn du fertig bist",
+      "micHint": "Tippe aufs Mikro und antworte auf Deutsch, oder tippe",
+      "tapToReplay": "Spielt diesen Satz nochmal ab",
+      "tapToStop": "Stoppt die Wiedergabe",
+      "notUnderstood": "Nicht ganz verstanden. Sag es anders.",
+      "correct": "Richtig!",
+      "loadFailed": "Dieses Gespräch konnte nicht geladen werden.",
+      "seeSummary": "Zur Zusammenfassung",
+      "streakSubtitle": "Du hast heute Deutsch gesprochen. Mach morgen weiter!",
+      "corrections_one": "{{count}} Korrektur · warum?",
+      "corrections_other": "{{count}} Korrekturen · warum?",
+      "streakTitle_one": "{{count}} Tag in Folge!",
+      "streakTitle_other": "{{count}} Tage in Folge!"
+    },
+    "errors": {
+      "tutorUnavailable": "Der Tutor hat diesmal nicht geantwortet. Dein Satz ist noch da: versuch es nochmal.",
+      "dailyLimit": "Du hast das heutige Übungslimit erreicht. Komm morgen wieder!",
+      "sessionEnded": "Dieses Gespräch ist schon beendet.",
+      "newSession": "Neues Gespräch starten"
+    },
+    "correction": {
+      "title": "Korrektur",
+      "youSaid": "Du hast gesagt",
+      "better": "Besser",
+      "why": "Warum?",
+      "listen": "Spielt den korrigierten Satz ab",
+      "tryAgain": "Zurück zum Gespräch",
+      "counter": "{{n}} von {{total}}",
+      "none": "Hier gibt es nichts zu korrigieren. Super!"
+    },
+    "summary": {
+      "title": "Gespräch beendet",
+      "turns": "Sätze gesprochen",
+      "understood": "verstanden",
+      "corrections": "Korrekturen",
+      "duration": "Zeit",
+      "review": "Deine Korrekturen",
+      "noCorrections": "Keine Korrekturen. Jeder Satz hat gepasst!",
+      "again": "Nochmal üben",
+      "done": "Fertig",
+      "celebrateTitle": "Gut gesprochen!",
+      "celebrateSubtitle_one": "{{count}} Satz verstanden",
+      "celebrateSubtitle_other": "{{count}} Sätze verstanden"
     }
   }
 }

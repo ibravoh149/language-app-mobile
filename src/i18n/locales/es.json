@@ -222,7 +222,12 @@
     "greeting": "¡Hola!",
     "greetingName": "¡Hola, {{name}}!",
     "level": "Nivel inicial: {{level}}",
-    "logOut": "Cerrar sesión"
+    "logOut": "Cerrar sesión",
+    "streakDone": "Hoy ya hablaste",
+    "streakKeep": "Di una frase hoy para mantenerla",
+    "streakStart": "Ten una conversación para empezar tu racha",
+    "streakDays_one": "día de racha",
+    "streakDays_other": "días de racha"
   },
   "legal": {
     "title": "Aviso legal",
@@ -250,6 +255,99 @@
       "confirm": "Eliminar mi cuenta para siempre",
       "wrongPassword": "Esa contraseña no es correcta.",
       "homeLink": "Eliminar cuenta"
+    }
+  },
+  "tabs": {
+    "home": "Inicio",
+    "practice": "Práctica"
+  },
+  "roleplay": {
+    "list": {
+      "title": "Juego de rol",
+      "intro": "Elige una situación real. Cada una abre una breve introducción (la escena, tu objetivo y palabras útiles) y luego hablas.",
+      "statSessions": "conversaciones",
+      "statTurnsToday": "hablado hoy",
+      "statStreak": "días seguidos",
+      "filterAll": "Todo",
+      "minutes": "~{{count}} min",
+      "notTried": "sin probar",
+      "loadFailed": "No pudimos cargar los escenarios.",
+      "resume": "Continuar tu conversación",
+      "words_one": "{{count}} palabra",
+      "words_other": "{{count}} palabras",
+      "practised_one": "{{count}}× practicado",
+      "practised_other": "{{count}}× practicado"
+    },
+    "prep": {
+      "title": "Antes de hablar",
+      "kicker": "{{level}} · juego de rol",
+      "youAre": "Tú: {{role}}",
+      "aiIs": "IA: {{role}}",
+      "goals": "Lo que se espera de ti",
+      "grammar": "Gramática que probablemente usarás",
+      "start": "Estoy listo, a hablar",
+      "hint": "No hace falta memorizar nada: lo tendrás a un toque mientras hablas.",
+      "loadFailed": "No pudimos cargar este escenario.",
+      "words_one": "Palabras útiles · {{count}}",
+      "words_other": "Palabras útiles · {{count}}",
+      "phrases_one": "Frase clave · {{count}}",
+      "phrases_other": "Frases clave · {{count}}"
+    },
+    "convo": {
+      "live": "en vivo",
+      "thinking": "{{name}} está pensando…",
+      "wordsHint": "¿Te falta una palabra? Tócala para añadirla",
+      "end": "Terminar y ver correcciones",
+      "listening": "Escuchando…",
+      "draftLabel": "Tu frase",
+      "clear": "Borrar",
+      "typePlaceholder": "Escribe en alemán…",
+      "send": "Enviar",
+      "typeInstead": "Mejor escribir",
+      "tapToSpeak": "Toca para hablar",
+      "tapToFinish": "Toca otra vez cuando termines",
+      "micHint": "Toca el micrófono y responde en alemán, o escribe",
+      "tapToReplay": "Reproduce esta frase de nuevo",
+      "tapToStop": "Detiene la reproducción",
+      "notUnderstood": "No se entendió del todo. Prueba a decirlo de otra forma.",
+      "correct": "¡Correcto!",
+      "loadFailed": "No pudimos cargar esta conversación.",
+      "seeSummary": "Ver tu resumen",
+      "streakSubtitle": "Hoy hablaste alemán. ¡Sigue mañana!",
+      "corrections_one": "{{count}} corrección · ¿por qué?",
+      "corrections_other": "{{count}} correcciones · ¿por qué?",
+      "streakTitle_one": "¡{{count}} día seguido!",
+      "streakTitle_other": "¡{{count}} días seguidos!"
+    },
+    "errors": {
+      "tutorUnavailable": "El tutor no respondió esta vez. Tu frase está a salvo: inténtalo de nuevo.",
+      "dailyLimit": "Alcanzaste el límite de práctica de hoy. ¡Vuelve mañana!",
+      "sessionEnded": "Esta conversación ya terminó.",
+      "newSession": "Empezar una conversación nueva"
+    },
+    "correction": {
+      "title": "Corrección",
+      "youSaid": "Dijiste",
+      "better": "Mejor",
+      "why": "¿Por qué?",
+      "listen": "Reproduce la frase corregida",
+      "tryAgain": "Volver a la conversación",
+      "counter": "{{n}} de {{total}}",
+      "none": "Nada que corregir aquí. ¡Genial!"
+    },
+    "summary": {
+      "title": "Conversación terminada",
+      "turns": "frases dichas",
+      "understood": "entendido",
+      "corrections": "correcciones",
+      "duration": "tiempo",
+      "review": "Repasa tus correcciones",
+      "noCorrections": "Sin correcciones. ¡Todas las frases funcionaron!",
+      "again": "Practicar otra vez",
+      "done": "Listo",
+      "celebrateTitle": "¡Bien dicho!",
+      "celebrateSubtitle_one": "{{count}} frase entendida",
+      "celebrateSubtitle_other": "{{count}} frases entendidas"
     }
   }
 }

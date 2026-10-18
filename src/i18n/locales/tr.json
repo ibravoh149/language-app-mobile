@@ -222,7 +222,12 @@
     "greeting": "Hoş geldin!",
     "greetingName": "Hoş geldin, {{name}}!",
     "level": "Başlangıç seviyesi: {{level}}",
-    "logOut": "Çıkış yap"
+    "logOut": "Çıkış yap",
+    "streakDone": "Bugün konuştun",
+    "streakKeep": "Seriyi sürdürmek için bugün bir cümle söyle",
+    "streakStart": "Serini başlatmak için bir sohbet yap",
+    "streakDays_one": "günlük konuşma serisi",
+    "streakDays_other": "günlük konuşma serisi"
   },
   "legal": {
     "title": "Yasal",
@@ -250,6 +255,99 @@
       "confirm": "Hesabımı kalıcı olarak sil",
       "wrongPassword": "Bu şifre doğru değil.",
       "homeLink": "Hesabı sil"
+    }
+  },
+  "tabs": {
+    "home": "Ana sayfa",
+    "practice": "Pratik"
+  },
+  "roleplay": {
+    "list": {
+      "title": "Rol yapma",
+      "intro": "Gerçek bir durum seç. Her biri kısa bir tanıtım açar (sahne, hedefin ve faydalı kelimeler), sonra konuşursun.",
+      "statSessions": "sohbet",
+      "statTurnsToday": "bugün konuşulan",
+      "statStreak": "günlük seri",
+      "filterAll": "Tümü",
+      "minutes": "~{{count}} dk",
+      "notTried": "henüz denenmedi",
+      "loadFailed": "Senaryolar yüklenemedi.",
+      "resume": "Sohbetine devam et",
+      "words_one": "{{count}} kelime",
+      "words_other": "{{count}} kelime",
+      "practised_one": "{{count}}× pratik",
+      "practised_other": "{{count}}× pratik"
+    },
+    "prep": {
+      "title": "Konuşmadan önce",
+      "kicker": "{{level}} · rol yapma",
+      "youAre": "Sen: {{role}}",
+      "aiIs": "YZ: {{role}}",
+      "goals": "Senden beklenenler",
+      "grammar": "Muhtemelen kullanacağın dilbilgisi",
+      "start": "Hazırım, konuşmaya başla",
+      "hint": "Ezberlemene gerek yok: konuşurken hepsi bir dokunuş uzakta.",
+      "loadFailed": "Bu senaryo yüklenemedi.",
+      "words_one": "Faydalı kelimeler · {{count}}",
+      "words_other": "Faydalı kelimeler · {{count}}",
+      "phrases_one": "Denenecek ifade · {{count}}",
+      "phrases_other": "Denenecek ifadeler · {{count}}"
+    },
+    "convo": {
+      "live": "canlı",
+      "thinking": "{{name}} düşünüyor…",
+      "wordsHint": "Bir kelime mi aklına gelmiyor? Eklemek için dokun",
+      "end": "Bitir ve düzeltmeleri gör",
+      "listening": "Dinliyorum…",
+      "draftLabel": "Cümlen",
+      "clear": "Temizle",
+      "typePlaceholder": "Almanca yaz…",
+      "send": "Gönder",
+      "typeInstead": "Bunun yerine yaz",
+      "tapToSpeak": "Konuşmak için dokun",
+      "tapToFinish": "Bitirince tekrar dokun",
+      "micHint": "Mikrofona dokun ve Almanca cevap ver ya da yaz",
+      "tapToReplay": "Bu cümleyi tekrar çalar",
+      "tapToStop": "Çalmayı durdurur",
+      "notUnderstood": "Tam anlaşılmadı. Başka bir şekilde söylemeyi dene.",
+      "correct": "Doğru!",
+      "loadFailed": "Bu sohbet yüklenemedi.",
+      "seeSummary": "Özetini gör",
+      "streakSubtitle": "Bugün Almanca konuştun. Yarın da devam et!",
+      "corrections_one": "{{count}} düzeltme · neden?",
+      "corrections_other": "{{count}} düzeltme · neden?",
+      "streakTitle_one": "{{count}} günlük seri!",
+      "streakTitle_other": "{{count}} günlük seri!"
+    },
+    "errors": {
+      "tutorUnavailable": "Öğretmen bu sefer cevap vermedi. Cümlen duruyor: tekrar dene.",
+      "dailyLimit": "Bugünkü pratik sınırına ulaştın. Yarın tekrar gel!",
+      "sessionEnded": "Bu sohbet zaten bitti.",
+      "newSession": "Yeni bir sohbet başlat"
+    },
+    "correction": {
+      "title": "Düzeltme",
+      "youSaid": "Şunu dedin",
+      "better": "Daha iyi",
+      "why": "Neden?",
+      "listen": "Düzeltilmiş cümleyi çalar",
+      "tryAgain": "Sohbete dön",
+      "counter": "{{n}} / {{total}}",
+      "none": "Burada düzeltilecek bir şey yok. Harika!"
+    },
+    "summary": {
+      "title": "Sohbet bitti",
+      "turns": "konuşulan cümle",
+      "understood": "anlaşıldı",
+      "corrections": "düzeltme",
+      "duration": "süre",
+      "review": "Düzeltmelerini gözden geçir",
+      "noCorrections": "Hiç düzeltme yok. Her cümle işe yaradı!",
+      "again": "Tekrar pratik yap",
+      "done": "Bitti",
+      "celebrateTitle": "Harika konuştun!",
+      "celebrateSubtitle_one": "{{count}} cümle anlaşıldı",
+      "celebrateSubtitle_other": "{{count}} cümle anlaşıldı"
     }
   }
 }

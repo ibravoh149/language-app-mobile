@@ -222,7 +222,12 @@
     "greeting": "Welcome!",
     "greetingName": "Welcome, {{name}}!",
     "level": "Starting level: {{level}}",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "streakDone": "You've spoken today",
+    "streakKeep": "Speak one sentence today to keep it going",
+    "streakStart": "Have a conversation to start your streak",
+    "streakDays_one": "day speaking streak",
+    "streakDays_other": "day speaking streak"
   },
   "legal": {
     "title": "Legal",
@@ -250,6 +255,99 @@
       "confirm": "Delete my account permanently",
       "wrongPassword": "That password isn't right.",
       "homeLink": "Delete account"
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "practice": "Practice"
+  },
+  "roleplay": {
+    "list": {
+      "title": "Roleplay",
+      "intro": "Pick a real situation. Each opens a short brief (the scene, your goal and useful words), then you talk.",
+      "statSessions": "conversations",
+      "statTurnsToday": "spoken today",
+      "statStreak": "day streak",
+      "filterAll": "All",
+      "minutes": "~{{count}} min",
+      "notTried": "not tried yet",
+      "loadFailed": "We couldn't load the scenarios.",
+      "resume": "Continue your conversation",
+      "words_one": "{{count}} word",
+      "words_other": "{{count}} words",
+      "practised_one": "{{count}}× practised",
+      "practised_other": "{{count}}× practised"
+    },
+    "prep": {
+      "title": "Before you talk",
+      "kicker": "{{level}} · roleplay",
+      "youAre": "You: {{role}}",
+      "aiIs": "AI: {{role}}",
+      "goals": "What's expected of you",
+      "grammar": "Grammar you'll likely use",
+      "start": "I'm ready, start talking",
+      "hint": "You don't need to memorise these: they're one tap away while you talk.",
+      "loadFailed": "We couldn't load this scenario.",
+      "words_one": "Useful words · {{count}}",
+      "words_other": "Useful words · {{count}}",
+      "phrases_one": "Key phrase to try · {{count}}",
+      "phrases_other": "Key phrases to try · {{count}}"
+    },
+    "convo": {
+      "live": "live",
+      "thinking": "{{name}} is thinking…",
+      "wordsHint": "Stuck for a word? Tap to drop it into your reply",
+      "end": "End & see corrections",
+      "listening": "Listening…",
+      "draftLabel": "Your sentence",
+      "clear": "Clear",
+      "typePlaceholder": "Type in German…",
+      "send": "Send",
+      "typeInstead": "Type instead",
+      "tapToSpeak": "Tap to speak",
+      "tapToFinish": "Tap again when you’re done",
+      "micHint": "Tap the mic and answer in German, or type instead",
+      "tapToReplay": "Plays this line again",
+      "tapToStop": "Stops playback",
+      "notUnderstood": "Not quite understood. Try saying it another way.",
+      "correct": "Correct!",
+      "loadFailed": "We couldn't load this conversation.",
+      "seeSummary": "See your summary",
+      "streakSubtitle": "You spoke German today. Keep it going tomorrow!",
+      "corrections_one": "{{count}} correction · see why",
+      "corrections_other": "{{count}} corrections · see why",
+      "streakTitle_one": "{{count}}-day streak!",
+      "streakTitle_other": "{{count}}-day streak!"
+    },
+    "errors": {
+      "tutorUnavailable": "The tutor didn't answer this time. Your sentence is safe; try again.",
+      "dailyLimit": "You've reached today's practice limit. Come back tomorrow!",
+      "sessionEnded": "This conversation has already ended.",
+      "newSession": "Start a new conversation"
+    },
+    "correction": {
+      "title": "Correction",
+      "youSaid": "You said",
+      "better": "Better",
+      "why": "Why?",
+      "listen": "Plays the corrected sentence",
+      "tryAgain": "Back to the conversation",
+      "counter": "{{n}} of {{total}}",
+      "none": "Nothing to correct here. Nice!"
+    },
+    "summary": {
+      "title": "Conversation done",
+      "turns": "sentences spoken",
+      "understood": "understood",
+      "corrections": "corrections",
+      "duration": "time",
+      "review": "Review your corrections",
+      "noCorrections": "No corrections. Every sentence worked!",
+      "again": "Practise again",
+      "done": "Done",
+      "celebrateTitle": "Well spoken!",
+      "celebrateSubtitle_one": "{{count}} sentence understood",
+      "celebrateSubtitle_other": "{{count}} sentences understood"
     }
   }
 }

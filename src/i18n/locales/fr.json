@@ -222,7 +222,12 @@
     "greeting": "Bienvenue !",
     "greetingName": "Bienvenue, {{name}} !",
     "level": "Niveau de départ : {{level}}",
-    "logOut": "Se déconnecter"
+    "logOut": "Se déconnecter",
+    "streakDone": "Tu as parlé aujourd'hui",
+    "streakKeep": "Dis une phrase aujourd'hui pour continuer",
+    "streakStart": "Lance une conversation pour démarrer ta série",
+    "streakDays_one": "jour de série",
+    "streakDays_other": "jours de série"
   },
   "legal": {
     "title": "Mentions légales",
@@ -250,6 +255,99 @@
       "confirm": "Supprimer définitivement mon compte",
       "wrongPassword": "Ce mot de passe n'est pas bon.",
       "homeLink": "Supprimer le compte"
+    }
+  },
+  "tabs": {
+    "home": "Accueil",
+    "practice": "Pratique"
+  },
+  "roleplay": {
+    "list": {
+      "title": "Jeu de rôle",
+      "intro": "Choisis une vraie situation. Chacune ouvre un court brief (la scène, ton objectif et des mots utiles), puis tu parles.",
+      "statSessions": "conversations",
+      "statTurnsToday": "parlé aujourd'hui",
+      "statStreak": "jours de suite",
+      "filterAll": "Tout",
+      "minutes": "~{{count}} min",
+      "notTried": "pas encore essayé",
+      "loadFailed": "Impossible de charger les scénarios.",
+      "resume": "Reprendre ta conversation",
+      "words_one": "{{count}} mot",
+      "words_other": "{{count}} mots",
+      "practised_one": "{{count}}× pratiqué",
+      "practised_other": "{{count}}× pratiqué"
+    },
+    "prep": {
+      "title": "Avant de parler",
+      "kicker": "{{level}} · jeu de rôle",
+      "youAre": "Toi : {{role}}",
+      "aiIs": "IA : {{role}}",
+      "goals": "Ce qu'on attend de toi",
+      "grammar": "La grammaire que tu utiliseras sans doute",
+      "start": "Je suis prêt·e, on parle",
+      "hint": "Pas besoin de tout retenir : tout reste à portée de main pendant que tu parles.",
+      "loadFailed": "Impossible de charger ce scénario.",
+      "words_one": "Mots utiles · {{count}}",
+      "words_other": "Mots utiles · {{count}}",
+      "phrases_one": "Phrase clé à essayer · {{count}}",
+      "phrases_other": "Phrases clés à essayer · {{count}}"
+    },
+    "convo": {
+      "live": "en direct",
+      "thinking": "{{name}} réfléchit…",
+      "wordsHint": "Un mot te manque ? Touche-le pour l’ajouter",
+      "end": "Terminer & voir les corrections",
+      "listening": "J’écoute…",
+      "draftLabel": "Ta phrase",
+      "clear": "Effacer",
+      "typePlaceholder": "Écris en allemand…",
+      "send": "Envoyer",
+      "typeInstead": "Écrire plutôt",
+      "tapToSpeak": "Touche pour parler",
+      "tapToFinish": "Touche encore quand tu as fini",
+      "micHint": "Touche le micro et réponds en allemand, ou écris",
+      "tapToReplay": "Rejoue cette réplique",
+      "tapToStop": "Arrête la lecture",
+      "notUnderstood": "Pas tout à fait compris. Essaie de le dire autrement.",
+      "correct": "Correct !",
+      "loadFailed": "Impossible de charger cette conversation.",
+      "seeSummary": "Voir ton bilan",
+      "streakSubtitle": "Tu as parlé allemand aujourd'hui. Continue demain !",
+      "corrections_one": "{{count}} correction · pourquoi ?",
+      "corrections_other": "{{count}} corrections · pourquoi ?",
+      "streakTitle_one": "{{count}} jour de suite !",
+      "streakTitle_other": "{{count}} jours de suite !"
+    },
+    "errors": {
+      "tutorUnavailable": "Le tuteur n'a pas répondu cette fois. Ta phrase est gardée : réessaie.",
+      "dailyLimit": "Tu as atteint la limite de pratique du jour. Reviens demain !",
+      "sessionEnded": "Cette conversation est déjà terminée.",
+      "newSession": "Nouvelle conversation"
+    },
+    "correction": {
+      "title": "Correction",
+      "youSaid": "Tu as dit",
+      "better": "Mieux",
+      "why": "Pourquoi ?",
+      "listen": "Joue la phrase corrigée",
+      "tryAgain": "Retour à la conversation",
+      "counter": "{{n}} sur {{total}}",
+      "none": "Rien à corriger ici. Bravo !"
+    },
+    "summary": {
+      "title": "Conversation terminée",
+      "turns": "phrases dites",
+      "understood": "compris",
+      "corrections": "corrections",
+      "duration": "durée",
+      "review": "Revois tes corrections",
+      "noCorrections": "Aucune correction. Chaque phrase a marché !",
+      "again": "Recommencer",
+      "done": "Terminé",
+      "celebrateTitle": "Bien parlé !",
+      "celebrateSubtitle_one": "{{count}} phrase comprise",
+      "celebrateSubtitle_other": "{{count}} phrases comprises"
     }
   }
 }

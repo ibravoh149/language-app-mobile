@@ -36,8 +36,8 @@ src/
 ├── screens/             screen components (onboarding/, auth/, …)
 ├── components/          shared UI: Button, Icon, TextField, OtpInput, OnboardingScreen, …
 ├── hooks/               use-theme, use-speech-recognition, use-voice-sample, use-tts-buffer-player, …
-├── services/            api.ts (axios + auth/refresh), auth-api.ts, placement-api.ts, social-auth.ts, token-storage.ts, haptics.ts, mocks/
-├── store/               index.ts (language, theme, course, assessment), session.ts, profile.ts
+├── services/            api.ts (axios + auth/refresh), auth-api.ts, placement-api.ts, roleplay-api.ts, social-auth.ts, token-storage.ts, haptics.ts, mocks/
+├── store/               index.ts (language, theme, course, assessment), session.ts, profile.ts, roleplay.ts, celebration.ts
 ├── constants/           theme, motion, levels, voices, learnable-languages, onboarding
 ├── schemas/             zod schemas
 └── i18n/                setup, languages, rtl, locales/
@@ -63,7 +63,13 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
 - Signup and social sign-in send the onboarding profile only if onboarding was
   done on this device (`onboardingPayload()`); otherwise the account goes through
   onboarding after verifying.
-- `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth and placement mocks (codes are `123456`).
+- Roleplay (F2, `docs/api/roleplay.md`): Practice tab (`(tabs)/practice`, scenario
+  list) → `/roleplay/[scenario]` prep brief → `/roleplay/session/[sessionId]` live
+  conversation (Whisper Base mic or typing; reply spoken with the learner's Piper
+  voice via `useGermanVoice`) → `/roleplay/correction/[sessionId]` (the "why") and
+  `/roleplay/summary/[sessionId]`. An unfinished conversation is remembered
+  (`store/roleplay.ts`) and offered on the Practice tab. Home shows the streak.
+- `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth, placement and roleplay mocks (codes are `123456`).
 - Google / Apple sign-in (`src/services/social-auth.ts`, buttons on login) are
   **off until configured**: `app.config.ts` adds the Google plugin only when
   `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` is set, and the Apple capability only when
