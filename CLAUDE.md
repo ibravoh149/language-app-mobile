@@ -67,13 +67,15 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
 
 ```bash
 yarn install
-cp .env.example .env        # set EXPO_PUBLIC_API_URL=http://<Mac LAN IP>:3000/api/v1
+cp .env.example .env        # EXPO_PUBLIC_API_URL=auto: the API host follows Metro's
 yarn ios                    # or: yarn android — builds and installs the dev client
 yarn start                  # afterwards, for JS-only changes
 ```
 
-- Find the Mac's LAN IP with `ipconfig getifaddr en0`. `localhost` doesn't work
-  from the phone.
+- With `EXPO_PUBLIC_API_URL=auto` (development only) the app reaches the API at
+  `http://<Metro host>:3000/api/v1`, so a new Wi-Fi IP on the Mac needs no .env
+  change. An explicit URL wins; release builds always use the explicit value.
+  `localhost` doesn't work from the phone.
 - Clean native rebuild: `yarn ri` (iOS) / `yarn ra` (Android). Needed after
   native dependency, plugin, permission or icon changes.
 - From a worktree, run Metro on another port: `yarn start --port 8082`.

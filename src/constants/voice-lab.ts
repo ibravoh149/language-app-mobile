@@ -3,6 +3,8 @@
  * persona so the normal preview hook can play it. Delete this file and the screen
  * once the user has picked voices and settings by ear (BACKLOG B-VOICE-1).
  */
+import { resolveApiBaseUrl } from '@/services/api-url';
+
 import { type PiperModel, type Voice } from './voices';
 
 /**
@@ -13,8 +15,7 @@ import { type PiperModel, type Voice } from './voices';
  */
 function voiceLabBaseUrl(): string {
   if (process.env.EXPO_PUBLIC_VOICE_LAB_URL) return process.env.EXPO_PUBLIC_VOICE_LAB_URL;
-  const api = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3000/api/v1';
-  const host = api.replace(/^(https?:\/\/[^/:]+).*$/, '$1');
+  const host = resolveApiBaseUrl().replace(/^(https?:\/\/[^/:]+).*$/, '$1');
   return `${host}:8099`;
 }
 

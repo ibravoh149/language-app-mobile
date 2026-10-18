@@ -1,9 +1,10 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios';
 
 import { toApiError } from './api-error';
+import { resolveApiBaseUrl } from './api-url';
 import { tokenStorage, type Tokens } from './token-storage';
 
-const baseURL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3000/api/v1';
+const baseURL = resolveApiBaseUrl();
 
 const api = axios.create({
   baseURL,
