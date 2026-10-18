@@ -1,18 +1,19 @@
 import { Redirect } from 'expo-router';
+import { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/icon';
+import { SelectablePill } from '@/components/selectable-pill';
 import { MotionReveal } from '@/components/motion-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { VOICE_LAB, type VoiceLabEntry } from '@/constants/voice-lab';
+import { VOICE_LAB, VOICE_LAB_PACES, type VoiceLabEntry } from '@/constants/voice-lab';
 import { voiceSampleText } from '@/constants/voices';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { useVoiceSample } from '@/hooks/use-voice-sample';
 import { haptics } from '@/services/haptics';
-import { useAssessmentStore } from '@/store';
 
 /**
  * Development-only: compare Piper voices and settings by ear (BACKLOG B-VOICE-1).
@@ -21,7 +22,7 @@ import { useAssessmentStore } from '@/store';
 export function VoiceLabScreen() {
   const theme = useTheme();
   const sample = useVoiceSample();
-  const voiceSpeed = useAssessmentStore((state) => state.voiceSpeed);
+  const [pace, setPace] = useState<number>(1.1);
 
   if (!__DEV__) return <Redirect href="/" />;
 
@@ -32,8 +33,9 @@ export function VoiceLabScreen() {
       return;
     }
     if (sample.activeVoiceId) sample.stop();
-    // Mara's name in every sample keeps the comparison about the voice, not the words.
-    void sample.play(voice, voiceSampleText('de', 'Mara'), voiceSpeed);
+    const paced = voice.piper ? { ...voice, piper: { ...voice.piper, vits: { ...voice.piper.vits, lengthScale: pace } } } : voice;
+    // Same words and Normal speed for every entry, so only the voice and the pace differ.
+    void sample.play(paced, voiceSampleText('de', 'Mara'), 1);
   }
 
   function status(entry: VoiceLabEntry): string {
@@ -49,9 +51,23 @@ export function VoiceLabScreen() {
       <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
         <ScrollView contentContainerStyle={styles.content}>
           <ThemedText type="small" themeColor="textSecondary">
-            Same German sample for every voice, at your saved speed. The first play of each model downloads it once.
-            Tell Claude which ones sound best.
+            Same German sample at Normal speed. Pick a pace (higher = slower), then compare the voices. The first play of
+            each model downloads it once. Tell Claude one voice per persona plus the pace.
           </ThemedText>
+          <View style={styles.paces}>
+            {VOICE_LAB_PACES.map((p) => (
+              <SelectablePill
+                key={p}
+                variant="soft"
+                label={p === 1 ? 'Pace 1.0 (today)' : `Pace ${p.toFixed(1)}`}
+                selected={pace === p}
+                onPress={() => {
+                  if (sample.activeVoiceId) sample.stop();
+                  setPace(p);
+                }}
+              />
+            ))}
+          </View>
           {VOICE_LAB.map((section) => (
             <View key={section.title} style={styles.section}>
               <ThemedText type="smallBold" themeColor="textMuted" style={styles.sectionTitle}>
@@ -106,6 +122,7 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   content: { padding: Spacing.xl, gap: Spacing.lg, paddingBottom: Spacing['3xl'] },
   section: { gap: Spacing.sm },
+  paces: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   sectionTitle: { fontSize: 11, textTransform: 'uppercase' },
   row: {
     flexDirection: 'row',

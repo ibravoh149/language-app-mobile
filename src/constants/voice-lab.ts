@@ -6,8 +6,6 @@
 import { type PiperModel, type Voice } from './voices';
 
 const RAMONA: PiperModel = { id: 'vits-piper-de_DE-ramona-low', sizeMB: 64, licence: 'M-AILABS (BSD-style)' };
-const KERSTIN: PiperModel = { id: 'vits-piper-de_DE-kerstin-low', sizeMB: 64, licence: 'CC0' };
-const THORSTEN_MEDIUM: PiperModel = { id: 'vits-piper-de_DE-thorsten-medium', sizeMB: 64, licence: 'CC0' };
 const THORSTEN_HIGH: PiperModel = { id: 'vits-piper-de_DE-thorsten-high', sizeMB: 110, licence: 'CC0' };
 const THORSTEN_EMOTIONAL: PiperModel = { id: 'vits-piper-de_DE-thorsten_emotional-medium', sizeMB: 76, licence: 'CC0' };
 // MLS (de_DE-mls-medium, release voices-v1) was tried and rejected by ear on 2026-10-18.
@@ -28,27 +26,23 @@ const entry = (key: string, name: string, color: string, piper: PiperModel, deta
   detail,
 });
 
+/** Pace options (Piper lengthScale; higher = slower), applied to every entry in the lab. */
+export const VOICE_LAB_PACES = [1, 1.1, 1.2, 1.3] as const;
+
+/** Finalists the user shortlisted by ear (2026-10-18): pick one per persona plus a pace. */
 export const VOICE_LAB: VoiceLabSection[] = [
   {
-    title: 'Mara (Ramona) presets',
+    title: 'Mara (Ramona)',
     entries: [
-      entry('mara-default', 'Mara · standard', '#d946ef', RAMONA, 'Piper defaults: expressiveness 0.667, rhythm 0.8, pace 1.0'),
-      entry('mara-expressive', 'Mara · expressive', '#d946ef', { ...RAMONA, vits: { noiseScale: 0.8, noiseScaleW: 0.9 } }, 'More lively: 0.8 / 0.9 / 1.0'),
-      entry('mara-calm', 'Mara · calm', '#d946ef', { ...RAMONA, vits: { noiseScale: 0.5, noiseScaleW: 0.6 } }, 'Steadier, less variation: 0.5 / 0.6 / 1.0'),
-      entry('mara-smooth', 'Mara · smooth & slower', '#d946ef', { ...RAMONA, vits: { noiseScale: 0.6, noiseScaleW: 0.7, lengthScale: 1.08 } }, 'Smoother, 8% slower: 0.6 / 0.7 / 1.08'),
+      entry('mara-default', 'Mara · standard', '#d946ef', RAMONA, 'Expressiveness 0.667 · rhythm 0.8'),
+      entry('mara-expressive', 'Mara · expressive', '#d946ef', { ...RAMONA, vits: { noiseScale: 0.8, noiseScaleW: 0.9 } }, 'Expressiveness 0.8 · rhythm 0.9'),
     ],
   },
   {
-    title: 'Lena (Kerstin), for reference',
-    entries: [entry('lena-default', 'Lena · standard', '#8b5cf6', KERSTIN, 'Piper defaults')],
-  },
-  {
-    title: 'Jonas candidates (male)',
+    title: 'Jonas (Thorsten)',
     entries: [
-      entry('jonas-medium', 'Thorsten · medium', '#6366f1', THORSTEN_MEDIUM, 'Current Jonas · 64 MB'),
       entry('jonas-high', 'Thorsten · high', '#4f46e5', THORSTEN_HIGH, 'Higher quality · 110 MB'),
-      entry('jonas-neutral', 'Thorsten emotional · neutral', '#4338ca', { ...THORSTEN_EMOTIONAL, sid: 4 }, '8-style model, neutral · 76 MB'),
-      entry('jonas-amused', 'Thorsten emotional · amused', '#3730a3', { ...THORSTEN_EMOTIONAL, sid: 0 }, '8-style model, amused (friendlier?) · 76 MB'),
+      entry('jonas-amused', 'Thorsten emotional · amused', '#3730a3', { ...THORSTEN_EMOTIONAL, sid: 0 }, 'Friendlier style · 76 MB'),
     ],
   },
 ];
