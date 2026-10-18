@@ -118,7 +118,8 @@
         "normal": "عادي",
         "fast": "سريع"
       },
-      "loadingVoice": "جارٍ تجهيز الصوت… {{percent}}٪"
+      "loadingVoice": "جارٍ تجهيز الصوت… {{percent}}٪",
+      "loadingVoiceModel": "جارٍ تحميل الصوت…"
     },
     "done": {
       "celebrateTitle": "كل شيء جاهز",

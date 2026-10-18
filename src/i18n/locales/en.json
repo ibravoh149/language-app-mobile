@@ -118,7 +118,8 @@
         "normal": "Normal",
         "fast": "Fast"
       },
-      "loadingVoice": "Getting the voice ready… {{percent}}%"
+      "loadingVoice": "Getting the voice ready… {{percent}}%",
+      "loadingVoiceModel": "Loading the voice…"
     },
     "done": {
       "celebrateTitle": "You're all set",

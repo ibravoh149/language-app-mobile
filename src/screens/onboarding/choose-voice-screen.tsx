@@ -259,7 +259,10 @@ export function ChooseVoiceScreen() {
                 </ThemedText>
               ) : (
                 <ThemedText type="small" themeColor="textMuted">
-                  {t('onboarding.chooseVoice.loadingVoice', { percent: Math.round((sample.downloadProgress ?? 0) * 100) })}
+                  {/* Download first (percent), then the model loads into memory before it's ready. */}
+                  {sample.downloadProgress < 100
+                    ? t('onboarding.chooseVoice.loadingVoice', { percent: Math.round(sample.downloadProgress) })
+                    : t('onboarding.chooseVoice.loadingVoiceModel')}
                 </ThemedText>
               )}
             </Animated.View>

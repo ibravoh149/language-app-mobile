@@ -118,7 +118,8 @@
         "normal": "Normal",
         "fast": "Hızlı"
       },
-      "loadingVoice": "Ses hazırlanıyor… %{{percent}}"
+      "loadingVoice": "Ses hazırlanıyor… %{{percent}}",
+      "loadingVoiceModel": "Ses yükleniyor…"
     },
     "done": {
       "celebrateTitle": "Her şey hazır",
