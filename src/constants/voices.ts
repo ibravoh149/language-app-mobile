@@ -35,8 +35,8 @@ export const VOICES: Voice[] = [
   },
   {
     id: 'mara', name: 'Mara', tagKey: 'natural', descriptionKey: 'mara', color: '#d946ef',
-    piper: { id: 'vits-piper-de_DE-ramona-low', sizeMB: 64, licence: 'M-AILABS (unverified)' },
-    devOnly: true,
+    // M-AILABS licence: commercial use allowed; keep the copyright notice, no endorsement (verified 2026-10-18).
+    piper: { id: 'vits-piper-de_DE-ramona-low', sizeMB: 64, licence: 'M-AILABS (BSD-style)' },
   },
   { id: 'finn', name: 'Finn', tagKey: 'patient', descriptionKey: 'finn', color: '#10b981' },
   { id: 'sofia', name: 'Sofia', tagKey: 'energetic', descriptionKey: 'sofia', color: '#f59e0b' },
