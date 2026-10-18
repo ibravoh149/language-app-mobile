@@ -21,6 +21,9 @@ export interface AudioPlayerState {
  * Streamed audio buffer queue playback via `react-native-audio-api`, adapted from
  * react-native-executorch's reference implementation (apps/speech/hooks/useAudioPlayer.ts).
  */
+/** Grace period after the computed end before playback is considered finished. */
+const END_SLACK_MS = 250;
+
 export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -29,6 +32,8 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   const lastEnqueuedBufferIdRef = useRef<string | null>(null);
   const lastBufferEndedRef = useRef(false);
   const streamDoneRef = useRef(false);
+  /** Backup for onBufferEnded, which can arrive late or not at all: ends playback by the clock. */
+  const endTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const getAudioContext = useCallback(async () => {
     if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
@@ -41,6 +46,8 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   }, [sampleRate]);
 
   const stop = useCallback(() => {
+    if (endTimerRef.current) clearTimeout(endTimerRef.current);
+    endTimerRef.current = null;
     if (queueSourceRef.current) {
       queueSourceRef.current.clearBuffers();
       queueSourceRef.current.stop();
@@ -67,9 +74,13 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
       streamDoneRef.current = false;
 
       let started = false;
+      let startedAt = 0;
+      let queuedSeconds = 0;
 
       const finishIfDone = () => {
         if (!streamDoneRef.current || !lastBufferEndedRef.current) return;
+        if (endTimerRef.current) clearTimeout(endTimerRef.current);
+        endTimerRef.current = null;
         const resolve = resolveCompletionRef.current;
         resolveCompletionRef.current = null;
         setIsPlaying(false);
@@ -94,9 +105,11 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
           buffer.copyToChannel(chunk.audio as Float32Array<ArrayBuffer>, 0);
           const bufferId = source.enqueueBuffer(buffer);
           lastEnqueuedBufferIdRef.current = bufferId;
+          queuedSeconds += chunk.audio.length / chunk.sampleRate;
 
           if (!started) {
             started = true;
+            startedAt = ctx.currentTime;
             setIsPlaying(true);
             source.start(0, 0);
           }
@@ -104,6 +117,14 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
         streamDoneRef.current = true;
         if (!started) {
           lastBufferEndedRef.current = true;
+        } else if (queueSourceRef.current === source) {
+          // All audio is queued, so we know when it ends; finish then even without the event.
+          const remainingMs = (startedAt + queuedSeconds - ctx.currentTime) * 1000 + END_SLACK_MS;
+          endTimerRef.current = setTimeout(() => {
+            if (queueSourceRef.current !== source) return;
+            lastBufferEndedRef.current = true;
+            finishIfDone();
+          }, Math.max(0, remainingMs));
         }
         finishIfDone();
       } catch (e) {
