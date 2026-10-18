@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
 
 import { AccentCard } from '@/components/accent-card';
 import { Button } from '@/components/button';
@@ -25,6 +25,11 @@ import { useRoleplayStore } from '@/store/roleplay';
 import { useSessionStore } from '@/store/session';
 
 export const scenarioQueryKey = ['roleplay', 'scenarios'] as const;
+/**
+ * Completed conversations until a scenario counts as mastered. The API has no mastery
+ * score yet (roleplay.md v2), so progress = timesPracticed / this; BACKLOG B-RP-1.
+ */
+const SESSIONS_TO_MASTER = 3;
 export const progressQueryKey = ['roleplay', 'progress'] as const;
 
 /** Practice tab root (prototype `SpeakScenarios`): pick a situation, then a prep brief opens. */
@@ -110,7 +115,7 @@ export function ScenarioListScreen() {
             <View style={styles.cards}>
               {shown.map((scenario, index) => (
                 <MotionReveal key={scenario.id} index={4 + index}>
-                  <ScenarioCard scenario={scenario} featured={scenario.id === featured?.id} onPress={() => open(scenario)} />
+                  <ScenarioCard scenario={scenario} featured={scenario.id === featured?.id} index={index} onPress={() => open(scenario)} />
                 </MotionReveal>
               ))}
             </View>
@@ -121,10 +126,18 @@ export function ScenarioListScreen() {
   );
 }
 
-function ScenarioCard({ scenario, featured, onPress }: { scenario: ScenarioSummary; featured: boolean; onPress: () => void }) {
+function ScenarioCard({ scenario, featured, index, onPress }: { scenario: ScenarioSummary; featured: boolean; index: number; onPress: () => void }) {
   const { t } = useTranslation();
   const theme = useTheme();
   const scale = useSharedValue(1);
+  const mastery = Math.min(1, scenario.timesPracticed / SESSIONS_TO_MASTER);
+  const mastered = mastery >= 1;
+  const fill = useSharedValue(0);
+  useEffect(() => {
+    // The bar fills after the card has arrived.
+    fill.value = withDelay(Motion.enter.duration + index * Motion.stagger, withTiming(mastery, Motion.countUp));
+  }, [fill, mastery, index]);
+  const fillStyle = useAnimatedStyle(() => ({ width: `${fill.value * 100}%` as `${number}%` }));
   const pressStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
   const onAccent = featured ? 'textOnAccent' : undefined;
 
@@ -135,7 +148,10 @@ function ScenarioCard({ scenario, featured, onPress }: { scenario: ScenarioSumma
           <ThemedText style={styles.emojiText} allowFontScaling={false}>{scenario.emoji}</ThemedText>
         </View>
         <View style={styles.cardText}>
-          <ThemedText type="smallBold" themeColor={onAccent} style={styles.cardTitle}>{scenario.title}</ThemedText>
+          <View style={styles.titleRow}>
+            <ThemedText type="smallBold" themeColor={onAccent} style={styles.cardTitle}>{scenario.title}</ThemedText>
+            {mastered ? <Icon name="check" size={15} themeColor={onAccent ?? 'success'} /> : null}
+          </View>
           <ThemedText type="small" themeColor={onAccent ?? 'textSecondary'} style={featured ? styles.dim : undefined}>
             {scenario.subtitle}
           </ThemedText>
@@ -152,6 +168,13 @@ function ScenarioCard({ scenario, featured, onPress }: { scenario: ScenarioSumma
         <ThemedText type="small" themeColor={onAccent ?? 'textMuted'} style={[styles.metaText, featured ? styles.dim : undefined]}>
           {scenario.timesPracticed > 0 ? t('roleplay.list.practised', { count: scenario.timesPracticed }) : t('roleplay.list.notTried')}
         </ThemedText>
+      </View>
+      <View
+        style={[styles.bar, { backgroundColor: featured ? 'rgba(255,255,255,0.25)' : theme.surfaceSunken }]}
+        accessible
+        accessibilityRole="progressbar"
+        accessibilityValue={{ min: 0, max: 100, now: Math.round(mastery * 100) }}>
+        <Animated.View style={[styles.barFill, { backgroundColor: featured ? theme.textOnAccent : mastered ? theme.success : theme.accent }, fillStyle]} />
       </View>
     </View>
   );
@@ -196,6 +219,9 @@ const styles = StyleSheet.create({
   emojiText: { fontSize: 26, lineHeight: 32 },
   cardText: { flex: 1, gap: 2 },
   cardTitle: { fontSize: 15.5 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  bar: { height: 5, borderRadius: 3, overflow: 'hidden' },
+  barFill: { height: '100%', borderRadius: 3 },
   dim: { opacity: 0.85 },
   meta: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 },
   metaPill: { paddingHorizontal: Spacing.sm, paddingVertical: 2, borderRadius: BorderRadius.pill, borderWidth: 1 },
