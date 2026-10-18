@@ -10,17 +10,7 @@ const KERSTIN: PiperModel = { id: 'vits-piper-de_DE-kerstin-low', sizeMB: 64, li
 const THORSTEN_MEDIUM: PiperModel = { id: 'vits-piper-de_DE-thorsten-medium', sizeMB: 64, licence: 'CC0' };
 const THORSTEN_HIGH: PiperModel = { id: 'vits-piper-de_DE-thorsten-high', sizeMB: 110, licence: 'CC0' };
 const THORSTEN_EMOTIONAL: PiperModel = { id: 'vits-piper-de_DE-thorsten_emotional-medium', sizeMB: 76, licence: 'CC0' };
-const MLS: PiperModel = {
-  id: 'vits-piper-de_DE-mls-medium',
-  sizeMB: 77,
-  licence: 'CC-BY 4.0 (credit needed)',
-  // Not published by sherpa-onnx: converted with languageapp/.voice-lab/convert_piper.py
-  // and released on the mobile repo (tag voices-v1).
-  url: 'https://github.com/ibravoh149/language-app-mobile/releases/download/voices-v1/vits-piper-de_DE-mls-medium.tar.bz2',
-  sha256: '3dfa0936119d216b85766ec532ca24568c7ca52a34a16a4e508df2480a8ce787',
-  // MLS's own defaults (its .onnx.json); much lower than the single-speaker voices.
-  vits: { noiseScale: 0.333, noiseScaleW: 0.333 },
-};
+// MLS (de_DE-mls-medium, release voices-v1) was tried and rejected by ear on 2026-10-18.
 
 export interface VoiceLabEntry {
   voice: Voice;
@@ -47,12 +37,6 @@ export const VOICE_LAB: VoiceLabSection[] = [
       entry('mara-calm', 'Mara · calm', '#d946ef', { ...RAMONA, vits: { noiseScale: 0.5, noiseScaleW: 0.6 } }, 'Steadier, less variation: 0.5 / 0.6 / 1.0'),
       entry('mara-smooth', 'Mara · smooth & slower', '#d946ef', { ...RAMONA, vits: { noiseScale: 0.6, noiseScaleW: 0.7, lengthScale: 1.08 } }, 'Smoother, 8% slower: 0.6 / 0.7 / 1.08'),
     ],
-  },
-  {
-    title: 'Female, medium quality (MLS)',
-    entries: [68, 118, 72, 223, 10].map((sid, i) =>
-      entry(`mls-${sid}`, `MLS speaker #${sid}`, ['#ec4899', '#f472b6', '#db2777', '#be185d', '#f9a8d4'][i], { ...MLS, sid }, 'Cleanest female speakers by background noise')
-    ),
   },
   {
     title: 'Lena (Kerstin), for reference',
