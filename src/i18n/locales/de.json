@@ -72,7 +72,8 @@
       "skipBeginner": "Überspringen, ich bin Anfänger",
       "micPermissionDenied": "Aktiviere den Mikrofonzugriff in den Einstellungen, um Sprechen zu üben.",
       "scoring": "Wir hören uns dein Deutsch an …",
-      "expired": "Die Aufgabe ist abgelaufen, hier ist eine neue."
+      "expired": "Die Aufgabe ist abgelaufen, hier ist eine neue.",
+      "preparingMicDownload": "Spracherkennung wird geladen … {{percent}} %. Das passiert nur einmal. Du kannst auch ohne Sprechen weitermachen."
     },
     "levelResult": {
       "reminderTimeLabel": "Welche Uhrzeit passt dir?",

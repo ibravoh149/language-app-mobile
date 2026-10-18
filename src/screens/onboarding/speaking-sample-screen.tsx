@@ -81,7 +81,7 @@ export function SpeakingSampleScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const theme = useTheme();
-  const speech = useSpeechRecognition();
+  const speech = useSpeechRecognition({ language: useCourseStore((state) => state.targetLanguage) });
   const stopRef = useRef(speech.stop);
   stopRef.current = speech.stop;
   const active = useRef(true);
@@ -206,8 +206,9 @@ export function SpeakingSampleScreen() {
         </View>
         <ThemedText type="small" themeColor="textSecondary" style={styles.center}>
           {t(speech.permissionDenied ? 'onboarding.placementTest.micPermissionDenied'
-            : !speech.isReady ? 'onboarding.placementTest.preparingMic'
-              : speech.isRecording ? 'onboarding.placementTest.listening' : 'onboarding.placementTest.tapToSpeak')}
+            : !speech.isReady ? (speech.downloadProgress < 100 ? 'onboarding.placementTest.preparingMicDownload' : 'onboarding.placementTest.preparingMic')
+              : speech.isRecording ? 'onboarding.placementTest.listening' : 'onboarding.placementTest.tapToSpeak',
+            { percent: Math.round(speech.downloadProgress) })}
         </ThemedText>
       </MotionReveal>
       {transcript ? <LiveTranscript text={transcript} /> : null}

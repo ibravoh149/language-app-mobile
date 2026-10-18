@@ -1,17 +1,28 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioManager, AudioRecorder } from 'react-native-audio-api';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
-import { models, useSpeechToText, WHISPER_SAMPLE_RATE_HZ } from 'react-native-executorch';
+import { models, useSpeechToText, WHISPER_LANGUAGES, WHISPER_SAMPLE_RATE_HZ, type WhisperLanguage } from 'react-native-executorch';
 
 import { Motion } from '@/constants/motion';
 
 /** RMS of normal speech sits around 0.02–0.15; this maps it onto 0..1 for the mic orb. */
 const LEVEL_GAIN = 7;
 
-// Live on-device transcription for the (currently German-only) placement test.
+/**
+ * Multilingual Whisper Base: Tiny garbled accented learner German too badly to
+ * score (BACKLOG B-STT-1). Default variant ~140 MB on iOS (Core ML), ~335 MB on
+ * Android (Vulkan), vs 73 / 204 MB for Tiny; downloaded once on first use.
+ */
+const STT_MODEL = models.speechToText.WHISPER.BASE.DEFAULT;
+
+function asWhisperLanguage(code: string): WhisperLanguage {
+  return (WHISPER_LANGUAGES as readonly string[]).includes(code) ? (code as WhisperLanguage) : 'de';
+}
+
+// Live on-device transcription of the learner, in the language they're learning.
 // Requires a dev-client build — react-native-executorch and the recorder are native-only.
-export function useSpeechRecognition() {
-  const stt = useSpeechToText(models.speechToText.WHISPER.TINY.DEFAULT);
+export function useSpeechRecognition({ language = 'de' }: { language?: string } = {}) {
+  const stt = useSpeechToText(STT_MODEL);
   const [isRecording, setIsRecording] = useState(false);
   const [committedText, setCommittedText] = useState('');
   const [nonCommittedText, setNonCommittedText] = useState('');
@@ -48,7 +59,7 @@ export function useSpeechRecognition() {
     setIsRecording(true);
 
     (async () => {
-      const textStream = stream({ language: 'de' });
+      const textStream = stream({ language: asWhisperLanguage(language) });
       for await (const result of textStream) {
         setCommittedText(result.committed);
         setNonCommittedText(result.nonCommitted);
@@ -68,7 +79,7 @@ export function useSpeechRecognition() {
       }
     );
     await recorder.start();
-  }, [stt, isRecording, level]);
+  }, [stt, isRecording, level, language]);
 
   const stop = useCallback(async () => {
     if (recorderRef.current) {
@@ -82,6 +93,8 @@ export function useSpeechRecognition() {
 
   return {
     isReady: stt.isReady,
+    /** First-run model download, 0–100 (react-native-executorch reports percent). */
+    downloadProgress: Math.min(100, Math.max(0, stt.downloadProgress ?? 0)),
     isRecording,
     committedText,
     nonCommittedText,

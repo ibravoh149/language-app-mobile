@@ -3,10 +3,11 @@
 // is unavailable in the web/Expo-Go target.
 import { useSharedValue } from 'react-native-reanimated';
 
-export function useSpeechRecognition() {
+export function useSpeechRecognition(_options: { language?: string } = {}) {
   const level = useSharedValue(0);
   return {
     isReady: false,
+    downloadProgress: 0,
     isRecording: false,
     committedText: '',
     nonCommittedText: '',

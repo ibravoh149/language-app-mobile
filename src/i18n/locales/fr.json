@@ -72,7 +72,8 @@
       "skipBeginner": "Passer, je suis débutant",
       "micPermissionDenied": "Active l'accès au micro dans les réglages pour t'entraîner à parler.",
       "scoring": "On écoute ton allemand…",
-      "expired": "Cette consigne a expiré, en voici une nouvelle."
+      "expired": "Cette consigne a expiré, en voici une nouvelle.",
+      "preparingMicDownload": "Téléchargement de la reconnaissance vocale… {{percent}} %. Cela n’arrive qu’une fois. Tu peux continuer sans parler."
     },
     "levelResult": {
       "reminderTimeLabel": "Quelle heure vous convient ?",

@@ -72,7 +72,8 @@
       "skipBeginner": "Atla, ben başlangıç seviyesindeyim",
       "micPermissionDenied": "Konuşma pratiği yapmak için Ayarlar'dan mikrofon erişimini aç.",
       "scoring": "Almancanı dinliyoruz…",
-      "expired": "Bu cümlenin süresi doldu, işte yenisi."
+      "expired": "Bu cümlenin süresi doldu, işte yenisi.",
+      "preparingMicDownload": "Konuşma tanıma indiriliyor… %{{percent}}. Bu yalnızca bir kez olur. Konuşmadan da devam edebilirsin."
     },
     "levelResult": {
       "reminderTimeLabel": "Hangi saat sizin için uygun?",

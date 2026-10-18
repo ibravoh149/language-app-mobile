@@ -72,7 +72,8 @@
       "skipBeginner": "Saltar, soy principiante",
       "micPermissionDenied": "Activa el acceso al micrófono en Ajustes para practicar hablando.",
       "scoring": "Escuchando tu alemán…",
-      "expired": "Esa frase caducó, aquí tienes una nueva."
+      "expired": "Esa frase caducó, aquí tienes una nueva.",
+      "preparingMicDownload": "Descargando el reconocimiento de voz… {{percent}} %. Solo ocurre una vez. Puedes continuar sin hablar."
     },
     "levelResult": {
       "reminderTimeLabel": "¿Qué hora te viene bien?",
