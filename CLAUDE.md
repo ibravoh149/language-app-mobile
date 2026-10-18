@@ -56,6 +56,11 @@ Path aliases: `@/*` → `src/*`, `@/assets/*` → `assets/*`.
   `/(auth)/verify-email`. A signed-in learner finishing onboarding saves the
   profile with `PATCH /me/profile` instead of signing up.
 - Forgot password → `/(auth)/reset-password` (6-digit code + new password).
+- `/legal` (Terms / Privacy / Imprint placeholders, linked from signup) and
+  `/delete-account` (password or emailed code, `DELETE /me`; linked from home).
+- Signup and social sign-in send the onboarding profile only if onboarding was
+  done on this device (`onboardingPayload()`); otherwise the account goes through
+  onboarding after verifying.
 - `EXPO_PUBLIC_API_MOCK=1` swaps in the in-memory auth and placement mocks (codes are `123456`).
 - Google / Apple sign-in (`src/services/social-auth.ts`, buttons on login) are
   **off until configured**: `app.config.ts` adds the Google plugin only when

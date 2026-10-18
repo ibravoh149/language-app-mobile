@@ -214,12 +214,42 @@
       "passwordLabel": "Neues Passwort",
       "submit": "Speichern und anmelden",
       "resend": "Keinen Code bekommen? Erneut senden"
-    }
+    },
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen"
   },
   "home": {
     "greeting": "Willkommen!",
     "greetingName": "Willkommen, {{name}}!",
     "level": "Startniveau: {{level}}",
     "logOut": "Abmelden"
+  },
+  "legal": {
+    "title": "Rechtliches",
+    "tabs": {
+      "terms": "AGB",
+      "privacy": "Datenschutz",
+      "imprint": "Impressum"
+    },
+    "headings": {
+      "terms": "Allgemeine Geschäftsbedingungen",
+      "privacy": "Datenschutzerklärung",
+      "imprint": "Impressum"
+    },
+    "placeholder": "Platzhalter: Der echte Rechtstext kommt vor dem Start hierher. Für Veröffentlichungen in Deutschland und der EU ist ein Impressum Pflicht."
+  },
+  "account": {
+    "delete": {
+      "title": "Konto löschen",
+      "subtitle": "Damit werden dein Konto, dein Profil, deine Einstufung und dein Fortschritt endgültig gelöscht. Das kann nicht rückgängig gemacht werden.",
+      "passwordLabel": "Mit deinem Passwort bestätigen",
+      "useCode": "Lieber einen Code per E-Mail",
+      "usePassword": "Lieber mit Passwort",
+      "sendCode": "Code per E-Mail senden",
+      "codeSent": "Gib den 6-stelligen Code ein, den wir an {{email}} geschickt haben.",
+      "confirm": "Mein Konto endgültig löschen",
+      "wrongPassword": "Das Passwort stimmt nicht.",
+      "homeLink": "Konto löschen"
+    }
   }
 }

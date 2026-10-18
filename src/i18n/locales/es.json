@@ -214,12 +214,42 @@
       "passwordLabel": "Contraseña nueva",
       "submit": "Guardar e iniciar sesión",
       "resend": "¿No te llegó el código? Enviar de nuevo"
-    }
+    },
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña"
   },
   "home": {
     "greeting": "¡Hola!",
     "greetingName": "¡Hola, {{name}}!",
     "level": "Nivel inicial: {{level}}",
     "logOut": "Cerrar sesión"
+  },
+  "legal": {
+    "title": "Aviso legal",
+    "tabs": {
+      "terms": "Términos",
+      "privacy": "Privacidad",
+      "imprint": "Aviso legal"
+    },
+    "headings": {
+      "terms": "Términos y condiciones",
+      "privacy": "Política de privacidad",
+      "imprint": "Aviso legal (Impressum)"
+    },
+    "placeholder": "Texto provisional: el texto legal real se añadirá antes del lanzamiento. El aviso legal es obligatorio para publicar en Alemania y la UE."
+  },
+  "account": {
+    "delete": {
+      "title": "Eliminar tu cuenta",
+      "subtitle": "Se eliminarán para siempre tu cuenta, tu perfil, tus resultados de nivel y tu progreso. No se puede deshacer.",
+      "passwordLabel": "Confirma con tu contraseña",
+      "useCode": "Mejor envíame un código por correo",
+      "usePassword": "Mejor usar mi contraseña",
+      "sendCode": "Enviarme un código por correo",
+      "codeSent": "Ingresa el código de 6 dígitos que enviamos a {{email}}.",
+      "confirm": "Eliminar mi cuenta para siempre",
+      "wrongPassword": "Esa contraseña no es correcta.",
+      "homeLink": "Eliminar cuenta"
+    }
   }
 }

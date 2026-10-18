@@ -66,6 +66,8 @@ export default function TabLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="(onboarding)/welcome" options={{ headerShown: false }} />
             <Stack.Screen name="voice-lab" options={{ title: 'Voice lab' }} />
+            <Stack.Screen name="legal" options={{ title: t('legal.title') }} />
+            <Stack.Screen name="delete-account" options={{ title: '' }} />
           </Stack>
           <CelebrationHost />
         </ThemeProvider>

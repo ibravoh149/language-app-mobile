@@ -214,12 +214,42 @@
       "passwordLabel": "Yeni şifre",
       "submit": "Kaydet ve giriş yap",
       "resend": "Kod gelmedi mi? Tekrar gönder"
-    }
+    },
+    "showPassword": "Şifreyi göster",
+    "hidePassword": "Şifreyi gizle"
   },
   "home": {
     "greeting": "Hoş geldin!",
     "greetingName": "Hoş geldin, {{name}}!",
     "level": "Başlangıç seviyesi: {{level}}",
     "logOut": "Çıkış yap"
+  },
+  "legal": {
+    "title": "Yasal",
+    "tabs": {
+      "terms": "Koşullar",
+      "privacy": "Gizlilik",
+      "imprint": "Künye"
+    },
+    "headings": {
+      "terms": "Kullanım Koşulları",
+      "privacy": "Gizlilik Politikası",
+      "imprint": "Künye (Impressum)"
+    },
+    "placeholder": "Yer tutucu: gerçek yasal metin yayından önce buraya eklenecek. Almanya ve AB'de yayın için künye zorunludur."
+  },
+  "account": {
+    "delete": {
+      "title": "Hesabını sil",
+      "subtitle": "Hesabın, profilin, seviye sonuçların ve ilerlemen kalıcı olarak silinir. Bu işlem geri alınamaz.",
+      "passwordLabel": "Şifrenle onayla",
+      "useCode": "Bunun yerine e-postayla kod gönder",
+      "usePassword": "Bunun yerine şifremi kullan",
+      "sendCode": "E-postayla kod gönder",
+      "codeSent": "{{email}} adresine gönderdiğimiz 6 haneli kodu gir.",
+      "confirm": "Hesabımı kalıcı olarak sil",
+      "wrongPassword": "Bu şifre doğru değil.",
+      "homeLink": "Hesabı sil"
+    }
   }
 }

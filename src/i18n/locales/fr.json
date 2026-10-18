@@ -214,12 +214,42 @@
       "passwordLabel": "Nouveau mot de passe",
       "submit": "Enregistrer et se connecter",
       "resend": "Pas reçu de code ? Renvoyer"
-    }
+    },
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe"
   },
   "home": {
     "greeting": "Bienvenue !",
     "greetingName": "Bienvenue, {{name}} !",
     "level": "Niveau de départ : {{level}}",
     "logOut": "Se déconnecter"
+  },
+  "legal": {
+    "title": "Mentions légales",
+    "tabs": {
+      "terms": "Conditions",
+      "privacy": "Confidentialité",
+      "imprint": "Mentions"
+    },
+    "headings": {
+      "terms": "Conditions générales d'utilisation",
+      "privacy": "Politique de confidentialité",
+      "imprint": "Mentions légales (Impressum)"
+    },
+    "placeholder": "Texte provisoire : le vrai texte juridique sera ajouté avant le lancement. Des mentions légales sont obligatoires pour publier en Allemagne et dans l'UE."
+  },
+  "account": {
+    "delete": {
+      "title": "Supprimer ton compte",
+      "subtitle": "Ton compte, ton profil, tes résultats de placement et ta progression seront supprimés définitivement. Impossible de revenir en arrière.",
+      "passwordLabel": "Confirme avec ton mot de passe",
+      "useCode": "Recevoir plutôt un code par e-mail",
+      "usePassword": "Utiliser plutôt mon mot de passe",
+      "sendCode": "M'envoyer un code par e-mail",
+      "codeSent": "Entre le code à 6 chiffres envoyé à {{email}}.",
+      "confirm": "Supprimer définitivement mon compte",
+      "wrongPassword": "Ce mot de passe n'est pas bon.",
+      "homeLink": "Supprimer le compte"
+    }
   }
 }

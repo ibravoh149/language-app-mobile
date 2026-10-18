@@ -214,12 +214,42 @@
       "passwordLabel": "New password",
       "submit": "Save and log in",
       "resend": "Didn't get a code? Send again"
-    }
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "home": {
     "greeting": "Welcome!",
     "greetingName": "Welcome, {{name}}!",
     "level": "Starting level: {{level}}",
     "logOut": "Log out"
+  },
+  "legal": {
+    "title": "Legal",
+    "tabs": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "imprint": "Imprint"
+    },
+    "headings": {
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "imprint": "Imprint (Impressum)"
+    },
+    "placeholder": "Placeholder: the real legal text goes here before launch. An imprint is required for publishing in Germany and the EU."
+  },
+  "account": {
+    "delete": {
+      "title": "Delete your account",
+      "subtitle": "This permanently deletes your account, profile, placement results and progress. It can't be undone.",
+      "passwordLabel": "Confirm with your password",
+      "useCode": "Email me a code instead",
+      "usePassword": "Use my password instead",
+      "sendCode": "Email me a code",
+      "codeSent": "Enter the 6-digit code we sent to {{email}}.",
+      "confirm": "Delete my account permanently",
+      "wrongPassword": "That password isn't right.",
+      "homeLink": "Delete account"
+    }
   }
 }
