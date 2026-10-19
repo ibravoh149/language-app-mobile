@@ -9,6 +9,7 @@ import { MotionReveal } from '@/components/motion-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { VOICE_LAB, VOICE_LAB_PACES, type VoiceLabEntry } from '@/constants/voice-lab';
+import { PhoneVoices } from '@/screens/dev/phone-voices';
 import { voiceSampleText } from '@/constants/voices';
 import { BorderRadius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
@@ -67,6 +68,12 @@ export function VoiceLabScreen() {
                 }}
               />
             ))}
+          </View>
+          <View style={styles.section}>
+            <ThemedText type="smallBold" themeColor="textMuted" style={styles.sectionTitle}>
+              Phone voices (experiment: iOS / Android built-in)
+            </ThemedText>
+            <PhoneVoices text={voiceSampleText('de', 'Mara')} onPlay={() => sample.stop()} />
           </View>
           {VOICE_LAB.map((section) => (
             <View key={section.title} style={styles.section}>
