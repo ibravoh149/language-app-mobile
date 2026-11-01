@@ -8,6 +8,7 @@ import { type CEFRLevel } from '@/constants/levels';
 
 import api from './api';
 import { ApiError } from './api-error';
+import { mockLookupWord } from './words-api';
 
 export interface ScenarioSummary {
   id: string;
@@ -49,6 +50,35 @@ export interface Correction {
   explanation: string;
 }
 
+/** A dictionary word (v3). `saved` = in My Words. */
+export interface Word {
+  id: string;
+  lemma: string;
+  article: 'der' | 'die' | 'das' | null;
+  plural: string | null;
+  partOfSpeech: 'noun' | 'verb' | 'adjective' | 'adverb' | 'phrase' | 'other';
+  /** In the learner's spoken language. */
+  meaning: string;
+  /** Short German example sentence. */
+  example: string;
+  saved: boolean;
+  source: 'roleplay' | 'manual';
+  createdAt: string | null;
+}
+
+/**
+ * What the tutor asks the app to do this turn (v3, D24), rendered in order after the
+ * reply. New types may be added: render only these and ignore anything else.
+ */
+export type Action =
+  | { type: 'word_card'; word: Word }
+  | { type: 'play'; text: string }
+  | { type: 'grammar_card'; ruleKey: string; ruleName: string; explanation: string; examples: string[] }
+  | { type: 'goal_achieved'; goalIndex: number; goal: string }
+  | { type: 'scenario_complete'; reason: string };
+
+export const KNOWN_ACTION_TYPES = ['word_card', 'play', 'grammar_card', 'goal_achieved', 'scenario_complete'] as const;
+
 export interface Streak {
   current: number;
   longest: number;
@@ -70,6 +100,10 @@ export interface TurnResult {
   understood: boolean;
   corrections: Correction[];
   streak: Streak;
+  /** v3: at most 4; may contain unknown types (ignore them). */
+  actions?: Action[];
+  /** v3: indexes of scenario.goals met so far in this session, ascending. */
+  goalsAchieved?: number[];
 }
 
 export interface SessionDetail {
@@ -77,6 +111,8 @@ export interface SessionDetail {
   scenario: ScenarioSummary;
   turns: Turn[];
   corrections: Correction[];
+  /** v3 */
+  goalsAchieved?: number[];
 }
 
 export interface SessionSummary {
@@ -204,7 +240,7 @@ const MOCK_SCENARIOS: MockScenario[] = [
   },
 ];
 
-const mockSessions = new Map<string, { session: Session; scenario: MockScenario; turns: Turn[]; corrections: Correction[]; understood: number }>();
+const mockSessions = new Map<string, { session: Session; scenario: MockScenario; turns: Turn[]; corrections: Correction[]; understood: number; goals: number[] }>();
 const mockStreak: Streak = { current: 0, longest: 0, producedToday: false, extendedToday: false };
 let mockSessionsCompleted = 0;
 let mockTurnsToday = 0;
@@ -228,6 +264,31 @@ const findSession = (id: string) => {
   return entry;
 };
 
+/** Spreads every action type over a mock conversation so each can be tried without the backend. */
+function mockActions(entry: { scenario: MockScenario; goals: number[] }, learnerTurn: number): Action[] {
+  const { scenario, goals } = entry;
+  const achieve = (index: number): Action[] => {
+    if (index >= scenario.goals.length || goals.includes(index)) return [];
+    goals.push(index);
+    goals.sort((a, b) => a - b);
+    return [{ type: 'goal_achieved', goalIndex: index, goal: scenario.goals[index] }];
+  };
+  const word = (i: number): Action[] => (scenario.words[i] ? [{ type: 'word_card', word: mockLookupWord(scenario.words[i].de) }] : []);
+  switch (learnerTurn) {
+    case 0:
+      return [...word(0), ...achieve(0)];
+    case 1:
+      return [
+        { type: 'grammar_card', ruleKey: 'mock-rule', ruleName: scenario.grammar[0] ?? 'Grammar', explanation: scenario.sampleCorrection.explanation, examples: scenario.phrases.slice(0, 2) },
+        ...(scenario.phrases[0] ? [{ type: 'play' as const, text: scenario.phrases[0] }] : []),
+      ];
+    case 2:
+      return [...achieve(1), ...word(1)];
+    default:
+      return [...achieve(2), { type: 'scenario_complete', reason: 'You reached every goal of this scene.' }];
+  }
+}
+
 const mockRoleplayApi: RoleplayApi = {
   async listScenarios() {
     await delay(300);
@@ -243,7 +304,7 @@ const mockRoleplayApi: RoleplayApi = {
     const scenario = findScenario(scenarioId);
     const session: Session = { id: nextId('mock-session'), scenarioId: scenario.id, startedAt: now(), endedAt: null };
     const opening: Turn = { id: nextId('turn'), role: 'ai', text: scenario.opening, createdAt: now() };
-    mockSessions.set(session.id, { session, scenario, turns: [opening], corrections: [], understood: 0 });
+    mockSessions.set(session.id, { session, scenario, turns: [opening], corrections: [], understood: 0, goals: [] });
     return { session, opening };
   },
   async sendTurn(sessionId, text) {
@@ -265,12 +326,13 @@ const mockRoleplayApi: RoleplayApi = {
     mockTurnsToday += 1;
     entry.turns.push(userTurn, reply);
     entry.corrections.push(...corrections);
-    return { userTurn, reply, understood, corrections, streak: { ...mockStreak, extendedToday } };
+    const actions = mockActions(entry, learnerTurns);
+    return { userTurn, reply, understood, corrections, streak: { ...mockStreak, extendedToday }, actions, goalsAchieved: [...entry.goals] };
   },
   async getSession(sessionId) {
     await delay(200);
-    const { session, scenario, turns, corrections } = findSession(sessionId);
-    return { session, scenario: summaryOf(scenario), turns, corrections };
+    const { session, scenario, turns, corrections, goals } = findSession(sessionId);
+    return { session, scenario: summaryOf(scenario), turns, corrections, goalsAchieved: [...goals] };
   },
   async getCorrections(sessionId) {
     await delay(150);
