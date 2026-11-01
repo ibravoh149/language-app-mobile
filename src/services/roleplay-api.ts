@@ -146,7 +146,11 @@ export interface RoleplayApi {
   getScenario(idOrSlug: string): Promise<Scenario>;
   startSession(scenarioId: string): Promise<{ session: Session; opening: Turn }>;
   /** On 502 TUTOR_UNAVAILABLE nothing is stored, so re-sending the same text is safe. */
-  sendTurn(sessionId: string, text: string, inputMode: InputMode): Promise<TurnResult>;
+  /**
+   * `clientTurnId` (v3.1) is the turn's idempotency key: one per learner turn, reused on
+   * every retry of it. A repeat returns the stored response unchanged.
+   */
+  sendTurn(sessionId: string, text: string, inputMode: InputMode, clientTurnId?: string): Promise<TurnResult>;
   getSession(sessionId: string): Promise<SessionDetail>;
   getCorrections(sessionId: string): Promise<Correction[]>;
   /** Idempotent. */
@@ -163,9 +167,9 @@ const httpRoleplayApi: RoleplayApi = {
     (await api.get<{ scenario: Scenario }>(`/scenarios/${encodeURIComponent(idOrSlug)}`)).data.scenario,
   startSession: async (scenarioId) =>
     (await api.post<{ session: Session; opening: Turn }>('/sessions', { scenarioId })).data,
-  sendTurn: async (sessionId, text, inputMode) =>
+  sendTurn: async (sessionId, text, inputMode, clientTurnId) =>
     (
-      await api.post<TurnResult>(`/sessions/${encodeURIComponent(sessionId)}/turns`, { text, inputMode }, {
+      await api.post<TurnResult>(`/sessions/${encodeURIComponent(sessionId)}/turns`, { text, inputMode, clientTurnId }, {
         timeout: TURN_TIMEOUT_MS,
       })
     ).data,
@@ -265,6 +269,9 @@ const findSession = (id: string) => {
 };
 
 /** Spreads every action type over a mock conversation so each can be tried without the backend. */
+/** Stored responses by session + clientTurnId, so a retried turn replays (v3.1). */
+const mockTurnReplays = new Map<string, { text: string; result: TurnResult }>();
+
 function mockActions(entry: { scenario: MockScenario; goals: number[] }, learnerTurn: number): Action[] {
   const { scenario, goals } = entry;
   const achieve = (index: number): Action[] => {
@@ -307,9 +314,15 @@ const mockRoleplayApi: RoleplayApi = {
     mockSessions.set(session.id, { session, scenario, turns: [opening], corrections: [], understood: 0, goals: [] });
     return { session, opening };
   },
-  async sendTurn(sessionId, text) {
+  async sendTurn(sessionId, text, _inputMode, clientTurnId) {
     await delay(1200);
     const entry = findSession(sessionId);
+    const replayKey = clientTurnId ? `${sessionId}:${clientTurnId}` : null;
+    const stored = replayKey ? mockTurnReplays.get(replayKey) : undefined;
+    if (stored) {
+      if (stored.text !== text.trim()) throw new ApiError('IDEMPOTENCY_KEY_REUSED', 'Key reused with different text', 409);
+      return stored.result;
+    }
     if (entry.session.endedAt) throw new ApiError('SESSION_ENDED', 'Session ended', 409);
     const userTurn: Turn = { id: nextId('turn'), role: 'user', text: text.trim(), createdAt: now() };
     const learnerTurns = entry.turns.filter((t) => t.role === 'user').length;
@@ -327,7 +340,9 @@ const mockRoleplayApi: RoleplayApi = {
     entry.turns.push(userTurn, reply);
     entry.corrections.push(...corrections);
     const actions = mockActions(entry, learnerTurns);
-    return { userTurn, reply, understood, corrections, streak: { ...mockStreak, extendedToday }, actions, goalsAchieved: [...entry.goals] };
+    const result: TurnResult = { userTurn, reply, understood, corrections, streak: { ...mockStreak, extendedToday }, actions, goalsAchieved: [...entry.goals] };
+    if (replayKey) mockTurnReplays.set(replayKey, { text: userTurn.text, result });
+    return result;
   },
   async getSession(sessionId) {
     await delay(200);

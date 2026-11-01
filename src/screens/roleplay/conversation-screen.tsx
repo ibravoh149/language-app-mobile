@@ -35,6 +35,7 @@ import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
 import { useTheme } from '@/hooks/use-theme';
 import { toApiError, type ApiError } from '@/services/api-error';
 import { haptics } from '@/services/haptics';
+import { randomUUID } from '@/services/uuid';
 import { type Action, type InputMode, roleplayApi, type SessionDetail, type Turn, type Word } from '@/services/roleplay-api';
 import { celebrate } from '@/store/celebration';
 import { useRoleplayStore } from '@/store/roleplay';
@@ -76,6 +77,11 @@ export function ConversationScreen() {
   /** The tutor's actions per AI reply id (v3, D24; only known for replies received on this screen). */
   const [actionsByReply, setActionsByReply] = useState<Record<string, Action[]>>({});
   const scrollRef = useRef<ScrollView>(null);
+  /**
+   * The learner turn in flight or last failed, with its idempotency key (v3.1). Re-sending
+   * the same text reuses the key, so a retry after a lost response can't store it twice.
+   */
+  const pendingTurnRef = useRef<{ text: string; clientTurnId: string } | null>(null);
   const spokenOpening = useRef(false);
   const stopRef = useRef(speech.stop);
   stopRef.current = speech.stop;
@@ -179,15 +185,20 @@ export function ConversationScreen() {
     setTyping(false);
     try {
       const sentAt = performance.now();
-      const result = await roleplayApi.sendTurn(sessionId, text, mode);
+      const pending = pendingTurnRef.current;
+      const clientTurnId = pending?.text === text ? pending.clientTurnId : randomUUID();
+      pendingTurnRef.current = { text, clientTurnId };
+      const result = await roleplayApi.sendTurn(sessionId, text, mode, clientTurnId);
+      pendingTurnRef.current = null;
       if (__DEV__) console.info(`[timing] turn round-trip: ${Math.round(performance.now() - sentAt)} ms`);
       queryClient.setQueryData<SessionDetail>(key, (old) =>
-        old ? {
+        // A replayed response (same ids) must not render twice.
+        !old || old.turns.some((turn) => turn.id === result.userTurn.id) ? old : {
           ...old,
           turns: [...old.turns, result.userTurn, result.reply],
           corrections: [...old.corrections, ...result.corrections],
           goalsAchieved: result.goalsAchieved ?? old.goalsAchieved,
-        } : old
+        }
       );
       if (result.actions?.length) setActionsByReply((prev) => ({ ...prev, [result.reply.id]: result.actions ?? [] }));
       // Words the tutor saved for the learner join My Words straight away.
@@ -208,6 +219,8 @@ export function ConversationScreen() {
     } catch (caught) {
       const apiError = toApiError(caught);
       haptics.error();
+      // A reused key with different text is a client bug: the next attempt gets a fresh key.
+      if (apiError.code === 'IDEMPOTENCY_KEY_REUSED') pendingTurnRef.current = null;
       // Nothing was stored, so the learner's sentence comes back for a retry (contract).
       setError({ error: apiError, text });
       setDraft(text);

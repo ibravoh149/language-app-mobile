@@ -18,6 +18,7 @@ export type ApiErrorCode =
   | 'NETWORK'
   // Roleplay (docs/api/roleplay.md)
   | 'SESSION_ENDED'
+  | 'IDEMPOTENCY_KEY_REUSED'
   | 'TUTOR_UNAVAILABLE';
 
 interface ErrorEnvelope {
