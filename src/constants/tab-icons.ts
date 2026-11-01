@@ -4,4 +4,5 @@ import type { NativeTabsTriggerIconProps } from 'expo-router/unstable-native-tab
 export const nativeTabIcons = {
   home: { sf: 'house', md: 'home' },
   practice: { sf: 'mic', md: 'mic' },
+  words: { sf: 'bookmark', md: 'bookmark' },
 } as const satisfies Record<string, NativeTabsTriggerIconProps>;

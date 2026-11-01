@@ -22,6 +22,11 @@ export default function AppTabs() {
         <NativeTabs.Trigger.Label>{t('tabs.practice')}</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon {...nativeTabIcons.practice} />
       </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="words">
+        <NativeTabs.Trigger.Label>{t('tabs.words')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon {...nativeTabIcons.words} />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }
