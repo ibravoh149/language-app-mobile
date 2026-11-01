@@ -279,7 +279,8 @@
   },
   "tabs": {
     "home": "الرئيسية",
-    "practice": "تدرّب"
+    "practice": "تدرّب",
+    "words": "الكلمات"
   },
   "roleplay": {
     "list": {
@@ -398,10 +399,49 @@
       "celebrateSubtitle_few": "فُهمت {{count}} جمل",
       "celebrateSubtitle_many": "فُهمت {{count}} جملة",
       "celebrateSubtitle_other": "فُهمت {{count}} جملة"
+    },
+    "actions": {
+      "grammar": "القواعد",
+      "goalReached": "تم تحقيق الهدف: {{goal}}",
+      "completeTitle": "اكتمل المشهد!",
+      "finish": "إنهاء المحادثة",
+      "goals": "الأهداف {{done}}/{{total}}"
     }
   },
   "profile": {
     "title": "الملف الشخصي",
     "legal": "الشروط والخصوصية وبيانات الناشر"
+  },
+  "words": {
+    "title": "كلماتي",
+    "intro": "كلمات حفظتها في المحادثات أو أضفتها بنفسك. اضغط على كلمة لسماعها.",
+    "statSaved": "محفوظة",
+    "statNouns": "أسماء",
+    "addPlaceholder": "أضف كلمة ألمانية، مثل die Kaution",
+    "add": "إضافة كلمة",
+    "adding": "جارٍ البحث…",
+    "addFailed": "تعذّرت إضافة هذه الكلمة. تحقّق من الإملاء وحاول مرة أخرى.",
+    "loadFailed": "تعذّر تحميل كلماتك.",
+    "emptyTitle": "لا توجد كلمات بعد",
+    "emptyBody": "اسأل شريك المحادثة عن معنى كلمة، أو اضغط على علامة الحفظ في بطاقة كلمة، أو أضف كلمة في الأعلى.",
+    "filters": {
+      "all": "الكل",
+      "noun": "أسماء",
+      "verb": "أفعال",
+      "other": "أخرى"
+    },
+    "listen": "استمع إلى {{word}}",
+    "save": "احفظ في كلماتي",
+    "unsave": "أزل من كلماتي",
+    "saveFailed": "تعذّر تحديث كلماتي. حاول مرة أخرى.",
+    "pos": {
+      "noun": "اسم",
+      "verb": "فعل",
+      "adjective": "صفة",
+      "adverb": "ظرف",
+      "phrase": "عبارة",
+      "other": "كلمة"
+    },
+    "plural": "الجمع: {{plural}}"
   }
 }

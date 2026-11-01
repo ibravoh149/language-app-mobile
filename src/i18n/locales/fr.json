@@ -267,7 +267,8 @@
   },
   "tabs": {
     "home": "Accueil",
-    "practice": "Pratique"
+    "practice": "Pratique",
+    "words": "Mots"
   },
   "roleplay": {
     "list": {
@@ -358,10 +359,49 @@
       "celebrateTitle": "Bien parlé !",
       "celebrateSubtitle_one": "{{count}} phrase comprise",
       "celebrateSubtitle_other": "{{count}} phrases comprises"
+    },
+    "actions": {
+      "grammar": "Grammaire",
+      "goalReached": "Objectif atteint : {{goal}}",
+      "completeTitle": "Scène terminée !",
+      "finish": "Terminer la conversation",
+      "goals": "Objectifs {{done}}/{{total}}"
     }
   },
   "profile": {
     "title": "Profil",
     "legal": "Conditions, confidentialité & mentions"
+  },
+  "words": {
+    "title": "Mes mots",
+    "intro": "Les mots enregistrés pendant tes conversations ou ajoutés par toi. Touche un mot pour l'écouter.",
+    "statSaved": "enregistrés",
+    "statNouns": "noms",
+    "addPlaceholder": "Ajoute un mot allemand, ex. die Kaution",
+    "add": "Ajouter le mot",
+    "adding": "Recherche…",
+    "addFailed": "Impossible d'ajouter ce mot. Vérifie l'orthographe et réessaie.",
+    "loadFailed": "Impossible de charger tes mots.",
+    "emptyTitle": "Pas encore de mots",
+    "emptyBody": "Demande à ton interlocuteur ce que signifie un mot, touche le signet d'une carte de mot ou ajoutes-en un ci-dessus.",
+    "filters": {
+      "all": "Tous",
+      "noun": "Noms",
+      "verb": "Verbes",
+      "other": "Autres"
+    },
+    "listen": "Écouter {{word}}",
+    "save": "Enregistrer dans Mes mots",
+    "unsave": "Retirer de Mes mots",
+    "saveFailed": "Impossible de mettre à jour Mes mots. Réessaie.",
+    "pos": {
+      "noun": "nom",
+      "verb": "verbe",
+      "adjective": "adjectif",
+      "adverb": "adverbe",
+      "phrase": "expression",
+      "other": "mot"
+    },
+    "plural": "pluriel : {{plural}}"
   }
 }

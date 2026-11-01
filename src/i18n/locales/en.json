@@ -267,7 +267,8 @@
   },
   "tabs": {
     "home": "Home",
-    "practice": "Practice"
+    "practice": "Practice",
+    "words": "Words"
   },
   "roleplay": {
     "list": {
@@ -358,10 +359,49 @@
       "celebrateTitle": "Well spoken!",
       "celebrateSubtitle_one": "{{count}} sentence understood",
       "celebrateSubtitle_other": "{{count}} sentences understood"
+    },
+    "actions": {
+      "grammar": "Grammar",
+      "goalReached": "Goal reached: {{goal}}",
+      "completeTitle": "Scene complete!",
+      "finish": "Finish conversation",
+      "goals": "Goals {{done}}/{{total}}"
     }
   },
   "profile": {
     "title": "Profile",
     "legal": "Terms, privacy & imprint"
+  },
+  "words": {
+    "title": "My words",
+    "intro": "Words you saved in conversations or added yourself. Tap a word to hear it.",
+    "statSaved": "saved",
+    "statNouns": "nouns",
+    "addPlaceholder": "Add a German word, e.g. die Kaution",
+    "add": "Add word",
+    "adding": "Looking it up…",
+    "addFailed": "Couldn't add that word. Check the spelling and try again.",
+    "loadFailed": "Couldn't load your words.",
+    "emptyTitle": "No words yet",
+    "emptyBody": "Ask your conversation partner what a word means, tap the bookmark on a word card, or add one above.",
+    "filters": {
+      "all": "All",
+      "noun": "Nouns",
+      "verb": "Verbs",
+      "other": "Other"
+    },
+    "listen": "Listen to {{word}}",
+    "save": "Save to My words",
+    "unsave": "Remove from My words",
+    "saveFailed": "Couldn't update My words. Try again.",
+    "pos": {
+      "noun": "noun",
+      "verb": "verb",
+      "adjective": "adjective",
+      "adverb": "adverb",
+      "phrase": "phrase",
+      "other": "word"
+    },
+    "plural": "plural: {{plural}}"
   }
 }

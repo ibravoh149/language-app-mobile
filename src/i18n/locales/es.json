@@ -267,7 +267,8 @@
   },
   "tabs": {
     "home": "Inicio",
-    "practice": "Práctica"
+    "practice": "Práctica",
+    "words": "Palabras"
   },
   "roleplay": {
     "list": {
@@ -358,10 +359,49 @@
       "celebrateTitle": "¡Bien dicho!",
       "celebrateSubtitle_one": "{{count}} frase entendida",
       "celebrateSubtitle_other": "{{count}} frases entendidas"
+    },
+    "actions": {
+      "grammar": "Gramática",
+      "goalReached": "Objetivo logrado: {{goal}}",
+      "completeTitle": "¡Escena completada!",
+      "finish": "Terminar conversación",
+      "goals": "Objetivos {{done}}/{{total}}"
     }
   },
   "profile": {
     "title": "Perfil",
     "legal": "Términos, privacidad y aviso legal"
+  },
+  "words": {
+    "title": "Mis palabras",
+    "intro": "Palabras que guardaste en conversaciones o añadiste tú. Toca una palabra para escucharla.",
+    "statSaved": "guardadas",
+    "statNouns": "sustantivos",
+    "addPlaceholder": "Añade una palabra alemana, p. ej. die Kaution",
+    "add": "Añadir palabra",
+    "adding": "Buscando…",
+    "addFailed": "No se pudo añadir esa palabra. Revisa la ortografía e inténtalo de nuevo.",
+    "loadFailed": "No se pudieron cargar tus palabras.",
+    "emptyTitle": "Aún no hay palabras",
+    "emptyBody": "Pregunta a tu interlocutor qué significa una palabra, toca el marcador de una tarjeta o añade una arriba.",
+    "filters": {
+      "all": "Todas",
+      "noun": "Sustantivos",
+      "verb": "Verbos",
+      "other": "Otras"
+    },
+    "listen": "Escuchar {{word}}",
+    "save": "Guardar en Mis palabras",
+    "unsave": "Quitar de Mis palabras",
+    "saveFailed": "No se pudo actualizar Mis palabras. Inténtalo de nuevo.",
+    "pos": {
+      "noun": "sustantivo",
+      "verb": "verbo",
+      "adjective": "adjetivo",
+      "adverb": "adverbio",
+      "phrase": "expresión",
+      "other": "palabra"
+    },
+    "plural": "plural: {{plural}}"
   }
 }

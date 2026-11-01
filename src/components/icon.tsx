@@ -1,10 +1,10 @@
 import {
-  Activity, ArrowRight, ArrowUp, Bell, Book, BookOpen, CalendarDays,
+  Activity, ArrowRight, ArrowUp, Bell, Book, BookOpen, Bookmark, BookmarkCheck, CalendarDays,
   Camera, Check, ChevronLeft, ChevronRight, Compass, Copy, Eye, EyeOff, Flame,
   Globe, Hand, Headphones, House, Layers, LayoutGrid, Link, Lock,
   MessageCircle, Mic, Moon, Pencil, Play, Plus, QrCode, Search,
   Settings, SlidersHorizontal, Sparkles, Square, Sun, User, Video,
-  Volume2, X,
+  Trash2, Volume2, X,
 } from 'lucide-react-native';
 import { I18nManager, Platform, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -53,6 +53,9 @@ export const icons = {
   settings: Settings,
   explore: Compass,
   eye: Eye,
+  bookmark: Bookmark,
+  bookmarked: BookmarkCheck,
+  trash: Trash2,
   eyeOff: EyeOff,
 } as const;
 

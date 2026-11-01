@@ -267,7 +267,8 @@
   },
   "tabs": {
     "home": "Start",
-    "practice": "Üben"
+    "practice": "Üben",
+    "words": "Wörter"
   },
   "roleplay": {
     "list": {
@@ -358,10 +359,49 @@
       "celebrateTitle": "Gut gesprochen!",
       "celebrateSubtitle_one": "{{count}} Satz verstanden",
       "celebrateSubtitle_other": "{{count}} Sätze verstanden"
+    },
+    "actions": {
+      "grammar": "Grammatik",
+      "goalReached": "Ziel erreicht: {{goal}}",
+      "completeTitle": "Szene geschafft!",
+      "finish": "Gespräch beenden",
+      "goals": "Ziele {{done}}/{{total}}"
     }
   },
   "profile": {
     "title": "Profil",
     "legal": "AGB, Datenschutz & Impressum"
+  },
+  "words": {
+    "title": "Meine Wörter",
+    "intro": "Wörter, die du in Gesprächen gespeichert oder selbst hinzugefügt hast. Tippe ein Wort an, um es zu hören.",
+    "statSaved": "gespeichert",
+    "statNouns": "Nomen",
+    "addPlaceholder": "Deutsches Wort hinzufügen, z. B. die Kaution",
+    "add": "Wort hinzufügen",
+    "adding": "Wird nachgeschlagen…",
+    "addFailed": "Das Wort konnte nicht hinzugefügt werden. Prüfe die Schreibweise und versuche es erneut.",
+    "loadFailed": "Deine Wörter konnten nicht geladen werden.",
+    "emptyTitle": "Noch keine Wörter",
+    "emptyBody": "Frag deinen Gesprächspartner, was ein Wort bedeutet, tippe auf das Lesezeichen einer Wortkarte oder füge oben eines hinzu.",
+    "filters": {
+      "all": "Alle",
+      "noun": "Nomen",
+      "verb": "Verben",
+      "other": "Andere"
+    },
+    "listen": "{{word}} anhören",
+    "save": "In Meine Wörter speichern",
+    "unsave": "Aus Meine Wörter entfernen",
+    "saveFailed": "Meine Wörter konnte nicht aktualisiert werden. Versuche es erneut.",
+    "pos": {
+      "noun": "Nomen",
+      "verb": "Verb",
+      "adjective": "Adjektiv",
+      "adverb": "Adverb",
+      "phrase": "Ausdruck",
+      "other": "Wort"
+    },
+    "plural": "Plural: {{plural}}"
   }
 }

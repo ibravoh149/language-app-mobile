@@ -24,15 +24,18 @@ import { Button } from '@/components/button';
 import { Icon } from '@/components/icon';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { GoalsStrip } from '@/components/roleplay/goals-strip';
+import { TurnActions } from '@/components/roleplay/turn-actions';
 import { ThinkingDots } from '@/components/thinking-dots';
 import { Motion } from '@/constants/motion';
 import { BorderRadius, FontFamily, Spacing } from '@/constants/theme';
 import { useGermanVoice } from '@/hooks/use-german-voice';
+import { myWordsQueryKey } from '@/hooks/use-my-words';
 import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
 import { useTheme } from '@/hooks/use-theme';
 import { toApiError, type ApiError } from '@/services/api-error';
 import { haptics } from '@/services/haptics';
-import { type InputMode, roleplayApi, type SessionDetail, type Turn } from '@/services/roleplay-api';
+import { type Action, type InputMode, roleplayApi, type SessionDetail, type Turn, type Word } from '@/services/roleplay-api';
 import { celebrate } from '@/store/celebration';
 import { useRoleplayStore } from '@/store/roleplay';
 
@@ -70,6 +73,8 @@ export function ConversationScreen() {
   const [speakingTurnId, setSpeakingTurnId] = useState<string | null>(null);
   /** Learner turns the tutor didn't understand (only known for turns sent on this screen). */
   const [notUnderstood, setNotUnderstood] = useState<Set<string>>(new Set());
+  /** The tutor's actions per AI reply id (v3, D24; only known for replies received on this screen). */
+  const [actionsByReply, setActionsByReply] = useState<Record<string, Action[]>>({});
   const scrollRef = useRef<ScrollView>(null);
   const spokenOpening = useRef(false);
   const stopRef = useRef(speech.stop);
@@ -112,6 +117,12 @@ export function ConversationScreen() {
     setSpeakingTurnId(turn.id);
     // First sentence plays while the rest is synthesized.
     voice.speak(turn.text, { progressive: true });
+  }
+
+  /** Speaks a word or phrase from an action card. */
+  function speakText(text: string) {
+    setSpeakingTurnId(null);
+    voice.speak(text);
   }
 
   // Speak the opening line once, when a fresh conversation starts.
@@ -171,8 +182,21 @@ export function ConversationScreen() {
       const result = await roleplayApi.sendTurn(sessionId, text, mode);
       if (__DEV__) console.info(`[timing] turn round-trip: ${Math.round(performance.now() - sentAt)} ms`);
       queryClient.setQueryData<SessionDetail>(key, (old) =>
-        old ? { ...old, turns: [...old.turns, result.userTurn, result.reply], corrections: [...old.corrections, ...result.corrections] } : old
+        old ? {
+          ...old,
+          turns: [...old.turns, result.userTurn, result.reply],
+          corrections: [...old.corrections, ...result.corrections],
+          goalsAchieved: result.goalsAchieved ?? old.goalsAchieved,
+        } : old
       );
+      if (result.actions?.length) setActionsByReply((prev) => ({ ...prev, [result.reply.id]: result.actions ?? [] }));
+      // Words the tutor saved for the learner join My Words straight away.
+      const savedWords = (result.actions ?? []).flatMap((a) => (a.type === 'word_card' && a.word.saved ? [a.word] : []));
+      if (savedWords.length) {
+        queryClient.setQueryData<Word[]>(myWordsQueryKey, (old) =>
+          old ? [...savedWords, ...old.filter((w) => !savedWords.some((s) => s.id === w.id))] : old
+        );
+      }
       if (!result.understood) setNotUnderstood((prev) => new Set(prev).add(result.userTurn.id));
       void queryClient.invalidateQueries({ queryKey: progressQueryKey });
       if (result.streak.extendedToday) {
@@ -230,6 +254,8 @@ export function ConversationScreen() {
 
   const ended = !!detail.data.session.endedAt || error?.error.code === 'SESSION_ENDED';
   const words = scenario.data?.words ?? [];
+  const goals = scenario.data?.goals ?? [];
+  const goalsAchieved = detail.data.goalsAchieved ?? [];
 
   return (
     <ThemedView style={styles.container}>
@@ -244,6 +270,7 @@ export function ConversationScreen() {
           </ThemedText>
           <LivePill label={t('roleplay.convo.live')} />
         </View>
+        <GoalsStrip goals={goals} achieved={goalsAchieved} />
 
         <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <ScrollView ref={scrollRef} contentContainerStyle={styles.thread} keyboardShouldPersistTaps="handled">
@@ -278,6 +305,9 @@ export function ConversationScreen() {
                     />
                   </View>
                 )}
+                {turn.role === 'ai' && actionsByReply[turn.id] && !ended ? (
+                  <TurnActions actions={actionsByReply[turn.id]} onSpeak={speakText} onFinish={() => void end()} finishing={ending} />
+                ) : null}
               </Animated.View>
             ))}
 
@@ -527,7 +557,7 @@ const styles = StyleSheet.create({
   livePill: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.sm + 2, paddingVertical: 4, borderRadius: BorderRadius.pill, borderWidth: 1 },
   liveDot: { width: 7, height: 7, borderRadius: 3.5 },
   thread: { paddingHorizontal: Spacing.lg, paddingTop: Spacing.md, paddingBottom: Spacing.lg, gap: Spacing.md },
-  aiRow: { alignItems: 'flex-start' },
+  aiRow: { alignItems: 'flex-start', gap: Spacing.sm },
   userRow: { alignItems: 'flex-end' },
   userBlock: { alignItems: 'flex-end', gap: 6, maxWidth: '84%' },
   bubble: { maxWidth: '84%', paddingVertical: 12, paddingHorizontal: 14, borderRadius: 20 },

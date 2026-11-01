@@ -267,7 +267,8 @@
   },
   "tabs": {
     "home": "Ana sayfa",
-    "practice": "Pratik"
+    "practice": "Pratik",
+    "words": "Kelimeler"
   },
   "roleplay": {
     "list": {
@@ -358,10 +359,49 @@
       "celebrateTitle": "Harika konuştun!",
       "celebrateSubtitle_one": "{{count}} cümle anlaşıldı",
       "celebrateSubtitle_other": "{{count}} cümle anlaşıldı"
+    },
+    "actions": {
+      "grammar": "Dilbilgisi",
+      "goalReached": "Hedefe ulaşıldı: {{goal}}",
+      "completeTitle": "Sahne tamamlandı!",
+      "finish": "Sohbeti bitir",
+      "goals": "Hedefler {{done}}/{{total}}"
     }
   },
   "profile": {
     "title": "Profil",
     "legal": "Koşullar, gizlilik ve künye"
+  },
+  "words": {
+    "title": "Kelimelerim",
+    "intro": "Sohbetlerde kaydettiğin ya da kendin eklediğin kelimeler. Dinlemek için bir kelimeye dokun.",
+    "statSaved": "kayıtlı",
+    "statNouns": "isim",
+    "addPlaceholder": "Almanca bir kelime ekle, ör. die Kaution",
+    "add": "Kelime ekle",
+    "adding": "Aranıyor…",
+    "addFailed": "Bu kelime eklenemedi. Yazımı kontrol edip tekrar dene.",
+    "loadFailed": "Kelimelerin yüklenemedi.",
+    "emptyTitle": "Henüz kelime yok",
+    "emptyBody": "Sohbet partnerine bir kelimenin ne anlama geldiğini sor, bir kelime kartındaki yer imine dokun ya da yukarıdan ekle.",
+    "filters": {
+      "all": "Tümü",
+      "noun": "İsimler",
+      "verb": "Fiiller",
+      "other": "Diğer"
+    },
+    "listen": "{{word}} dinle",
+    "save": "Kelimelerime kaydet",
+    "unsave": "Kelimelerimden çıkar",
+    "saveFailed": "Kelimelerim güncellenemedi. Tekrar dene.",
+    "pos": {
+      "noun": "isim",
+      "verb": "fiil",
+      "adjective": "sıfat",
+      "adverb": "zarf",
+      "phrase": "ifade",
+      "other": "kelime"
+    },
+    "plural": "çoğul: {{plural}}"
   }
 }
