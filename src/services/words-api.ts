@@ -15,7 +15,7 @@ export interface WordsApi {
   /**
    * Look a word up without saving it (tap-a-word). `q` is the form as tapped; the server
    * resolves the lemma ("Schmerzen" → "Schmerz"). `context` is the sentence it came from.
-   * Proposed `GET /words/lookup` (roleplay.md v3.2, pending with the lead).
+   * `GET /me/words/lookup` (roleplay.md v3.2).
    */
   lookup(q: string, context?: string): Promise<Word>;
 }
@@ -30,7 +30,7 @@ const httpWordsApi: WordsApi = {
     await api.delete(`/me/words/${encodeURIComponent(id)}`);
   },
   lookup: async (q, context) =>
-    (await api.get<{ word: Word }>('/words/lookup', { params: { q, context }, timeout: SAVE_TIMEOUT_MS })).data.word,
+    (await api.get<{ word: Word }>('/me/words/lookup', { params: { q, context }, timeout: SAVE_TIMEOUT_MS })).data.word,
 };
 
 // ---------------------------------------------------------------------------
