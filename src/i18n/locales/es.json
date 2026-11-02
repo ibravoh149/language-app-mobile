@@ -205,7 +205,8 @@
         "NETWORK": "No se puede conectar con Sprachbar. Revisa tu conexión e inténtalo de nuevo.",
         "RATE_LIMITED": "Demasiados intentos. Espera un momento.",
         "RATE_LIMITED_SECONDS": "Demasiados intentos. Inténtalo de nuevo en {{seconds}} s.",
-        "INTERNAL": "Algo salió mal. Inténtalo de nuevo."
+        "INTERNAL": "Algo salió mal. Inténtalo de nuevo.",
+        "ACCOUNT_SUSPENDED": "Tu cuenta ha sido suspendida. Si crees que es un error, contacta con soporte."
       }
     },
     "resetPassword": {

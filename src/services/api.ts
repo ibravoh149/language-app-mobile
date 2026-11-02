@@ -16,10 +16,23 @@ const api = axios.create({
 const refreshClient = axios.create({ baseURL, timeout: 10000, headers: { 'Content-Type': 'application/json' } });
 
 let onSessionExpired: (() => void) | null = null;
+let onAccountSuspended: (() => void) | null = null;
 
 /** The session store registers here so a dead refresh token signs the user out. */
 export function setSessionExpiredHandler(handler: (() => void) | null) {
   onSessionExpired = handler;
+}
+
+/** The session store registers here: 403 ACCOUNT_SUSPENDED signs the user out (auth-onboarding.md v1.5). */
+export function setAccountSuspendedHandler(handler: (() => void) | null) {
+  onAccountSuspended = handler;
+}
+
+/** An admin suspended the account: drop the tokens and sign out; never retry or refresh. */
+async function endSuspendedSession() {
+  if (!tokenStorage.get()) return;
+  await tokenStorage.clear();
+  onAccountSuspended?.();
 }
 
 /** One refresh at a time: concurrent 401s wait on the same rotation (the old refresh token dies after one use). */
@@ -35,6 +48,10 @@ function refreshTokens(): Promise<Tokens> {
       return data.tokens;
     } catch (error) {
       const apiError = toApiError(error);
+      if (apiError.code === 'ACCOUNT_SUSPENDED') {
+        await endSuspendedSession();
+        throw apiError;
+      }
       // Only a rejected token ends the session; a network blip keeps the user signed in.
       if (!refreshToken || apiError.code === 'REFRESH_INVALID') {
         await tokenStorage.clear();
@@ -57,6 +74,10 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(undefined, async (error) => {
   const apiError = toApiError(error);
   const config = (error as { config?: InternalAxiosRequestConfig & { _retried?: boolean } }).config;
+  if (apiError.code === 'ACCOUNT_SUSPENDED') {
+    await endSuspendedSession();
+    throw apiError;
+  }
   if (apiError.code === 'UNAUTHORIZED' && config && !config._retried && tokenStorage.get()) {
     config._retried = true;
     const tokens = await refreshTokens();

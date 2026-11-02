@@ -205,7 +205,8 @@
         "NETWORK": "Sprachbar ist nicht erreichbar. Prüf deine Verbindung und versuch es noch einmal.",
         "RATE_LIMITED": "Zu viele Versuche. Bitte warte kurz.",
         "RATE_LIMITED_SECONDS": "Zu viele Versuche. Versuch es in {{seconds}} s noch einmal.",
-        "INTERNAL": "Etwas ist schiefgelaufen. Bitte versuch es noch einmal."
+        "INTERNAL": "Etwas ist schiefgelaufen. Bitte versuch es noch einmal.",
+        "ACCOUNT_SUSPENDED": "Dein Konto wurde gesperrt. Wenn du denkst, dass das ein Fehler ist, wende dich an den Support."
       }
     },
     "resetPassword": {

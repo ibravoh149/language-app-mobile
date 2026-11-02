@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { setSessionExpiredHandler } from '@/services/api';
+import { setAccountSuspendedHandler, setSessionExpiredHandler } from '@/services/api';
 import { toApiError } from '@/services/api-error';
 import { authApi, type AuthResult, type DeleteAccountInput, type Me, type Profile, type User } from '@/services/auth-api';
 import { signOutOfGoogle } from '@/services/social-auth';
@@ -23,6 +23,8 @@ interface SessionState {
    * to login instead of the welcome screen, which is only for first-time users.
    */
   hasHadAccount: boolean;
+  /** Signed out because an admin suspended the account; login explains it. Cleared on sign-in. */
+  suspended: boolean;
   /** Reads tokens from secure storage and asks `GET /me` where the user stands. Call once on launch. */
   restore: () => Promise<void>;
   /** Stores the tokens and user from any sign-in, signup, reset or OAuth response. */
@@ -42,6 +44,7 @@ export const useSessionStore = create<SessionState>()(
       user: null,
       profile: null,
       hasHadAccount: false,
+      suspended: false,
 
       restore: async () => {
         if (!useSessionStore.persist.hasHydrated()) {
@@ -75,7 +78,7 @@ export const useSessionStore = create<SessionState>()(
       signIn: async (result) => {
         await tokenStorage.save(result.tokens);
         if (result.profile && !result.isNewUser) applyProfile(result.profile);
-        set({ status: 'signedIn', user: result.user, profile: result.profile, hasHadAccount: true });
+        set({ status: 'signedIn', user: result.user, profile: result.profile, hasHadAccount: true, suspended: false });
       },
 
       setMe: (me) => set((state) => ({ user: me.user ?? state.user, profile: me.profile ?? state.profile })),
@@ -108,6 +111,10 @@ export const useSessionStore = create<SessionState>()(
 );
 
 setSessionExpiredHandler(() => useSessionStore.setState(signedOut));
+setAccountSuspendedHandler(() => {
+  void signOutOfGoogle();
+  useSessionStore.setState({ ...signedOut, suspended: true });
+});
 
 /**
  * Where a user in this session state belongs (contract table under `GET /me`),

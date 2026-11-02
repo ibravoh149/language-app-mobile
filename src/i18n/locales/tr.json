@@ -205,7 +205,8 @@
         "NETWORK": "Sprachbar'a ulaşılamıyor. Bağlantını kontrol edip tekrar dene.",
         "RATE_LIMITED": "Çok fazla deneme. Lütfen biraz bekle.",
         "RATE_LIMITED_SECONDS": "Çok fazla deneme. {{seconds}} sn sonra tekrar dene.",
-        "INTERNAL": "Bir şeyler ters gitti. Lütfen tekrar dene."
+        "INTERNAL": "Bir şeyler ters gitti. Lütfen tekrar dene.",
+        "ACCOUNT_SUSPENDED": "Hesabın askıya alındı. Bunun bir hata olduğunu düşünüyorsan destekle iletişime geç."
       }
     },
     "resetPassword": {

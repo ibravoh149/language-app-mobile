@@ -10,6 +10,7 @@ export type ApiErrorCode =
   | 'REFRESH_INVALID'
   | 'OAUTH_TOKEN_INVALID'
   | 'EMAIL_NOT_VERIFIED'
+  | 'ACCOUNT_SUSPENDED'
   | 'NOT_FOUND'
   | 'EMAIL_TAKEN'
   | 'ACCOUNT_USES_SOCIAL'
@@ -67,6 +68,7 @@ export function apiErrorMessage(error: ApiError): { key: string; params?: Record
     case 'OAUTH_TOKEN_INVALID':
     case 'EMAIL_TAKEN':
     case 'ACCOUNT_USES_SOCIAL':
+    case 'ACCOUNT_SUSPENDED':
     case 'VALIDATION_FAILED':
     case 'NETWORK':
       return { key: `auth.errors.api.${error.code}` };

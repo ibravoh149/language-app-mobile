@@ -21,6 +21,8 @@ export function LoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const signIn = useSessionStore((state) => state.signIn);
+  // Signed out by an admin suspension (auth-onboarding.md v1.5): say why.
+  const suspended = useSessionStore((state) => state.suspended);
   const { control, handleSubmit, setError, setFocus, getValues } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
@@ -82,7 +84,8 @@ export function LoginScreen() {
           {t('auth.login.forgotPassword')}
         </ThemedText>
       </Pressable>
-      {formError ? <FormError message={formError} attempt={errorAttempt} /> : null}
+      {formError ? <FormError message={formError} attempt={errorAttempt} />
+        : suspended ? <FormError message={t('auth.errors.api.ACCOUNT_SUSPENDED')} attempt={0} /> : null}
       <Button title={t('auth.login.submit')} loading={submitting} onPress={handleSubmit(onSubmit)} />
       {hasSocialProviders ? <SocialSignIn /> : null}
     </AuthScreen>
