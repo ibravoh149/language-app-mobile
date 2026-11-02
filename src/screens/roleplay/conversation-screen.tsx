@@ -26,7 +26,9 @@ import { Icon } from '@/components/icon';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { GoalsStrip } from '@/components/roleplay/goals-strip';
+import { TappableText } from '@/components/roleplay/tappable-text';
 import { TutorAvatar, type TutorMood } from '@/components/roleplay/tutor-avatar';
+import { type WordTarget, WordSheet } from '@/components/roleplay/word-sheet';
 import { TurnActions } from '@/components/roleplay/turn-actions';
 import { ThinkingDots } from '@/components/thinking-dots';
 import { Motion } from '@/constants/motion';
@@ -80,6 +82,8 @@ export function ConversationScreen() {
   const [actionsByReply, setActionsByReply] = useState<Record<string, Action[]>>({});
   /** Bumped for wins (goal reached, streak, scene done): the tutor character cheers. */
   const [cheerKey, setCheerKey] = useState(0);
+  /** Tap-a-word (F2-T4): the tapped word, and where it is so it stays highlighted. */
+  const [lookup, setLookup] = useState<(WordTarget & { turnId: string; index: number }) | null>(null);
   const scrollRef = useRef<ScrollView>(null);
   /**
    * The learner turn in flight or last failed, with its idempotency key (v3.1). Re-sending
@@ -325,7 +329,9 @@ export function ConversationScreen() {
                       <Icon name={speakingTurnId === turn.id ? 'stop' : 'speaker'} size={14} themeColor="accentBright" filled={speakingTurnId === turn.id} />
                       <ThemedText type="smallBold" themeColor="accentBright" style={styles.speakerName}>{voice.voice?.name ?? aiName}</ThemedText>
                     </View>
-                    <ThemedText style={styles.bubbleText}>{turn.text}</ThemedText>
+                    <TappableText text={turn.text} style={styles.bubbleText}
+                      selectedIndex={lookup?.turnId === turn.id ? lookup.index : null}
+                      onWord={(word, wordIndex) => setLookup({ q: word, context: turn.text, turnId: turn.id, index: wordIndex })} />
                   </Pressable>
                 ) : (
                   <View style={styles.userBlock}>
@@ -340,6 +346,12 @@ export function ConversationScreen() {
                     />
                   </View>
                 )}
+                {index === 0 && turn.role === 'ai' && !turns.some((x) => x.role === 'user') ? (
+                  <Animated.View entering={FadeIn.delay(Motion.stagger * 8)} style={styles.tapHint}>
+                    <Icon name="spark" size={12} themeColor="textMuted" />
+                    <ThemedText type="small" themeColor="textMuted">{t('words.tapHint')}</ThemedText>
+                  </Animated.View>
+                ) : null}
                 {turn.role === 'ai' && actionsByReply[turn.id] && !ended ? (
                   <TurnActions actions={actionsByReply[turn.id]} onSpeak={speakText} onFinish={() => void end()} finishing={ending} />
                 ) : null}
@@ -467,6 +479,7 @@ export function ConversationScreen() {
           )}
         </KeyboardAvoidingView>
       </SafeAreaView>
+      <WordSheet target={lookup} onClose={() => setLookup(null)} onSpeak={speakText} />
     </ThemedView>
   );
 }
@@ -593,6 +606,7 @@ const styles = StyleSheet.create({
   liveDot: { width: 7, height: 7, borderRadius: 3.5 },
   stage: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.lg + 4, paddingTop: Spacing.xs, paddingBottom: Spacing.sm },
   stageText: { flex: 1, gap: 2 },
+  tapHint: { flexDirection: 'row', alignItems: 'center', gap: 4, marginLeft: 4 },
   thread: { paddingHorizontal: Spacing.lg, paddingTop: Spacing.md, paddingBottom: Spacing.lg, gap: Spacing.md },
   aiRow: { alignItems: 'flex-start', gap: Spacing.sm },
   userRow: { alignItems: 'flex-end' },

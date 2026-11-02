@@ -407,6 +407,9 @@
       "phrase": "Ausdruck",
       "other": "Wort"
     },
-    "plural": "Plural: {{plural}}"
+    "plural": "Plural: {{plural}}",
+    "close": "Schließen",
+    "lookupFailed": "Das Wort konnte nicht nachgeschlagen werden. Versuche es erneut.",
+    "tapHint": "Tippe auf ein Wort, um zu sehen, was es bedeutet"
   }
 }

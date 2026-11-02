@@ -407,6 +407,9 @@
       "phrase": "expresión",
       "other": "palabra"
     },
-    "plural": "plural: {{plural}}"
+    "plural": "plural: {{plural}}",
+    "close": "Cerrar",
+    "lookupFailed": "No se pudo buscar esta palabra. Inténtalo de nuevo.",
+    "tapHint": "Toca cualquier palabra para ver qué significa"
   }
 }

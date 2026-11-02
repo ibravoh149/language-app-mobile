@@ -407,6 +407,9 @@
       "phrase": "expression",
       "other": "mot"
     },
-    "plural": "pluriel : {{plural}}"
+    "plural": "pluriel : {{plural}}",
+    "close": "Fermer",
+    "lookupFailed": "Impossible de chercher ce mot. Réessaie.",
+    "tapHint": "Touche un mot pour voir ce qu’il signifie"
   }
 }

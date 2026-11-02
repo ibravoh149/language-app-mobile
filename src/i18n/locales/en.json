@@ -407,6 +407,9 @@
       "phrase": "phrase",
       "other": "word"
     },
-    "plural": "plural: {{plural}}"
+    "plural": "plural: {{plural}}",
+    "close": "Close",
+    "lookupFailed": "Couldn't look up this word. Try again.",
+    "tapHint": "Tap any word to see what it means"
   }
 }

@@ -12,6 +12,12 @@ export interface WordsApi {
   /** Save by lemma ("Kaution" or "die Kaution"); idempotent. 502 TUTOR_UNAVAILABLE if no dictionary entry. */
   save(lemma: string): Promise<Word>;
   remove(id: string): Promise<void>;
+  /**
+   * Look a word up without saving it (tap-a-word). `q` is the form as tapped; the server
+   * resolves the lemma ("Schmerzen" → "Schmerz"). `context` is the sentence it came from.
+   * Proposed `GET /words/lookup` (roleplay.md v3.2, pending with the lead).
+   */
+  lookup(q: string, context?: string): Promise<Word>;
 }
 
 /** The dictionary lookup can include a small LLM call on a cache miss. */
@@ -23,6 +29,8 @@ const httpWordsApi: WordsApi = {
   remove: async (id) => {
     await api.delete(`/me/words/${encodeURIComponent(id)}`);
   },
+  lookup: async (q, context) =>
+    (await api.get<{ word: Word }>('/words/lookup', { params: { q, context }, timeout: SAVE_TIMEOUT_MS })).data.word,
 };
 
 // ---------------------------------------------------------------------------
@@ -72,6 +80,15 @@ const mockWordsApi: WordsApi = {
   async remove(id) {
     await delay(200);
     if (!mockSaved.delete(id)) throw new ApiError('NOT_FOUND', 'Unknown word', 404);
+  },
+  async lookup(q) {
+    await delay(500);
+    if (!q.trim()) throw new ApiError('VALIDATION_FAILED', 'q required', 400, { q: 'required' });
+    // Crude lemmatising for the mock: try the form, then without a plural/case ending.
+    const form = q.trim();
+    const known = (lemma: string) => MOCK_DICTIONARY.some((d) => d.lemma.toLowerCase() === lemma.toLowerCase());
+    const lemma = [form, form.replace(/(en|n|e|s)$/i, '')].find(known) ?? form;
+    return mockLookupWord(lemma);
   },
 };
 

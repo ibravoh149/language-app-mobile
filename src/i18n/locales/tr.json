@@ -407,6 +407,9 @@
       "phrase": "ifade",
       "other": "kelime"
     },
-    "plural": "çoğul: {{plural}}"
+    "plural": "çoğul: {{plural}}",
+    "close": "Kapat",
+    "lookupFailed": "Bu kelime aranamadı. Tekrar dene.",
+    "tapHint": "Anlamını görmek için bir kelimeye dokun"
   }
 }
