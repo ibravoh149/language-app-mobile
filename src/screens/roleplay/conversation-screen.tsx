@@ -10,6 +10,7 @@ import Animated, {
   Easing,
   FadeIn,
   FadeInDown,
+  LinearTransition,
   type SharedValue,
   useAnimatedStyle,
   useReducedMotion,
@@ -25,6 +26,7 @@ import { Icon } from '@/components/icon';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { GoalsStrip } from '@/components/roleplay/goals-strip';
+import { TutorAvatar, type TutorMood } from '@/components/roleplay/tutor-avatar';
 import { TurnActions } from '@/components/roleplay/turn-actions';
 import { ThinkingDots } from '@/components/thinking-dots';
 import { Motion } from '@/constants/motion';
@@ -76,6 +78,8 @@ export function ConversationScreen() {
   const [notUnderstood, setNotUnderstood] = useState<Set<string>>(new Set());
   /** The tutor's actions per AI reply id (v3, D24; only known for replies received on this screen). */
   const [actionsByReply, setActionsByReply] = useState<Record<string, Action[]>>({});
+  /** Bumped for wins (goal reached, streak, scene done): the tutor character cheers. */
+  const [cheerKey, setCheerKey] = useState(0);
   const scrollRef = useRef<ScrollView>(null);
   /**
    * The learner turn in flight or last failed, with its idempotency key (v3.1). Re-sending
@@ -210,6 +214,9 @@ export function ConversationScreen() {
       }
       if (!result.understood) setNotUnderstood((prev) => new Set(prev).add(result.userTurn.id));
       void queryClient.invalidateQueries({ queryKey: progressQueryKey });
+      if (result.streak.extendedToday || result.actions?.some((a) => a.type === 'goal_achieved' || a.type === 'scenario_complete')) {
+        setCheerKey((k) => k + 1);
+      }
       if (result.streak.extendedToday) {
         celebrate({ title: t('roleplay.convo.streakTitle', { count: result.streak.current }), subtitle: t('roleplay.convo.streakSubtitle'), icon: 'flame' });
       } else {
@@ -269,6 +276,11 @@ export function ConversationScreen() {
   const words = scenario.data?.words ?? [];
   const goals = scenario.data?.goals ?? [];
   const goalsAchieved = detail.data.goalsAchieved ?? [];
+  const mood: TutorMood = speech.isRecording ? 'listening'
+    : sending || speech.isFinalizing || voice.phase === 'loading' ? 'thinking'
+      : voice.isPlaying ? 'speaking'
+        : 'idle';
+  const compactStage = typing;
 
   return (
     <ThemedView style={styles.container}>
@@ -283,6 +295,16 @@ export function ConversationScreen() {
           </ThemedText>
           <LivePill label={t('roleplay.convo.live')} />
         </View>
+        <Animated.View layout={LinearTransition.springify().damping(Motion.settle.damping)} style={styles.stage}>
+          <TutorAvatar mood={mood} voiceLevel={voice.level} micLevel={speech.level} cheerKey={cheerKey}
+            size={compactStage ? 40 : 72} badge={compactStage ? undefined : detail.data.scenario.emoji} />
+          <View style={styles.stageText}>
+            <ThemedText type="smallBold" numberOfLines={1}>{voice.voice?.name ?? aiName}</ThemedText>
+            <ThemedText type="small" themeColor={mood === 'idle' ? 'textMuted' : 'accentBright'} numberOfLines={1}>
+              {mood === 'idle' ? aiName : t(`roleplay.tutor.${mood}`)}
+            </ThemedText>
+          </View>
+        </Animated.View>
         <GoalsStrip goals={goals} achieved={goalsAchieved} />
 
         <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -569,6 +591,8 @@ const styles = StyleSheet.create({
   headerTitle: { flex: 1, fontSize: 16 },
   livePill: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.sm + 2, paddingVertical: 4, borderRadius: BorderRadius.pill, borderWidth: 1 },
   liveDot: { width: 7, height: 7, borderRadius: 3.5 },
+  stage: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.lg + 4, paddingTop: Spacing.xs, paddingBottom: Spacing.sm },
+  stageText: { flex: 1, gap: 2 },
   thread: { paddingHorizontal: Spacing.lg, paddingTop: Spacing.md, paddingBottom: Spacing.lg, gap: Spacing.md },
   aiRow: { alignItems: 'flex-start', gap: Spacing.sm },
   userRow: { alignItems: 'flex-end' },

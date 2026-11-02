@@ -47,5 +47,7 @@ export function useGermanVoice() {
     phase: sample.phase,
     downloadProgress: sample.downloadProgress,
     isPlaying: sample.isPlaying,
+    /** Loudness of the voice as it plays, 0–1 (shared value for animations). */
+    level: sample.level,
   };
 }

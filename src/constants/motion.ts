@@ -20,4 +20,9 @@ export const Motion = {
   level: { duration: 240, easing: Easing.out(Easing.quad), reduceMotion: ReduceMotion.System },
   /** "AI is thinking" dots: one bounce cycle, offset per dot by `stagger * 3`. */
   thinking: { duration: 420, easing: Easing.inOut(Easing.quad), reduceMotion: ReduceMotion.System },
+  /** Tutor character: idle breathing (one leg), blink, and mouth smoothing per loudness sample. */
+  breathe: { duration: 1800, easing: Easing.inOut(Easing.sin), reduceMotion: ReduceMotion.System },
+  blink: { duration: 70, reduceMotion: ReduceMotion.System },
+  blinkEveryMs: 3600,
+  mouth: { duration: 70, easing: Easing.out(Easing.quad), reduceMotion: ReduceMotion.Never },
 } as const;

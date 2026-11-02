@@ -406,6 +406,11 @@
       "completeTitle": "اكتمل المشهد!",
       "finish": "إنهاء المحادثة",
       "goals": "الأهداف {{done}}/{{total}}"
+    },
+    "tutor": {
+      "listening": "يستمع…",
+      "thinking": "يفكّر…",
+      "speaking": "يتحدّث"
     }
   },
   "profile": {

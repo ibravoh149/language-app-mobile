@@ -47,6 +47,10 @@ export const Colors = {
     articleDie: '#db2777',
     articleDas: '#15a34a',
 
+    // Tutor character (same in both modes: drawn on the accent gradient)
+    characterInk: '#1b1036',
+    characterBlush: 'rgba(244,114,182,0.55)',
+
     // Misc
     skeleton: 'rgba(22,17,38,0.06)',
   },
@@ -88,6 +92,10 @@ export const Colors = {
     articleDer: '#60a5fa',
     articleDie: '#f472b6',
     articleDas: '#4ade80',
+
+    // Tutor character (same in both modes: drawn on the accent gradient)
+    characterInk: '#1b1036',
+    characterBlush: 'rgba(244,114,182,0.55)',
 
     // Misc
     skeleton: 'rgba(255,255,255,0.07)',

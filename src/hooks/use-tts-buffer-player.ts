@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { type SharedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import { AudioContext, type AudioBufferQueueSourceNode } from 'react-native-audio-api';
 
 /** An audio chunk yielded by a speech synthesis stream. */
@@ -18,6 +19,8 @@ export interface AudioPlayerState {
   playStream: <T extends AudioChunk>(chunks: AsyncIterable<T>, sampleRate?: number) => Promise<void>;
   /** Immediately stops audio playback, clears remaining buffers, and resets state. */
   stop: () => void;
+  /** Loudness of what's playing right now, 0–1 (drives the tutor's mouth). */
+  level: SharedValue<number>;
 }
 
 /**
@@ -26,6 +29,22 @@ export interface AudioPlayerState {
  */
 /** Grace period after the computed end before playback is considered finished. */
 const END_SLACK_MS = 250;
+/** Loudness envelope resolution: one value per window, sampled while playing. */
+const LEVEL_WINDOW_S = 0.04;
+
+/** RMS per window, mapped to 0–1 (sqrt so quiet syllables still move). */
+function envelope(audio: Float32Array, sampleRate: number): number[] {
+  const size = Math.max(1, Math.round(sampleRate * LEVEL_WINDOW_S));
+  const out: number[] = [];
+  for (let start = 0; start < audio.length; start += size) {
+    const end = Math.min(audio.length, start + size);
+    let sum = 0;
+    for (let i = start; i < end; i++) sum += audio[i] * audio[i];
+    const rms = Math.sqrt(sum / (end - start));
+    out.push(Math.min(1, Math.sqrt(rms) * 2)); // speech RMS ≈ 0.1 → 0.63
+  }
+  return out;
+}
 
 export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -37,6 +56,14 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   const streamDoneRef = useRef(false);
   /** Backup for onBufferEnded, which can arrive late or not at all: ends playback by the clock. */
   const endTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const level = useSharedValue(0);
+  const levelTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stopLevel = useCallback(() => {
+    if (levelTimerRef.current) clearInterval(levelTimerRef.current);
+    levelTimerRef.current = null;
+    level.value = withTiming(0, { duration: 120 });
+  }, [level]);
 
   const getAudioContext = useCallback(async (rate: number) => {
     // A fresh context per clip. Stopping the microphone rebuilds react-native-audio-api's
@@ -56,6 +83,7 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   const stop = useCallback(() => {
     if (endTimerRef.current) clearTimeout(endTimerRef.current);
     endTimerRef.current = null;
+    stopLevel();
     if (queueSourceRef.current) {
       queueSourceRef.current.clearBuffers();
       queueSourceRef.current.stop();
@@ -68,7 +96,7 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
     const resolve = resolveCompletionRef.current;
     resolveCompletionRef.current = null;
     resolve?.();
-  }, []);
+  }, [stopLevel]);
 
   const playStream = useCallback(
     async <T extends AudioChunk>(chunks: AsyncIterable<T>, rate: number = sampleRate) => {
@@ -84,11 +112,13 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
       let started = false;
       let startedAt = 0;
       let queuedSeconds = 0;
+      const levels: number[] = [];
 
       const finishIfDone = () => {
         if (!streamDoneRef.current || !lastBufferEndedRef.current) return;
         if (endTimerRef.current) clearTimeout(endTimerRef.current);
         endTimerRef.current = null;
+        stopLevel();
         const resolve = resolveCompletionRef.current;
         resolveCompletionRef.current = null;
         setIsPlaying(false);
@@ -113,6 +143,9 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
           buffer.copyToChannel(chunk.audio as Float32Array<ArrayBuffer>, 0);
           const bufferId = source.enqueueBuffer(buffer);
           lastEnqueuedBufferIdRef.current = bufferId;
+          // Pad to the chunk's start so the envelope stays aligned with playback time.
+          while (levels.length < Math.round(queuedSeconds / LEVEL_WINDOW_S)) levels.push(0);
+          levels.push(...envelope(chunk.audio, chunk.sampleRate));
           queuedSeconds += chunk.audio.length / chunk.sampleRate;
 
           if (!started) {
@@ -120,6 +153,12 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
             startedAt = ctx.currentTime;
             setIsPlaying(true);
             source.start(0, 0);
+            if (levelTimerRef.current) clearInterval(levelTimerRef.current);
+            levelTimerRef.current = setInterval(() => {
+              if (queueSourceRef.current !== source) return;
+              const index = Math.floor((ctx.currentTime - startedAt) / LEVEL_WINDOW_S);
+              level.value = withTiming(levels[index] ?? 0, { duration: LEVEL_WINDOW_S * 1000 * 1.5 });
+            }, LEVEL_WINDOW_S * 1000);
           }
         }
         streamDoneRef.current = true;
@@ -142,7 +181,7 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
 
       await playbackFinished;
     },
-    [getAudioContext, stop, sampleRate]
+    [getAudioContext, stop, stopLevel, sampleRate, level]
   );
 
   useEffect(() => {
@@ -156,5 +195,5 @@ export function useTtsBufferPlayer(sampleRate: number): AudioPlayerState {
   }, [stop]);
 
   // Stable object: callers put `stop` in effect cleanups, which must not fire on every render.
-  return useMemo(() => ({ isPlaying, playStream, stop }), [isPlaying, playStream, stop]);
+  return useMemo(() => ({ isPlaying, playStream, stop, level }), [isPlaying, playStream, stop, level]);
 }

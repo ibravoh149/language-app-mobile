@@ -366,6 +366,11 @@
       "completeTitle": "Scene complete!",
       "finish": "Finish conversation",
       "goals": "Goals {{done}}/{{total}}"
+    },
+    "tutor": {
+      "listening": "Listening…",
+      "thinking": "Thinking…",
+      "speaking": "Speaking"
     }
   },
   "profile": {

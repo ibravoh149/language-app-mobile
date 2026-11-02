@@ -366,6 +366,11 @@
       "completeTitle": "Sahne tamamlandı!",
       "finish": "Sohbeti bitir",
       "goals": "Hedefler {{done}}/{{total}}"
+    },
+    "tutor": {
+      "listening": "Dinliyor…",
+      "thinking": "Düşünüyor…",
+      "speaking": "Konuşuyor"
     }
   },
   "profile": {

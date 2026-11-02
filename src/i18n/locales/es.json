@@ -366,6 +366,11 @@
       "completeTitle": "¡Escena completada!",
       "finish": "Terminar conversación",
       "goals": "Objetivos {{done}}/{{total}}"
+    },
+    "tutor": {
+      "listening": "Escuchando…",
+      "thinking": "Pensando…",
+      "speaking": "Hablando"
     }
   },
   "profile": {

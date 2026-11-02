@@ -201,10 +201,12 @@ export function useVoiceSample() {
       phase,
       downloadProgress,
       isPlaying: player.isPlaying,
+      /** Loudness of the voice as it plays, 0–1. */
+      level: player.level,
       play,
       prepare,
       stop,
     }),
-    [activeVoiceId, phase, downloadProgress, player.isPlaying, play, prepare, stop]
+    [activeVoiceId, phase, downloadProgress, player.isPlaying, player.level, play, prepare, stop]
   );
 }
